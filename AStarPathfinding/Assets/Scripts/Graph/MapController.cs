@@ -15,6 +15,12 @@ public class MapController : MonoBehaviour
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
+    private int _gridRowCount;
+    private int _gridColumnCount;
+
+    [SerializeField]
+    [Range(1, 10)]
+    private int _verticesPerUnit = 1;
 
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
@@ -51,9 +57,41 @@ public class MapController : MonoBehaviour
         }
 
         /*Graph.ResizeGrid(ref grid, tex.height, tex.width, 2, 2);*/
+        _gridRowCount = textureHeight;
+        _gridColumnCount = textureWidth;
+        ResizeGrid(_verticesPerUnit);
+        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _verticesPerUnit);
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit);
+    }
 
-        _graph = new Graph(_grid, textureHeight, textureWidth, pixelsPerUnit);
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, textureWidth, textureHeight), transform.position, pixelsPerUnit);
+    private void ResizeGrid(int verticesByUnit)
+    {
+        Enums.TerrainType[,] resizedGrid = new Enums.TerrainType[_gridRowCount/verticesByUnit, _gridColumnCount/verticesByUnit];
+
+        int newGridRowCount = _gridRowCount / verticesByUnit;
+        int newGridColumnCount = _gridColumnCount / verticesByUnit;
+
+        for (int i = 0; i < _gridRowCount / verticesByUnit; i+=verticesByUnit)
+        {
+            for (int j = 0; j < _gridColumnCount / verticesByUnit; j+=verticesByUnit)
+            {
+                bool isWalkable = true;
+                int vertexRowIndex = i;
+                int vertexColumnIndex = j;
+
+                /*for (int r = 0; r < verticesByUnit; r++)
+                {
+                    
+                }*/
+
+                resizedGrid[i, j] = Enums.TerrainType.Path;
+            }
+        }
+
+        _gridRowCount = newGridRowCount;
+        _gridColumnCount = newGridColumnCount;
+
+        _grid = resizedGrid;
     }
 
     private void PrintGraph()
@@ -76,11 +114,17 @@ public class MapController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying)
         {
-            /*DrawGraph();*/
+            if (_grid != null)
+            {
+                if (_grid.Length < 2000)
+                {
+                    DrawGraph();
+                }
+            }
         }
     }
 
@@ -99,7 +143,7 @@ public class MapController : MonoBehaviour
             }
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(vertex.Position, new Vector2(1, 1));
+            Gizmos.DrawWireCube(vertex.Position, new Vector2(vertex.Size, vertex.Size));
 
             int rowIndex;
             int columnIndex;
