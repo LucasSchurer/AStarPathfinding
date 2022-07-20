@@ -23,7 +23,7 @@ public class MapController : MonoBehaviour
 
     [SerializeField]
     [Range(1, 50)]
-    private int _unitsPerVertex = 1;
+    private int _unitsPerVertice = 1;
 
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
@@ -61,10 +61,10 @@ public class MapController : MonoBehaviour
 
         _gridRowCount = textureHeight;
         _gridColumnCount = textureWidth;
-        ResizeGrid(_unitsPerVertex);
-        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
+        ResizeGrid(_unitsPerVertice);
+        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertice / pixelsPerUnit);
         _vertexCount = _graph.Vertices.Length;
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertice);
     }
 
     private void ResizeGrid(int verticesByUnit)
