@@ -19,8 +19,11 @@ public class MapController : MonoBehaviour
     private int _gridColumnCount;
 
     [SerializeField]
-    [Range(1, 10)]
-    private int _verticesPerUnit = 1;
+    private int _vertexCount = 0;
+
+    [SerializeField]
+    [Range(1, 20)]
+    private int _unitsPerVertice = 1;
 
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
@@ -56,12 +59,12 @@ public class MapController : MonoBehaviour
             }
         }
 
-        /*Graph.ResizeGrid(ref grid, tex.height, tex.width, 2, 2);*/
         _gridRowCount = textureHeight;
         _gridColumnCount = textureWidth;
-        ResizeGrid(_verticesPerUnit);
-        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _verticesPerUnit);
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _verticesPerUnit);
+        ResizeGrid(_unitsPerVertice);
+        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertice);
+        _vertexCount = _graph.Vertices.Length;
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertice);
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -75,31 +78,27 @@ public class MapController : MonoBehaviour
         {
             for (int j = 0; j < newGridColumnCount; j++)
             {
-                bool isWalkable = true;
-                int vertexRowIndex = i;
-                int vertexColumnIndex = j;
+                int wallCount = 0;
+                int pathCount = 0;
 
                 for (int r = 0; r < verticesByUnit; r++)
                 {
                     for (int c = 0; c < verticesByUnit; c++)
                     {
-                        vertexRowIndex = i * verticesByUnit + r;
-                        vertexColumnIndex = j * verticesByUnit + c;
+                        int vertexRowIndex = i * verticesByUnit + r;
+                        int vertexColumnIndex = j * verticesByUnit + c;
 
                         if (_grid[vertexRowIndex, vertexColumnIndex] == Enums.TerrainType.Wall)
                         {
-                            isWalkable = false;
-                            break;
+                            wallCount++;
+                        } else
+                        {
+                            pathCount++;
                         }
-                    }
-
-                    if (isWalkable == false)
-                    {
-                        break;
                     }
                 }
 
-                resizedGrid[i, j] = isWalkable ? Enums.TerrainType.Path : Enums.TerrainType.Wall;
+                resizedGrid[i, j] = pathCount > wallCount ? Enums.TerrainType.Path : Enums.TerrainType.Wall;
             }
         }
 

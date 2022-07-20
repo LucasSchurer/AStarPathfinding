@@ -75,13 +75,13 @@ public class Vertex
                 return new Color(0, 0, 0, 0);
 
             case Enums.TerrainType.Wall:
-                return new Color(1, 0, 0, 1);
+                return new Color(1, 0, 0, 0.4f);
 
             case Enums.TerrainType.Path:
-                return new Color(0, 1, 0, 1);
+                return new Color(0, 1, 0, 0.4f);
 
             default:
-                return new Color(0, 0, 0, 0);
+                return new Color(0, 0, 0, 0.4f);
         }
     }
 }
