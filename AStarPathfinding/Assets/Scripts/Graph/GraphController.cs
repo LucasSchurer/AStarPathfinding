@@ -42,14 +42,14 @@ public class GraphController : MonoBehaviour
         }
         else {
             Debug.Log("DONE");
-            Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;
-            /*Texture2D tex = new Texture2D(texture.height, texture.width);*/
+            /*Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;*/
+            Texture2D tex = new Texture2D(texture.height, texture.width);
             tex.filterMode = FilterMode.Point;
             tex.Apply();
 
             grid = new int[tex.height, tex.width];
 
-            Color[] pixels = tex.GetPixels();
+            Color[] pixels = texture.GetPixels();
 
             for (int i = 0; i < tex.height; i++)
             {
@@ -69,7 +69,10 @@ public class GraphController : MonoBehaviour
             tex.SetPixels(pixels);
             tex.Apply();
 
-            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, tex.height/20);
+            /*float pixelsPerUnit = tex.height / 20;*/
+            float pixelsPerUnit = 1;
+
+            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);
             Debug.Log(tex.width);
             _graph = new Graph(grid, tex.height, tex.width);
         }
@@ -94,7 +97,7 @@ public class GraphController : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            /*DrawGraph();*/
+            DrawGraph();
         }
     }
 
