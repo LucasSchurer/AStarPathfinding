@@ -19,8 +19,6 @@ public class GraphController : MonoBehaviour
 
     private void Awake()
     {
-        _graph = new Graph();
-
 /*        int[,] grid = new int[4, 3] {
                                     { 0, 0, 0 },
                                     { 0, 1, 0 },
@@ -44,14 +42,14 @@ public class GraphController : MonoBehaviour
         }
         else {
             Debug.Log("DONE");
-            /*Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;*/
-            Texture2D tex = new Texture2D(texture.height, texture.width);
+            Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            /*Texture2D tex = new Texture2D(texture.height, texture.width);*/
             tex.filterMode = FilterMode.Point;
             tex.Apply();
 
             grid = new int[tex.height, tex.width];
 
-            Color[] pixels = texture.GetPixels();
+            Color[] pixels = tex.GetPixels();
 
             for (int i = 0; i < tex.height; i++)
             {
@@ -71,15 +69,15 @@ public class GraphController : MonoBehaviour
             tex.SetPixels(pixels);
             tex.Apply();
 
-            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, 1);
+            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, tex.height/20);
             Debug.Log(tex.width);
-            _graph.GenerateGraph(grid, tex.height, tex.width);
+            _graph = new Graph(grid, tex.height, tex.width);
         }
     }
 
     private void PrintGraph()
     {
-        foreach (Vertex vertex in _graph.Vertices.Values)
+        foreach (Vertex vertex in _graph.Vertices)
         {
             string s = $"Vertex: {vertex.Identifier}\nConnected Vertices: ";
 
@@ -96,14 +94,24 @@ public class GraphController : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            DrawGraph();
+            /*DrawGraph();*/
         }
     }
 
     private void DrawGraph()
     {
-        foreach (Vertex vertex in _graph.Vertices.Values)
+        if (_graph == null)
         {
+            return;
+        }
+
+        foreach (Vertex vertex in _graph.Vertices)
+        {
+            if (vertex == null)
+            {
+                continue;
+            }
+
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(vertex.Position, new Vector2(1, 1));
 
