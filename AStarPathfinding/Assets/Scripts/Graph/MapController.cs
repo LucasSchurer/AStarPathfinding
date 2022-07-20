@@ -61,7 +61,7 @@ public class MapController : MonoBehaviour
         _gridColumnCount = textureWidth;
         ResizeGrid(_verticesPerUnit);
         _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _verticesPerUnit);
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit);
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _verticesPerUnit);
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -71,20 +71,35 @@ public class MapController : MonoBehaviour
         int newGridRowCount = _gridRowCount / verticesByUnit;
         int newGridColumnCount = _gridColumnCount / verticesByUnit;
 
-        for (int i = 0; i < _gridRowCount / verticesByUnit; i+=verticesByUnit)
+        for (int i = 0; i < newGridRowCount; i++)
         {
-            for (int j = 0; j < _gridColumnCount / verticesByUnit; j+=verticesByUnit)
+            for (int j = 0; j < newGridColumnCount; j++)
             {
                 bool isWalkable = true;
                 int vertexRowIndex = i;
                 int vertexColumnIndex = j;
 
-                /*for (int r = 0; r < verticesByUnit; r++)
+                for (int r = 0; r < verticesByUnit; r++)
                 {
-                    
-                }*/
+                    for (int c = 0; c < verticesByUnit; c++)
+                    {
+                        vertexRowIndex = i * verticesByUnit + r;
+                        vertexColumnIndex = j * verticesByUnit + c;
 
-                resizedGrid[i, j] = Enums.TerrainType.Path;
+                        if (_grid[vertexRowIndex, vertexColumnIndex] == Enums.TerrainType.Wall)
+                        {
+                            isWalkable = false;
+                            break;
+                        }
+                    }
+
+                    if (isWalkable == false)
+                    {
+                        break;
+                    }
+                }
+
+                resizedGrid[i, j] = isWalkable ? Enums.TerrainType.Path : Enums.TerrainType.Wall;
             }
         }
 
@@ -142,8 +157,15 @@ public class MapController : MonoBehaviour
                 continue;
             }
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(vertex.Position, new Vector2(vertex.Size, vertex.Size));
+            if (vertex.TerrainType == Enums.TerrainType.Path)
+            {
+                Gizmos.color = Color.green;
+            } else
+            {
+                Gizmos.color = Color.red;
+            }
+
+            Gizmos.DrawWireCube(vertex.Position, new Vector2(vertex.Size - vertex.Size * 0.05f, vertex.Size - vertex.Size * 0.05f));
 
             int rowIndex;
             int columnIndex;

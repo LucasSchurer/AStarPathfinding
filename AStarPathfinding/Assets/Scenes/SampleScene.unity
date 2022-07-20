@@ -579,8 +579,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd9241c019dcde4883b54129e1f0e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageUrl: https://i.imgur.com/uluS2rP.png
-  _pixelsPerUnit: 2
+  _imageUrl: https://movingai.com/benchmarks/street/Berlin_0_256.png
+  _pixelsPerUnit: 53.65
   _spriteRenderer: {fileID: 1857118990}
 --- !u!114 &1909400684
 MonoBehaviour:
@@ -595,5 +595,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapLoader: {fileID: 1909400683}
-  _verticesPerUnit: 1
+  _verticesPerUnit: 10
   _graphOverlayRenderer: {fileID: 277766480}
