@@ -1,74 +1,59 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GraphController : MonoBehaviour
+public class MapController : MonoBehaviour
 {
+    [SerializeField]
+    private MapLoader _mapLoader;
+
     [SerializeField]
     private Graph _graph;
 
     [SerializeField]
+    private Enums.TerrainType[,] _grid;
+
+    [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
-
-    [SerializeField]
-    private int[,] grid;
-
-    [SerializeField]
-    private string imageUrl;
-    [SerializeField]
-    private Texture2D texture;
 
     private void Awake()
     {
-        StartCoroutine(LoadImage());
+        _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
     }
 
-    private IEnumerator LoadImage()
+    private void CreateGridBasedOnSprite(Sprite sprite)
     {
-        UnityWebRequest www = UnityWebRequestTexture.GetTexture(imageUrl);
-        yield return www.SendWebRequest();
+        Texture2D spriteTexture = sprite.texture;
+        int textureHeight = spriteTexture.height;
+        int textureWidth = spriteTexture.width;
+        float pixelsPerUnit = sprite.pixelsPerUnit;
 
-        if (www.result != UnityWebRequest.Result.Success)
+        _grid = new Enums.TerrainType[spriteTexture.height, spriteTexture.width];
+
+        Color[] pixels = spriteTexture.GetPixels();
+
+        for (int i = 0; i < textureHeight; i++)
         {
-            Debug.Log(www.error);
-        }
-        else {
-            Debug.Log("DONE");
-            /*Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;*/
-            Texture2D tex = new Texture2D(texture.height, texture.width);
-            tex.filterMode = FilterMode.Point;
-            tex.Apply();
-
-            grid = new int[tex.height, tex.width];
-
-            Color[] pixels = texture.GetPixels();
-
-            for (int i = 0; i < tex.height; i++)
+            for (int j = 0; j < textureWidth; j++)
             {
-                for (int j = 0; j < tex.width; j++)
+                if (pixels[i * spriteTexture.height + j].grayscale < 0.2f && pixels[i * spriteTexture.height + j].a != 0f)
                 {
-                    if (pixels[i * tex.height + j].grayscale < 0.2f)
-                    {
-                        grid[i, j] = 1;
-                    } else
-                    {
-                        grid[i, j] = 0;
-                    }
+                    _grid[i, j] = Enums.TerrainType.Wall;
+                }
+                else
+                {
+                    _grid[i, j] = Enums.TerrainType.Path;
                 }
             }
-
-            tex.SetPixels(pixels);
-            tex.Apply();
-
-            /*float pixelsPerUnit = tex.height / 20;*/
-            float pixelsPerUnit = 1;
-
-            _graph = new Graph(grid, tex.height, tex.width, pixelsPerUnit);
-            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);            
-            _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);
         }
+
+        /*Graph.ResizeGrid(ref grid, tex.height, tex.width, 2, 2);*/
+
+        _graph = new Graph(_grid, textureHeight, textureWidth, pixelsPerUnit);
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, textureWidth, textureHeight), transform.position, pixelsPerUnit);
     }
 
     private void PrintGraph()
@@ -95,7 +80,7 @@ public class GraphController : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            DrawGraph();
+            /*DrawGraph();*/
         }
     }
 
@@ -132,5 +117,10 @@ public class GraphController : MonoBehaviour
                 Gizmos.DrawLine(vertex.Position, connectedVertex.Position);
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        _mapLoader.onSpriteCreated -= CreateGridBasedOnSprite;
     }
 }

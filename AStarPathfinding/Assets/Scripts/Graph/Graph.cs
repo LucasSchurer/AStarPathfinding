@@ -25,7 +25,7 @@ public class Graph
 
     public bool IsIndexValid(int rowIndex, int columnIndex) => rowIndex >= 0 && rowIndex < _rowCount && columnIndex >= 0 && columnIndex < _columnCount;
 
-    public Graph(int[,] grid, int rowCount, int columnCount, float vertexSize)
+    public Graph(Enums.TerrainType[,] grid, int rowCount, int columnCount, float vertexSize)
     {
         _rowCount = rowCount;
         _columnCount = columnCount;
@@ -38,31 +38,29 @@ public class Graph
         GenerateGraph(grid);
     }
 
-    private void GenerateGraph(int[,] grid)
+    private void GenerateGraph(Enums.TerrainType[,] grid)
     {
         CreateVertices(grid);
         /*CreateEdges();*/
         _graphTexture.Apply();
     }
 
-    private void CreateVertices(int [,] grid)
+    private void CreateVertices(Enums.TerrainType [,] grid)
     {
-        Vector2 initialPosition = new Vector2(_vertexSize * _rowCount, _vertexSize * _columnCount);
-
         for (int i = 0; i < _rowCount; i++)
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                bool isWalkable = grid[i, j] == 0;
                 Vector2 vertexPosition;
-                /*vertexPosition.x = initialPosition.x + j * _vertexSize;*/
-                vertexPosition.x = -initialPosition.x + j * _vertexSize + _vertexSize * 1.5f;
-                vertexPosition.y = initialPosition.y + i * _vertexSize - _vertexSize/2;
+                vertexPosition.x = j * _vertexSize + _vertexSize/2;
+                vertexPosition.y = i * _vertexSize + _vertexSize/2;
 
-                _vertices[i, j] = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, isWalkable);
-                UpdateOverlay(i, j, isWalkable);
+                _vertices[i, j] = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, grid[i, j]);
+                UpdateOverlay(_vertices[i, j]);
             }
         }
+
+        _graphTexture.Apply();
     }
 
     private void CreateEdges()
@@ -81,20 +79,14 @@ public class Graph
             }
         }
     }
-
-    private void UpdateOverlay(int row, int column, bool isWalkable)
+    private void UpdateOverlay(Vertex vertex)
     {
-        Color pixel = _graphTexture.GetPixel(column, row);
-        
-        if (isWalkable)
-        {
-            pixel.g = 1f;
-        } else
-        {
-            pixel.r = 1f;
-        }
+        UpdateOverlay(vertex.RowIndex, vertex.ColumnIndex, vertex.TerrainType);
+    }
 
-        _graphTexture.SetPixel(column, row, pixel);
+    private void UpdateOverlay(int row, int column, Enums.TerrainType terrainType)
+    {
+        _graphTexture.SetPixel(column, row, Vertex.GetColorBasedOnTerrainType(terrainType));
     }
 
     private List<Vertex> GetVertexNeighbours(Vertex vertex)
@@ -113,7 +105,7 @@ public class Graph
         int neighbourIndex = columnIndex - 1;
         if (IsIndexValid(rowIndex, neighbourIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].IsWalkable)
+            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[rowIndex, neighbourIndex]);
             }
@@ -123,7 +115,7 @@ public class Graph
         neighbourIndex = columnIndex + 1;
         if (IsIndexValid(rowIndex, neighbourIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].IsWalkable)
+            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[rowIndex, neighbourIndex]);
             }
@@ -133,7 +125,7 @@ public class Graph
         neighbourIndex = rowIndex - 1;
         if (IsIndexValid(neighbourIndex, columnIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].IsWalkable)
+            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[neighbourIndex, columnIndex]);
             }
@@ -143,12 +135,46 @@ public class Graph
         neighbourIndex = rowIndex + 1;
         if (IsIndexValid(neighbourIndex, columnIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].IsWalkable)
+            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[neighbourIndex, columnIndex]);
             }            
         }
 
         return neighbours;
+    }
+
+    public static void ResizeGrid(ref int[,] grid, int rowCount, int columnCount, int combinedRowsAmount, int combinedColumnsAmount)
+    {
+        int[,] newGrid = new int[rowCount / combinedRowsAmount, columnCount / combinedColumnsAmount];
+
+        for (int i = 0; i < rowCount; i += combinedRowsAmount)
+        {
+            for (int j = 0; j < columnCount; j += combinedColumnsAmount)
+            {
+                int walkable = 0;
+
+                for (int r = 0; r < combinedRowsAmount; r++)
+                {
+                    for (int c = 0; c < combinedColumnsAmount; c++)
+                    {
+                        int rowIndex = Mathf.Clamp(i + r, 0, rowCount - 1);
+                        int columnIndex = Mathf.Clamp(j + c, 0, columnCount - 1);
+
+                        try
+                        {
+                            walkable += grid[rowIndex, columnIndex];
+                        } catch (IndexOutOfRangeException) 
+                        {
+                            Debug.Log("erro");
+                        }
+                    }
+                }
+
+                newGrid[i / combinedRowsAmount, j / combinedColumnsAmount] = walkable;
+            }
+        }
+
+        grid = newGrid;
     }
 }
