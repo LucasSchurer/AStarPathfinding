@@ -40,8 +40,27 @@ public class Graph
         }
     }
 
-    public void CreateVertex(Vector2 position)
+    public void GenerateGraph(int[,] grid, int rowCount, int columnCount)
     {
-        _vertices.Add(new Vertex(position, _vertices.Count));
+        CreateVertices(grid, rowCount, columnCount);
+    }
+
+    private void CreateVertices(int [,] grid, int rowCount, int columnCount)
+    {
+        for (int i = 0; i < rowCount; i++)
+        {
+            for (int j = 0; j < columnCount; j++)
+            {
+                if (grid[i, j] == 0)
+                {
+                    CreateVertex(new Vector2(2 * i, 2 * j), (i * 10 + j));
+                }
+            }
+        }
+    }
+
+    public void CreateVertex(Vector2 position, int number = 0)
+    {
+        _vertices.Add(new Vertex(position, number));
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GraphController : MonoBehaviour
@@ -10,7 +11,13 @@ public class GraphController : MonoBehaviour
     private void Awake()
     {
         _graph = new Graph();
-        _graph.GenerateGraph();
+
+        int[,] grid = new int[3, 3] { 
+                                    { 0, 0, 0 }, 
+                                    { 0, 0, 0 }, 
+                                    { 0, 0, 0 } };
+
+        _graph.GenerateGraph(grid, 3, 3);
         PrintGraph();
     }
 
@@ -43,14 +50,15 @@ public class GraphController : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(vertex.Position, 0.3f);
-            
-            foreach(Vertex connectedVertex in vertex.GetConnectedVertices())
+
+            Handles.color = Color.yellow;
+            Handles.Label(vertex.Position, vertex.Number.ToString());
+
+            foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
             {
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(vertex.Position, connectedVertex.Position);
             }
         }
-
-        _graph.RandomMoveVertices();
     }
 }
