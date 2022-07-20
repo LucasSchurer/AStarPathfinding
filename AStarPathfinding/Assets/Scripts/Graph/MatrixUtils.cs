@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MatrixUtils<T>
 {
-    public static List<T> GetNeighbours(T[][] grid, int rowCount, int columnCount, int rowIndex, int columnIndex, bool includeDiagonal = false)
+    public static List<Tuple<int, int>> GetNeighboursIndexes(T[,] grid, int rowCount, int columnCount, int rowIndex, int columnIndex, bool includeDiagonal = false)
     {
-        List<T> neighbours = new List<T>();
+        List<Tuple<int, int>> neighbours = new List<Tuple<int, int>>();
 
         if (!IsIndexValid(rowCount, columnCount, rowIndex, columnIndex))
         {
@@ -14,31 +15,31 @@ public class MatrixUtils<T>
         }
 
         // Checking the left neighbour index
-        int neighbourIndex = rowCount - 1;
-        if (IsIndexValid(rowCount, columnCount, neighbourIndex, columnIndex))
+        int neighbourIndex = columnIndex - 1;
+        if (IsIndexValid(rowCount, columnCount, rowIndex, neighbourIndex))
         {
-            neighbours.Add(grid[rowIndex][neighbourIndex]);
+            neighbours.Add(new Tuple<int, int>(rowIndex, neighbourIndex));
         }
 
         // Checking the right neighbour index
-        neighbourIndex = rowCount + 1;
-        if (IsIndexValid(rowCount, columnCount, neighbourIndex, columnIndex))
+        neighbourIndex = columnIndex + 1;
+        if (IsIndexValid(rowCount, columnCount, rowIndex, neighbourIndex))
         {
-            neighbours.Add(grid[rowIndex][neighbourIndex]);
-        }
-
-        // Checking the up neighbour index
-        neighbourIndex = columnCount - 1;
-        if (IsIndexValid(rowCount, columnCount, neighbourIndex, columnIndex))
-        {
-            neighbours.Add(grid[neighbourIndex][columnIndex]);
+            neighbours.Add(new Tuple<int, int>(rowIndex, neighbourIndex));
         }
 
         // Checking the down neighbour index
-        neighbourIndex = columnCount + 1;
+        neighbourIndex = rowIndex - 1;
         if (IsIndexValid(rowCount, columnCount, neighbourIndex, columnIndex))
         {
-            neighbours.Add(grid[neighbourIndex][columnIndex]);
+            neighbours.Add(new Tuple<int, int>(neighbourIndex, columnIndex));
+        }
+
+        // Checking the right neighbour index
+        neighbourIndex = rowIndex + 1;
+        if (IsIndexValid(rowCount, columnCount, neighbourIndex, columnIndex))
+        {
+            neighbours.Add(new Tuple<int, int>(neighbourIndex, columnIndex));
         }
 
         return neighbours;

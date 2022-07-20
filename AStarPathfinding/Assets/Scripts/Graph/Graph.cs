@@ -1,42 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Graph
 {
-    private List<Vertex> _vertices;
-    public List<Vertex> Vertices => _vertices;
+    /* https://gist.github.com/GibsS/fdba8e3cdbd307652fc3c01336b32534 */
+    public static int CantorPairing(int i, int j) => (((i + j) * (i + j + 1)) / 2) + j;
+    public static void ReverseCantorPairing(int m, out int i, out int j)
+    {
+        int t = (int)Math.Floor((-1 + Math.Sqrt(1 + 8 * m)) * 0.5f);
+        i = t * (t + 3) / 2 - m;
+        j = m - t * (t + 1) / 2;
+    }
+
+    private Dictionary<int, Vertex> _vertices;
+    public Dictionary<int, Vertex> Vertices => _vertices;
 
     public Graph()
     {
-        _vertices = new List<Vertex>();
+        _vertices = new Dictionary<int, Vertex>();
     }
 
     public void RandomMoveVertices()
     {
-        foreach (Vertex vertex in _vertices)
+        foreach (Vertex vertex in _vertices.Values)
         {
             Vector2 newPosition = vertex.Position;
-            newPosition.x += Random.Range(-0.05f, 0.05f);
-            newPosition.y += Random.Range(-0.05f, 0.05f);
+            newPosition.x += UnityEngine.Random.Range(-0.05f, 0.05f);
+            newPosition.y += UnityEngine.Random.Range(-0.05f, 0.05f);
             newPosition.x = Mathf.Clamp(newPosition.x, -10, 10);
             newPosition.y = Mathf.Clamp(newPosition.y, -10, 10);
             vertex.SetPosition(newPosition);
-        }
-    }
-
-    public void GenerateGraph()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            CreateVertex(new Vector2(Random.Range(-5, 5), Random.Range(-5, 5)));
-        }
-
-        for (int i = 0; i < Random.Range(5, 15); i++)
-        {
-            Vertex source = _vertices[Random.Range(0, _vertices.Count - 1)];
-            Vertex target = _vertices[Random.Range(0, _vertices.Count - 1)];
-            source.AddRelationship(target, 1);
         }
     }
 
@@ -53,14 +48,78 @@ public class Graph
             {
                 if (grid[i, j] == 0)
                 {
-                    CreateVertex(new Vector2(2 * i, 2 * j), (i * 10 + j));
+                    CreateVertex(grid, rowCount, columnCount, i, j);
                 }
             }
         }
     }
 
-    public void CreateVertex(Vector2 position, int number = 0)
+    private void CreateVertex(int [,] grid, int rowCount, int columnCount, int rowIndex, int columnIndex)
     {
-        _vertices.Add(new Vertex(position, number));
+        if (grid[rowIndex, columnIndex] == 1)
+        {
+            return;
+        }
+
+        int vertexIdentifier = CantorPairing(rowIndex, columnIndex);
+        Vertex vertex;
+        CreateVertex(vertexIdentifier, new Vector2(1 * columnIndex, 1 * rowIndex), out vertex);
+        
+        if (vertex.GetConnectedVertices().Count > 0)
+        {
+            return;
+        }
+
+        foreach (Tuple<int, int> neighbourIndex in MatrixUtils<int>.GetNeighboursIndexes(grid, rowCount, columnCount, rowIndex, columnIndex))
+        {
+            if (grid[neighbourIndex.Item1, neighbourIndex.Item2] == 1)
+            {
+                continue;
+            }
+
+            int neighbourIdentifier = CantorPairing(neighbourIndex.Item1, neighbourIndex.Item2);
+
+            if (!_vertices.ContainsKey(neighbourIdentifier))
+            {
+                CreateVertex(grid, rowCount, columnCount, neighbourIndex.Item1, neighbourIndex.Item2);
+            }
+
+            Vertex neighbour;
+            _vertices.TryGetValue(neighbourIdentifier, out neighbour);
+            vertex.AddRelationship(neighbour, 1);
+        }
+    }
+
+    public bool CreateVertex(Vector2 position)
+    {
+        return CreateVertex(_vertices.Count, position);
+    }
+
+    public bool CreateVertex(int identifier, Vector2 position)
+    {
+        return CreateVertex(identifier, position, out _);
+    }
+
+    public bool CreateVertex(int identifier, Vector2 position, out Vertex addedVertex)
+    {
+        try
+        {
+            Vertex vertex = new Vertex(identifier, position);
+            _vertices.Add(identifier, vertex);
+            addedVertex = vertex;
+            return true;
+        } catch (ArgumentException)
+        {
+            Vertex existingVertex;
+            if (_vertices.TryGetValue(identifier, out existingVertex))
+            {
+                addedVertex = existingVertex;
+            } else
+            {
+                addedVertex = null;
+            }
+
+            return false;
+        }
     }
 }
