@@ -10,6 +10,9 @@ public class GraphController : MonoBehaviour
     private Graph _graph;
 
     [SerializeField]
+    private SpriteRenderer _graphOverlayRenderer;
+
+    [SerializeField]
     private int[,] grid;
 
     [SerializeField]
@@ -19,15 +22,6 @@ public class GraphController : MonoBehaviour
 
     private void Awake()
     {
-/*        int[,] grid = new int[4, 3] {
-                                    { 0, 0, 0 },
-                                    { 0, 1, 0 },
-                                    { 0, 0, 0 },
-                                    { 0, 1, 0 } };
-
-        _graph.GenerateGraph(grid, 4, 3);
-        PrintGraph();
-*/
         StartCoroutine(LoadImage());
     }
 
@@ -57,7 +51,6 @@ public class GraphController : MonoBehaviour
                 {
                     if (pixels[i * tex.height + j].grayscale < 0.2f)
                     {
-                        pixels[i * tex.height + j].r = 1f;
                         grid[i, j] = 1;
                     } else
                     {
@@ -72,9 +65,9 @@ public class GraphController : MonoBehaviour
             /*float pixelsPerUnit = tex.height / 20;*/
             float pixelsPerUnit = 1;
 
-            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);
-            Debug.Log(tex.width);
-            _graph = new Graph(grid, tex.height, tex.width);
+            _graph = new Graph(grid, tex.height, tex.width, pixelsPerUnit);
+            GetComponent<SpriteRenderer>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);            
+            _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, tex.width, tex.height), transform.position, pixelsPerUnit);
         }
     }
 
@@ -82,6 +75,11 @@ public class GraphController : MonoBehaviour
     {
         foreach (Vertex vertex in _graph.Vertices)
         {
+            if (vertex == null)
+            {
+                continue;
+            }
+
             string s = $"Vertex: {vertex.Identifier}\nConnected Vertices: ";
 
             foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
@@ -125,7 +123,7 @@ public class GraphController : MonoBehaviour
             Handles.color = Color.yellow;
             Handles.Label(vertex.Position, vertex.Identifier.ToString());
             Vector2 columnRowHandlePosition = vertex.Position;
-            columnRowHandlePosition.y -= 0.5f;
+            columnRowHandlePosition.y -= vertex.Size / 6;
             Handles.Label(columnRowHandlePosition, $"{rowIndex},{columnIndex}");
 
             foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
