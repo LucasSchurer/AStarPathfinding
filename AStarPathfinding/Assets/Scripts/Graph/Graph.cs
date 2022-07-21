@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Graph
 {
+    public delegate void OnPathFound(long timeInMilliseconds);
+    public OnPathFound onPathFound;
+
     /* https://gist.github.com/GibsS/fdba8e3cdbd307652fc3c01336b32534 */
     public static int CantorPairing(int i, int j) => (((i + j) * (i + j + 1)) / 2) + j;
     public static void ReverseCantorPairing(int m, out int i, out int j)
@@ -45,15 +49,15 @@ public class Graph
         _graphTexture.Apply();
     }
 
-    private void CreateVertices(Enums.TerrainType [,] grid)
+    private void CreateVertices(Enums.TerrainType[,] grid)
     {
         for (int i = 0; i < _rowCount; i++)
         {
             for (int j = 0; j < _columnCount; j++)
             {
                 Vector2 vertexPosition;
-                vertexPosition.x = j * _vertexSize + _vertexSize/2;
-                vertexPosition.y = i * _vertexSize + _vertexSize/2;
+                vertexPosition.x = j * _vertexSize + _vertexSize / 2;
+                vertexPosition.y = i * _vertexSize + _vertexSize / 2;
 
                 _vertices[i, j] = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, grid[i, j]);
                 UpdateOverlay(_vertices[i, j], false);
@@ -79,7 +83,7 @@ public class Graph
             }
         }
     }
-   
+
     public void UpdateOverlay(Vertex vertex, bool applyChangesToTexture = true)
     {
         UpdateOverlay(vertex.RowIndex, vertex.ColumnIndex, vertex.TerrainType, applyChangesToTexture);
@@ -154,7 +158,7 @@ public class Graph
             if (_vertices[neighbourIndex, columnIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[neighbourIndex, columnIndex]);
-            }            
+            }
         }
 
         return neighbours;
@@ -164,8 +168,6 @@ public class Graph
     {
         int rowIndex = (int)(position.y / _vertexSize);
         int columnIndex = (int)(position.x / _vertexSize);
-
-        Debug.Log($"{rowIndex},{columnIndex} {position}");
 
         if (IsIndexValid(rowIndex, columnIndex))
         {
@@ -192,13 +194,7 @@ public class Graph
                         int rowIndex = Mathf.Clamp(i + r, 0, rowCount - 1);
                         int columnIndex = Mathf.Clamp(j + c, 0, columnCount - 1);
 
-                        try
-                        {
-                            walkable += grid[rowIndex, columnIndex];
-                        } catch (IndexOutOfRangeException) 
-                        {
-                            Debug.Log("erro");
-                        }
+                        walkable += grid[rowIndex, columnIndex];
                     }
                 }
 
@@ -215,7 +211,7 @@ public class Graph
     /// </summary>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    public IEnumerator GetPathFromSourceToTarget(Vertex source, Vertex target)
+    public IEnumerator GetPathFromSourceToTargetWithOverlay(Vertex source, Vertex target)
     {
         foreach (Vertex vertex in _vertices)
         {
@@ -224,16 +220,15 @@ public class Graph
 
         UpdateOverlay(source, Color.yellow, false);
         UpdateOverlay(target, Color.yellow, false);
-
         _graphTexture.Apply();
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
 
         List<Vertex> closedList = new List<Vertex>();
         List<Vertex> openList = new List<Vertex>();
         Vertex currentVertex;
-        source.gCost = 0;
         source.hCost = DistanceBetweenVertices(source, target);
-        target.gCost = 0;
-        target.hCost = 0;
         source.parent = null;
         target.parent = null;
         openList.Add(source);
@@ -247,6 +242,8 @@ public class Graph
 
             if (currentVertex == target)
             {
+                sw.Stop();
+                UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
                 currentVertex = currentVertex.parent;
 
                 while (currentVertex != null)
@@ -261,7 +258,7 @@ public class Graph
 
                 break;
             }
-            
+
             foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
             {
                 if (closedList.Contains(connectedVertex))
@@ -279,6 +276,7 @@ public class Graph
                     if (!openList.Contains(connectedVertex))
                     {
                         openList.Add(connectedVertex);
+
                         UpdateOverlay(connectedVertex, Color.blue, false);
                     }
                 }
@@ -286,9 +284,85 @@ public class Graph
 
             _graphTexture.Apply();
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0);
 
             UpdateOverlay(currentVertex, Color.red, true);
+        }
+
+        yield return null;
+    }
+
+    public IEnumerator GetPathFromSourceToTarget(Vertex source, Vertex target)
+    {
+        foreach (Vertex vertex in _vertices)
+        {
+            UpdateOverlay(vertex, false);
+        }
+
+        UpdateOverlay(source, Color.yellow, false);
+        UpdateOverlay(target, Color.yellow, false);
+        _graphTexture.Apply();
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        Dictionary<int, Vertex> closedList = new Dictionary<int, Vertex>();
+        List<Vertex> openList = new List<Vertex>();
+        Vertex currentVertex;
+        source.hCost = DistanceBetweenVertices(source, target);
+        source.parent = null;
+        target.parent = null;
+        openList.Add(source);
+        while (openList.Count > 0)
+        {
+            currentVertex = GetLowestCostVertexInList(openList);
+            closedList.Add(currentVertex.Identifier, currentVertex);
+            openList.Remove(currentVertex);
+
+            if (currentVertex == target)
+            {
+                sw.Stop();
+                UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
+                currentVertex = currentVertex.parent;
+
+                while (currentVertex != null)
+                {
+                    UpdateOverlay(currentVertex, Color.green, false);
+                    currentVertex = currentVertex.parent;
+                }
+
+                UpdateOverlay(source, Color.yellow, false);
+                UpdateOverlay(target, Color.yellow, false);
+                _graphTexture.Apply();
+
+                break;
+            }
+
+            foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
+            {
+                if (closedList.ContainsKey(connectedVertex.Identifier))
+                {
+                    continue;
+                }
+
+                int movementCostToConnectedVertex = currentVertex.gCost + DistanceBetweenVertices(currentVertex, connectedVertex);
+                if (!openList.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
+                {
+                    connectedVertex.gCost = movementCostToConnectedVertex;
+                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
+                    connectedVertex.parent = currentVertex;
+
+                    if (!openList.Contains(connectedVertex))
+                    {
+                        openList.Add(connectedVertex);
+                    }
+                }
+            }
+
+            if (sw.ElapsedMilliseconds > 10000)
+            {
+                break;
+            }
         }
 
         yield return null;
