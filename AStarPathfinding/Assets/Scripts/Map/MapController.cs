@@ -23,7 +23,7 @@ public class MapController : MonoBehaviour
 
     [SerializeField]
     [Range(1, 50)]
-    private int _unitsPerVertice = 1;
+    private int _unitsPerVertex = 1;
 
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
@@ -31,6 +31,19 @@ public class MapController : MonoBehaviour
     private void Awake()
     {
         _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vertex selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (selectedVertex != null)
+            {
+                selectedVertex.ChangeTerrainType(Enums.TerrainType.Path);
+                _graph.UpdateOverlay(selectedVertex);
+            }
+        }
     }
 
     private void CreateGridBasedOnSprite(Sprite sprite)
@@ -61,10 +74,10 @@ public class MapController : MonoBehaviour
 
         _gridRowCount = textureHeight;
         _gridColumnCount = textureWidth;
-        ResizeGrid(_unitsPerVertice);
-        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertice / pixelsPerUnit);
+        ResizeGrid(_unitsPerVertex);
+        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _vertexCount = _graph.Vertices.Length;
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertice);
+        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
     }
 
     private void ResizeGrid(int verticesByUnit)

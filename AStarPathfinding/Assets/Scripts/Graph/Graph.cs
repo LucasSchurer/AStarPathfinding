@@ -56,7 +56,7 @@ public class Graph
                 vertexPosition.y = i * _vertexSize + _vertexSize/2;
 
                 _vertices[i, j] = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, grid[i, j]);
-                UpdateOverlay(_vertices[i, j]);
+                UpdateOverlay(_vertices[i, j], false);
             }
         }
 
@@ -79,14 +79,20 @@ public class Graph
             }
         }
     }
-    private void UpdateOverlay(Vertex vertex)
+   
+    public void UpdateOverlay(Vertex vertex, bool applyChangesToTexture = true)
     {
-        UpdateOverlay(vertex.RowIndex, vertex.ColumnIndex, vertex.TerrainType);
+        UpdateOverlay(vertex.RowIndex, vertex.ColumnIndex, vertex.TerrainType, applyChangesToTexture);
     }
 
-    private void UpdateOverlay(int row, int column, Enums.TerrainType terrainType)
+    private void UpdateOverlay(int row, int column, Enums.TerrainType terrainType, bool applyChangesToTexture = true)
     {
         _graphTexture.SetPixel(column, row, Vertex.GetColorBasedOnTerrainType(terrainType));
+
+        if (applyChangesToTexture)
+        {
+            _graphTexture.Apply();
+        }
     }
 
     private List<Vertex> GetVertexNeighbours(Vertex vertex)
@@ -142,6 +148,21 @@ public class Graph
         }
 
         return neighbours;
+    }
+
+    public Vertex GetVertexOnPosition(Vector2 position)
+    {
+        int rowIndex = (int)(position.y / _vertexSize);
+        int columnIndex = (int)(position.x / _vertexSize);
+
+        Debug.Log($"{rowIndex},{columnIndex} {position}");
+
+        if (IsIndexValid(rowIndex, columnIndex))
+        {
+            return _vertices[rowIndex, columnIndex];
+        }
+
+        return null;
     }
 
     public static void ResizeGrid(ref int[,] grid, int rowCount, int columnCount, int combinedRowsAmount, int combinedColumnsAmount)

@@ -67,6 +67,11 @@ public class Vertex
         return connectedVertices;
     }
 
+    public void ChangeTerrainType(Enums.TerrainType newTerrainType)
+    {
+        _terrainType = newTerrainType;
+    }
+
     public static Color GetColorBasedOnTerrainType(Enums.TerrainType terrainType)
     {
         switch (terrainType)
