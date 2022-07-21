@@ -569,7 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd9241c019dcde4883b54129e1f0e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageUrl: https://movingai.com/benchmarks/street/Berlin_0_1024.png
+  _imageUrl: https://movingai.com/benchmarks/street/London_1_1024.png
   _pixelsPerUnit: 53.65
   _spriteRenderer: {fileID: 1857118990}
 --- !u!114 &1909400684
@@ -586,5 +586,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mapLoader: {fileID: 1909400683}
   _vertexCount: 3
-  _unitsPerVertex: 20
+  _unitsPerVertex: 1
   _graphOverlayRenderer: {fileID: 277766480}
