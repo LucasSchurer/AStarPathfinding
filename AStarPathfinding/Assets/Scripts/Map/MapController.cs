@@ -70,7 +70,7 @@ public class MapController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && _selectedVertex != null && _targetVertex != null)
         {
             StopAllCoroutines();
-            StartCoroutine(_graph.GetPathFromSourceToTarget(_selectedVertex, _targetVertex));
+            StartCoroutine(_graph.FindPath(_selectedVertex, _targetVertex));
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
@@ -82,6 +82,33 @@ public class MapController : MonoBehaviour
 
             _graph._graphTexture.Apply();
         }
+    }
+
+    private void OnPathProcessed(Vertex[] steps)
+    {
+        ClearGraph();
+        DrawSteps(steps);
+    }
+
+    private void DrawSteps(Vertex[] steps)
+    {
+        foreach (Vertex vertex in steps)
+        {
+            _graph.UpdateOverlay(vertex, Color.green, false);
+        }
+
+        _graph.UpdateOverlay(steps[0], Color.yellow, false);
+        _graph.UpdateOverlay(steps[steps.Length - 1], Color.yellow, true);
+    }
+
+    private void ClearGraph()
+    {
+        foreach (Vertex vertex in _graph.Vertices)
+        {
+            _graph.UpdateOverlay(vertex, false);
+        }
+
+        _graph._graphTexture.Apply();
     }
 
     private void CreateGridBasedOnSprite(Sprite sprite)
@@ -116,6 +143,8 @@ public class MapController : MonoBehaviour
         _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _vertexCount = _graph.Vertices.Length;
         _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+
+        _graph.onPathProcessed += OnPathProcessed;
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -245,5 +274,6 @@ public class MapController : MonoBehaviour
     private void OnDisable()
     {
         _mapLoader.onSpriteCreated -= CreateGridBasedOnSprite;
+        _graph.onPathProcessed -= OnPathProcessed;
     }
 }

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Graph
 {
-    public delegate void OnPathFound(long timeInMilliseconds);
-    public OnPathFound onPathFound;
+    public delegate void OnPathProcessed(Vertex[] steps);
+    public OnPathProcessed onPathProcessed;
 
     /* https://gist.github.com/GibsS/fdba8e3cdbd307652fc3c01336b32534 */
     public static int CantorPairing(int i, int j) => (((i + j) * (i + j + 1)) / 2) + j;
@@ -205,12 +205,6 @@ public class Graph
         grid = newGrid;
     }
 
-
-    /// <summary>
-    /// A* Algorithm Implementation
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
     public IEnumerator GetPathFromSourceToTargetWithOverlay(Vertex source, Vertex target)
     {
         foreach (Vertex vertex in _vertices)
@@ -234,7 +228,7 @@ public class Graph
         openList.Add(source);
         while (openList.Count > 0)
         {
-            currentVertex = GetLowestCostVertexInList(openList);
+            currentVertex = openList[0];
             closedList.Add(currentVertex);
             openList.Remove(currentVertex);
 
@@ -292,32 +286,89 @@ public class Graph
         yield return null;
     }
 
-    public IEnumerator GetPathFromSourceToTarget(Vertex source, Vertex target)
+    /// <summary>
+    /// A* Algorithm Implementation to find a path between two vertices
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public IEnumerator FindPath(Vertex source, Vertex target)
     {
-        foreach (Vertex vertex in _vertices)
-        {
-            UpdateOverlay(vertex, false);
-        }
-
-        UpdateOverlay(source, Color.yellow, false);
-        UpdateOverlay(target, Color.yellow, false);
-        _graphTexture.Apply();
-
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
-        Dictionary<int, Vertex> closedList = new Dictionary<int, Vertex>();
-        List<Vertex> openList = new List<Vertex>();
+        HashSet<Vertex> closedSet = new HashSet<Vertex>();
+        Heap<Vertex> openSet = new Heap<Vertex>(_vertices.Length);
+        Vertex[] steps = new Vertex[] { source };
+        Vertex currentVertex;
+
+        source.hCost = DistanceBetweenVertices(source, target);
+        source.parent = null;
+        openSet.Add(source);
+
+        while (openSet.Count > 0)
+        {
+            currentVertex = openSet.RemoveFirst();
+            closedSet.Add(currentVertex);
+
+            if (currentVertex == target)
+            {
+                sw.Stop();
+                UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
+
+                steps = RetraceSteps(currentVertex);
+
+                break;
+            }
+
+            foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
+            {
+                if (closedSet.Contains(connectedVertex))
+                {
+                    continue;
+                }
+
+                int movementCostToConnectedVertex = currentVertex.gCost + DistanceBetweenVertices(currentVertex, connectedVertex);
+                if (!openSet.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
+                {
+                    connectedVertex.gCost = movementCostToConnectedVertex;
+                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
+                    connectedVertex.parent = currentVertex;
+
+                    if (!openSet.Contains(connectedVertex))
+                    {
+                        openSet.Add(connectedVertex);
+                    }
+                }
+            }
+
+            if (sw.ElapsedMilliseconds > 10000)
+            {
+                break;
+            }
+        }
+
+        onPathProcessed?.Invoke(steps);
+
+        yield return null;
+    }
+
+    public IEnumerator FindPathStepByStep(Vertex source, Vertex target)
+    {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        HashSet<Vertex> closedSet = new HashSet<Vertex>();
+        Heap<Vertex> openSet = new Heap<Vertex>(_vertices.Length);
+
         Vertex currentVertex;
         source.hCost = DistanceBetweenVertices(source, target);
         source.parent = null;
         target.parent = null;
-        openList.Add(source);
-        while (openList.Count > 0)
+        openSet.Add(source);
+        while (openSet.Count > 0)
         {
-            currentVertex = GetLowestCostVertexInList(openList);
-            closedList.Add(currentVertex.Identifier, currentVertex);
-            openList.Remove(currentVertex);
+            currentVertex = openSet.RemoveFirst();
+            closedSet.Add(currentVertex);
 
             if (currentVertex == target)
             {
@@ -340,21 +391,21 @@ public class Graph
 
             foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
             {
-                if (closedList.ContainsKey(connectedVertex.Identifier))
+                if (closedSet.Contains(connectedVertex))
                 {
                     continue;
                 }
 
                 int movementCostToConnectedVertex = currentVertex.gCost + DistanceBetweenVertices(currentVertex, connectedVertex);
-                if (!openList.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
+                if (!openSet.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
                 {
                     connectedVertex.gCost = movementCostToConnectedVertex;
                     connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
                     connectedVertex.parent = currentVertex;
 
-                    if (!openList.Contains(connectedVertex))
+                    if (!openSet.Contains(connectedVertex))
                     {
-                        openList.Add(connectedVertex);
+                        openSet.Add(connectedVertex);
                     }
                 }
             }
@@ -368,30 +419,23 @@ public class Graph
         yield return null;
     }
 
-    private Vertex GetLowestCostVertexInList(List<Vertex> list)
+    /// <summary>
+    /// Return a array with all the vertices used to reach a target vertex.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    private Vertex[] RetraceSteps(Vertex target)
     {
-        if (list.Count == 0)
+        List<Vertex> steps = new List<Vertex>();
+
+        while (target != null)
         {
-            return null;
+            steps.Add(target);
+            target = target.parent;
         }
 
-        Vertex lowestCostVertex = list[0];
-
-        foreach (Vertex vertex in list)
-        {
-            if (lowestCostVertex.fCost == vertex.fCost)
-            {
-                if (lowestCostVertex.hCost > vertex.hCost)
-                {
-                    lowestCostVertex = vertex;
-                }
-            } else if (lowestCostVertex.fCost > vertex.fCost)
-            {
-                lowestCostVertex = vertex;
-            }
-        }
-
-        return lowestCostVertex;
+        steps.Reverse();
+        return steps.ToArray();
     }
 
     private int DistanceBetweenVertices(Vertex a, Vertex b)

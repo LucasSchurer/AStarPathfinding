@@ -586,5 +586,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mapLoader: {fileID: 1909400683}
   _vertexCount: 3
-  _unitsPerVertex: 2
+  _unitsPerVertex: 20
   _graphOverlayRenderer: {fileID: 277766480}

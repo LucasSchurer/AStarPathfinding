@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Vertex
+public class Vertex : IHeapNode<Vertex>
 {
     private int _identifier;
     private int _rowIndex;
@@ -18,12 +18,15 @@ public class Vertex
     public int RowIndex => _rowIndex;
     public int ColumnIndex => _columnIndex;
 
+    private int _heapIndex;
     public Enums.TerrainType TerrainType => _terrainType;
 
     public Vertex parent;
     public int gCost;
     public int hCost;
     public int fCost => gCost + hCost;
+
+    public int Index { get => _heapIndex; set => _heapIndex = value;}
 
     public Vertex(int identifier, int rowIndex, int columnIndex, Vector2 position, float size, Enums.TerrainType terrainType)
     {
@@ -82,5 +85,16 @@ public class Vertex
             default:
                 return new Color(0, 0, 0, 0.4f);
         }
+    }
+
+    public int CompareTo(Vertex other)
+    {
+        int compare = fCost.CompareTo(other.fCost);
+        if (compare == 0)
+        {
+            compare = hCost.CompareTo(other.hCost);
+        }
+
+        return -compare;
     }
 }
