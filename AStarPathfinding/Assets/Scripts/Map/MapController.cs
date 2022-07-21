@@ -29,6 +29,7 @@ public class MapController : MonoBehaviour
     private SpriteRenderer _graphOverlayRenderer;
 
     private Vertex _selectedVertex;
+    private Vertex _targetVertex;
 
     private void Awake()
     {
@@ -39,7 +40,47 @@ public class MapController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            _selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (_targetVertex != null)
+                {
+                    _graph.UpdateOverlay(_targetVertex);
+                }
+
+                _targetVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                if (_targetVertex != null)
+                {
+                    _graph.UpdateOverlay(_targetVertex, Color.yellow);
+                }
+            } else
+            {
+                if (_selectedVertex != null)
+                {
+                    _graph.UpdateOverlay(_selectedVertex);
+                }
+
+                _selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                if (_selectedVertex != null)
+                {
+                    _graph.UpdateOverlay(_selectedVertex, Color.yellow);
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && _selectedVertex != null && _targetVertex != null)
+        {
+            StopAllCoroutines();
+            StartCoroutine(_graph.GetPathFromSourceToTarget(_selectedVertex, _targetVertex));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            foreach (Vertex vertex in _graph.Vertices)
+            {
+                _graph.UpdateOverlay(vertex, false);
+            }
+
+            _graph._graphTexture.Apply();
         }
     }
 

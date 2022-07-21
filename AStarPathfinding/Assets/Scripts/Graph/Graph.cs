@@ -95,6 +95,16 @@ public class Graph
         }
     }
 
+    public void UpdateOverlay(Vertex vertex, Color color, bool applyChangesToTexture = true)
+    {
+        _graphTexture.SetPixel(vertex.ColumnIndex, vertex.RowIndex, color);
+
+        if (applyChangesToTexture)
+        {
+            _graphTexture.Apply();
+        }
+    }
+
     private List<Vertex> GetVertexNeighbours(Vertex vertex)
     {
         List<Vertex> neighbours = new List<Vertex>();
@@ -197,5 +207,124 @@ public class Graph
         }
 
         grid = newGrid;
+    }
+
+
+    /// <summary>
+    /// A* Algorithm Implementation
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    public IEnumerator GetPathFromSourceToTarget(Vertex source, Vertex target)
+    {
+        foreach (Vertex vertex in _vertices)
+        {
+            UpdateOverlay(vertex, false);
+        }
+
+        UpdateOverlay(source, Color.yellow, false);
+        UpdateOverlay(target, Color.yellow, false);
+
+        _graphTexture.Apply();
+
+        List<Vertex> closedList = new List<Vertex>();
+        List<Vertex> openList = new List<Vertex>();
+        Vertex currentVertex;
+        source.gCost = 0;
+        source.hCost = DistanceBetweenVertices(source, target);
+        target.gCost = 0;
+        target.hCost = 0;
+        source.parent = null;
+        target.parent = null;
+        openList.Add(source);
+        while (openList.Count > 0)
+        {
+            currentVertex = GetLowestCostVertexInList(openList);
+            closedList.Add(currentVertex);
+            openList.Remove(currentVertex);
+
+            UpdateOverlay(currentVertex, Color.magenta, false);
+
+            if (currentVertex == target)
+            {
+                currentVertex = currentVertex.parent;
+
+                while (currentVertex != null)
+                {
+                    UpdateOverlay(currentVertex, Color.green, false);
+                    currentVertex = currentVertex.parent;
+                }
+
+                UpdateOverlay(source, Color.yellow, false);
+                UpdateOverlay(target, Color.yellow, false);
+                _graphTexture.Apply();
+
+                break;
+            }
+            
+            foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
+            {
+                if (closedList.Contains(connectedVertex))
+                {
+                    continue;
+                }
+
+                int movementCostToConnectedVertex = currentVertex.gCost + DistanceBetweenVertices(currentVertex, connectedVertex);
+                if (!openList.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
+                {
+                    connectedVertex.gCost = movementCostToConnectedVertex;
+                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
+                    connectedVertex.parent = currentVertex;
+
+                    if (!openList.Contains(connectedVertex))
+                    {
+                        openList.Add(connectedVertex);
+                        UpdateOverlay(connectedVertex, Color.blue, false);
+                    }
+                }
+            }
+
+            _graphTexture.Apply();
+
+            yield return new WaitForSeconds(0.01f);
+
+            UpdateOverlay(currentVertex, Color.red, true);
+        }
+
+        yield return null;
+    }
+
+    private Vertex GetLowestCostVertexInList(List<Vertex> list)
+    {
+        if (list.Count == 0)
+        {
+            return null;
+        }
+
+        Vertex lowestCostVertex = list[0];
+
+        foreach (Vertex vertex in list)
+        {
+            if (lowestCostVertex.fCost == vertex.fCost)
+            {
+                if (lowestCostVertex.hCost > vertex.hCost)
+                {
+                    lowestCostVertex = vertex;
+                }
+            } else if (lowestCostVertex.fCost > vertex.fCost)
+            {
+                lowestCostVertex = vertex;
+            }
+        }
+
+        return lowestCostVertex;
+    }
+
+    private int DistanceBetweenVertices(Vertex a, Vertex b)
+    {
+        int xDistance = Mathf.Abs(a.ColumnIndex - b.ColumnIndex);
+        int yDistance = Mathf.Abs(a.RowIndex - b.RowIndex);
+
+        return xDistance + yDistance;
     }
 }

@@ -17,7 +17,14 @@ public class Vertex
     public int Identifier => _identifier;
     public int RowIndex => _rowIndex;
     public int ColumnIndex => _columnIndex;
+
     public Enums.TerrainType TerrainType => _terrainType;
+
+    public Vertex parent;
+    public int gCost;
+    public int hCost;
+    public int fCost => gCost + hCost;
+
     public Vertex(int identifier, int rowIndex, int columnIndex, Vector2 position, float size, Enums.TerrainType terrainType)
     {
         _edges = new Dictionary<int, Edge>();
@@ -67,7 +74,7 @@ public class Vertex
                 return new Color(0, 0, 0, 0);
 
             case Enums.TerrainType.Wall:
-                return new Color(1, 0, 0, 0.4f);
+                return new Color(0, 0, 0, 0.4f);
 
             case Enums.TerrainType.Path:
                 return new Color(0, 1, 0, 0.4f);
