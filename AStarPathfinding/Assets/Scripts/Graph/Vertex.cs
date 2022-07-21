@@ -10,7 +10,7 @@ public class Vertex
     private int _columnIndex;
     private Vector2 _position;
     private float _size;
-    private List<Edge> _edges;
+    private Dictionary<int, Edge> _edges;
     private Enums.TerrainType _terrainType;
     public Vector2 Position => _position;
     public float Size => _size;
@@ -20,7 +20,7 @@ public class Vertex
     public Enums.TerrainType TerrainType => _terrainType;
     public Vertex(int identifier, int rowIndex, int columnIndex, Vector2 position, float size, Enums.TerrainType terrainType)
     {
-        _edges = new List<Edge>();
+        _edges = new Dictionary<int, Edge>();
         _identifier = identifier;
         _rowIndex = rowIndex;
         _columnIndex = columnIndex;
@@ -29,39 +29,26 @@ public class Vertex
         _terrainType = terrainType;
     }
 
-    public void AddRelationship(Vertex target, float cost)
+    public void ConnectTo(Vertex target, float cost)
     {
-        if (target != null && target != this && !DoesRelationshipExists(target))
+        if (!_edges.ContainsKey(target.Identifier))
         {
-            _edges.Add(new Edge(this, target, cost));
+            _edges.Add(target.Identifier, new Edge(this, target, cost));
         }
     }
 
-    public bool DoesRelationshipExists(Vertex target)
+    public bool IsConnectedTo(Vertex target)
     {
-        foreach (Edge edge in _edges)
-        {
-            if (edge.Target == target)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return _edges.ContainsKey(target.Identifier);
     }
 
-    public static void CreateRelationship(Vertex source, Vertex target, float cost)
+    public Vertex[] GetConnectedVertices()
     {
-        source.AddRelationship(target, cost);
-    }
+        Vertex[] connectedVertices = new Vertex[_edges.Count()];
 
-    public List<Vertex> GetConnectedVertices()
-    {
-        List<Vertex> connectedVertices = new List<Vertex>();
-
-        foreach (Edge edge in _edges)
+        for (int i = 0; i < _edges.Count; i++)
         {
-            connectedVertices.Add(edge.Target);
+            connectedVertices[i] = _edges.ElementAt(i).Value.Target;
         }
 
         return connectedVertices;

@@ -41,7 +41,7 @@ public class Graph
     private void GenerateGraph(Enums.TerrainType[,] grid)
     {
         CreateVertices(grid);
-        /*CreateEdges();*/
+        CreateEdges();
         _graphTexture.Apply();
     }
 
@@ -69,11 +69,11 @@ public class Graph
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                if (_vertices[i, j] != null)
+                if (_vertices[i, j] != null && _vertices[i, j].TerrainType != Enums.TerrainType.Wall)
                 {
                     foreach (Vertex neighbour in GetVertexNeighbours(_vertices[i, j]))
                     {
-                        _vertices[i, j].AddRelationship(neighbour, 1);
+                        _vertices[i, j].ConnectTo(neighbour, 1);
                     }
                 }
             }
@@ -131,17 +131,17 @@ public class Graph
         neighbourIndex = rowIndex - 1;
         if (IsIndexValid(neighbourIndex, columnIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
+            if (_vertices[neighbourIndex, columnIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[neighbourIndex, columnIndex]);
             }
         }
 
-        // Checking the right neighbour index
+        // Checking the up neighbour index
         neighbourIndex = rowIndex + 1;
         if (IsIndexValid(neighbourIndex, columnIndex))
         {
-            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
+            if (_vertices[neighbourIndex, columnIndex].TerrainType == Enums.TerrainType.Path)
             {
                 neighbours.Add(_vertices[neighbourIndex, columnIndex]);
             }            

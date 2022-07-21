@@ -28,6 +28,8 @@ public class MapController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
 
+    private Vertex _selectedVertex;
+
     private void Awake()
     {
         _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
@@ -37,12 +39,7 @@ public class MapController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vertex selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            if (selectedVertex != null)
-            {
-                selectedVertex.ChangeTerrainType(Enums.TerrainType.Path);
-                _graph.UpdateOverlay(selectedVertex);
-            }
+            _selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
     }
 
@@ -151,6 +148,12 @@ public class MapController : MonoBehaviour
                 {
                     DrawGraph();
                 }
+
+                if (_selectedVertex != null)
+                {
+                    DrawVertex(_selectedVertex, Color.magenta);
+                    DrawVertexConnections(_selectedVertex);
+                }
             }
         }
     }
@@ -169,31 +172,32 @@ public class MapController : MonoBehaviour
                 continue;
             }
 
-            if (vertex.TerrainType == Enums.TerrainType.Path)
-            {
-                Gizmos.color = Color.green;
-            } else
-            {
-                Gizmos.color = Color.red;
-            }
+            DrawVertex(vertex);
+        }
+    }
 
-            Gizmos.DrawWireCube(vertex.Position, new Vector2(vertex.Size - vertex.Size * 0.05f, vertex.Size - vertex.Size * 0.05f));
+    private void DrawVertex(Vertex vertex, Color? c = null)
+    {
+        Gizmos.color = c ?? Vertex.GetColorBasedOnTerrainType(vertex.TerrainType);
 
-            int rowIndex;
-            int columnIndex;
-            Graph.ReverseCantorPairing(vertex.Identifier, out rowIndex, out columnIndex);
+        Gizmos.DrawWireCube(vertex.Position, new Vector2(vertex.Size - vertex.Size * 0.05f, vertex.Size - vertex.Size * 0.05f));
 
-            Handles.color = Color.yellow;
-            Handles.Label(vertex.Position, vertex.Identifier.ToString());
-            Vector2 columnRowHandlePosition = vertex.Position;
-            columnRowHandlePosition.y -= vertex.Size / 6;
-            Handles.Label(columnRowHandlePosition, $"{rowIndex},{columnIndex}");
+        int rowIndex;
+        int columnIndex;
+        Graph.ReverseCantorPairing(vertex.Identifier, out rowIndex, out columnIndex);
 
-            foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(vertex.Position, connectedVertex.Position);
-            }
+        Handles.color = Color.black;
+        Handles.Label(vertex.Position, vertex.Identifier.ToString());
+        Vector2 columnRowHandlePosition = vertex.Position;
+        columnRowHandlePosition.y -= vertex.Size / 6;
+        Handles.Label(columnRowHandlePosition, $"{rowIndex},{columnIndex}");
+    }
+    
+    private void DrawVertexConnections(Vertex vertex)
+    {
+        foreach (Vertex connection in vertex.GetConnectedVertices())
+        {
+            DrawVertex(connection, Color.blue);
         }
     }
 
