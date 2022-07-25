@@ -14,6 +14,9 @@ public class MapController : MonoBehaviour
     private Graph _graph;
     private GraphDrawer _graphDrawer;
 
+    private SubgoalGraph _ssg;
+    private GraphDrawer _ssgDrawer;
+
     private Pathfinding _pathfinding;
 
     [SerializeField]
@@ -30,6 +33,9 @@ public class MapController : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer _graphOverlayRenderer;
+
+    [SerializeField]
+    private SpriteRenderer _ssgOverlayRenderer;
 
     private Vertex _selectedVertex;
     private Vertex _targetVertex;
@@ -156,15 +162,21 @@ public class MapController : MonoBehaviour
         _gridRowCount = textureHeight;
         _gridColumnCount = textureWidth;
         ResizeGrid(_unitsPerVertex);
+        
+        
         _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _graphDrawer = new GraphDrawer(_graph);
         _vertexCount = _graph.Vertices.Count;
         _graphOverlayRenderer.sprite = Sprite.Create(_graphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
         _graphDrawer.Draw();
+
+        _ssg = new SubgoalGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
+        _ssgDrawer = new GraphDrawer(_ssg);
+        _ssgOverlayRenderer.sprite = Sprite.Create(_ssgDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _ssgDrawer.Draw();
+
         _pathfinding = new Pathfinding(_graph);
         _pathfinding.onPathProcessed += OnPathProcessed;
-
-        _graphDrawer.DrawPixel(-1, 0, Color.black);
     }
 
     private void ResizeGrid(int verticesByUnit)
