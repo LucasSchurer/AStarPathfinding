@@ -12,6 +12,9 @@ public class MapController : MonoBehaviour
 
     [SerializeField]
     private Graph _graph;
+    private GraphDrawer _graphDrawer;
+
+    private Pathfinding _pathfinding;
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
@@ -45,13 +48,13 @@ public class MapController : MonoBehaviour
             {
                 if (_targetVertex != null)
                 {
-                    _graph.UpdateOverlay(_targetVertex);
+                    _graphDrawer.DrawVertex(_targetVertex);
                 }
 
                 _targetVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 if (_targetVertex != null)
                 {
-                    _graph.UpdateOverlay(_targetVertex, Color.yellow);
+                    _graphDrawer.DrawVertex(_targetVertex, Color.yellow);
                 }
             } else if (Input.GetKey(KeyCode.LeftAlt))
             {
@@ -60,7 +63,7 @@ public class MapController : MonoBehaviour
 
                 if (temp != null)
                 {
-                    _graph.UpdateOverlay(temp, Color.blue);
+                    _graphDrawer.DrawVertex(temp, Color.blue);
                 }
 
 
@@ -81,20 +84,20 @@ public class MapController : MonoBehaviour
 
                 if (temp != null)
                 {
-                    _graph.UpdateOverlay(temp, Color.red);
+                    _graphDrawer.DrawVertex(temp, Color.red);
                 }
 
             } else
             { 
                 if (_selectedVertex != null)
                 {
-                    _graph.UpdateOverlay(_selectedVertex);
+                    _graphDrawer.DrawVertex(_selectedVertex);
                 }
 
                 _selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 if (_selectedVertex != null)
                 {
-                    _graph.UpdateOverlay(_selectedVertex, Color.yellow);
+                    _graphDrawer.DrawVertex(_selectedVertex, Color.yellow);
                 }
             }
         }
@@ -102,50 +105,26 @@ public class MapController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && _selectedVertex != null && _targetVertex != null)
         {
             StopAllCoroutines();
-            StartCoroutine(_graph.FindPath(_selectedVertex, _targetVertex));
+            StartCoroutine(_pathfinding.FindPath(_selectedVertex, _targetVertex));
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            foreach (Vertex vertex in _graph.Vertices)
-            {
-                _graph.UpdateOverlay(vertex, false);
-            }
-
-            _graph._graphTexture.Apply();
-        }
-
-        if (Input.GetKeyDown(KeyCode.H) && _selectedVertex != null)
-        {
-            _graph.PrintClearance(_selectedVertex);
+            _graphDrawer.Draw();
         }
     }
 
     private void OnPathProcessed(Vertex[] steps)
     {
-        ClearGraph();
+        _graphDrawer.Draw();
         DrawSteps(steps);
     }
 
     private void DrawSteps(Vertex[] steps)
     {
-        foreach (Vertex vertex in steps)
-        {
-            _graph.UpdateOverlay(vertex, Color.red, false);
-        }
-
-        _graph.UpdateOverlay(steps[0], Color.yellow, false);
-        _graph.UpdateOverlay(steps[steps.Length - 1], Color.yellow, true);
-    }
-
-    private void ClearGraph()
-    {
-        foreach (Vertex vertex in _graph.Vertices)
-        {
-            _graph.UpdateOverlay(vertex, false);
-        }
-
-        _graph._graphTexture.Apply();
+        _graphDrawer.DrawVertices(steps, Color.red, false);
+        _graphDrawer.DrawVertex(steps[0], Color.yellow, false);
+        _graphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
     }
 
     private void CreateGridBasedOnSprite(Sprite sprite)
@@ -178,10 +157,14 @@ public class MapController : MonoBehaviour
         _gridColumnCount = textureWidth;
         ResizeGrid(_unitsPerVertex);
         _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
-        _vertexCount = _graph.Vertices.Length;
-        _graphOverlayRenderer.sprite = Sprite.Create(_graph._graphTexture, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _graphDrawer = new GraphDrawer(_graph);
+        _vertexCount = _graph.Vertices.Count;
+        _graphOverlayRenderer.sprite = Sprite.Create(_graphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _graphDrawer.Draw();
+        _pathfinding = new Pathfinding(_graph);
+        _pathfinding.onPathProcessed += OnPathProcessed;
 
-        _graph.onPathProcessed += OnPathProcessed;
+        _graphDrawer.DrawPixel(-1, 0, Color.black);
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -227,7 +210,7 @@ public class MapController : MonoBehaviour
 
     private void PrintGraph()
     {
-        foreach (Vertex vertex in _graph.Vertices)
+        foreach (Vertex vertex in _graph.Vertices.Values)
         {
             if (vertex == null)
             {
@@ -256,10 +239,10 @@ public class MapController : MonoBehaviour
                     DrawGraph();
                 }
 
-                if (_visibilityGraphSelectedVertex != null)
+                if (_selectedVertex != null)
                 {
-                    DrawVertex(_visibilityGraphSelectedVertex, Color.magenta);
-                    DrawVertexConnections(_visibilityGraphSelectedVertex);
+                    DrawVertex(_selectedVertex, Color.magenta);
+                    DrawVertexConnections(_selectedVertex);
                 }
             }
         }
@@ -272,7 +255,7 @@ public class MapController : MonoBehaviour
             return;
         }
 
-        foreach (Vertex vertex in _graph.Vertices)
+        foreach (Vertex vertex in _graph.Vertices.Values)
         {
             if (vertex == null)
             {
@@ -311,6 +294,6 @@ public class MapController : MonoBehaviour
     private void OnDisable()
     {
         _mapLoader.onSpriteCreated -= CreateGridBasedOnSprite;
-        _graph.onPathProcessed -= OnPathProcessed;
+        _pathfinding.onPathProcessed -= OnPathProcessed;
     }
 }

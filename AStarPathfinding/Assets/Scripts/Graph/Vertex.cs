@@ -47,11 +47,6 @@ public class Vertex : IHeapNode<Vertex>
         }
     }
 
-    public bool IsConnectedTo(Vertex target)
-    {
-        return _edges.ContainsKey(target.Identifier);
-    }
-
     public Vertex[] GetConnectedVertices()
     {
         Vertex[] connectedVertices = new Vertex[_edges.Count()];
@@ -62,11 +57,6 @@ public class Vertex : IHeapNode<Vertex>
         }
 
         return connectedVertices;
-    }
-
-    public void ChangeTerrainType(Enums.TerrainType newTerrainType)
-    {
-        _terrainType = newTerrainType;
     }
 
     public static Color GetColorBasedOnTerrainType(Enums.TerrainType terrainType)
