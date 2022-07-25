@@ -12,7 +12,7 @@ public class GraphDrawer
         _graph = graph;
         texture2D = new Texture2D(_graph.ColumnCount, _graph.RowCount);
         texture2D.filterMode = FilterMode.Point;
-        texture2D.Apply();
+        Clear();
     }
 
     public void Draw()
@@ -23,6 +23,17 @@ public class GraphDrawer
         }
 
         texture2D.Apply();
+    }
+
+    public void Clear()
+    {
+        Color32[] pixels = new Color32[_graph.ColumnCount * _graph.RowCount];
+        for (int i = 0; i < _graph.ColumnCount * _graph.RowCount; i++)
+        {
+            pixels[i] = new Color32(0, 0, 0, 0);
+        }
+        texture2D.SetPixels32(pixels);
+        Apply();
     }
 
     public void DrawVertex(Vertex vertex, bool shouldCallApply = true)
@@ -69,6 +80,30 @@ public class GraphDrawer
         {
             Apply();
         }
+    }
+
+    public void DrawPathBetweenVertices(Vertex a, Vertex b, Color color, bool shouldCallApply = true)
+    {
+        if (a == null || b == null)
+        {
+            return;
+        }
+
+        int xDistance = Mathf.Abs(a.ColumnIndex - b.ColumnIndex);
+        int yDistance = Mathf.Abs(a.RowIndex - b.RowIndex);
+
+        int verticalDirection = a.RowIndex > b.RowIndex ? -1 : a.RowIndex == b.RowIndex ? 0 : 1;
+        int horizontalDirection = a.ColumnIndex > b.ColumnIndex ? -1 : a.ColumnIndex == b.ColumnIndex ? 0 : 1;
+
+        int distanceDiagonal = 14 * Mathf.Min(xDistance, yDistance);
+        int distanceCardinal = 10 * Mathf.Abs(xDistance - yDistance);
+
+        for (int i = 0; i < distanceCardinal/10; i++)
+        {
+            DrawPixel(a.RowIndex + (i + 1) * verticalDirection, a.ColumnIndex + (i + 1) * horizontalDirection, Color.red);
+        }
+
+        Apply();
     }
 
     public void Apply()

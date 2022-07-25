@@ -95,6 +95,8 @@ public class Pathfinding
     {
         List<Vertex> steps = new List<Vertex>();
 
+        UnityEngine.Debug.Log("Distance: " + target.gCost);
+
         while (target != null)
         {
             steps.Add(target);
@@ -105,7 +107,7 @@ public class Pathfinding
         return steps.ToArray();
     }
 
-    private int DistanceBetweenVertices(Vertex a, Vertex b)
+    public static int DistanceBetweenVertices(Vertex a, Vertex b)
     {
         int xDistance = Mathf.Abs(a.ColumnIndex - b.ColumnIndex);
         int yDistance = Mathf.Abs(a.RowIndex - b.RowIndex);

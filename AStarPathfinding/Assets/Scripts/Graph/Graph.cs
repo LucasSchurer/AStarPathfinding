@@ -24,6 +24,8 @@ public class Graph
     public int ColumnCount => _columnCount;
     public Dictionary<int, Vertex> Vertices => _vertices;
 
+    public bool isSSG = false;
+    public GraphDrawer graphDrawer;
     public bool IsIndexValid(int rowIndex, int columnIndex) => rowIndex >= 0 && rowIndex < _rowCount && columnIndex >= 0 && columnIndex < _columnCount;
 
     public Graph(Enums.TerrainType[,] grid, int rowCount, int columnCount, float vertexSize)
@@ -126,11 +128,30 @@ public class Graph
                 }
 
                 Vertex neighbour;
-                if (TryGetVertex(vertex.RowIndex + i, vertex.ColumnIndex + j, out neighbour))
+                if (TryToGetVertex(vertex.RowIndex + i, vertex.ColumnIndex + j, out neighbour))
                 {
                     if (neighbour.TerrainType != Enums.TerrainType.Wall)
                     {
-                        neighbours.Add(neighbour);
+                        if (i != 0 && j != 0)
+                        {
+                            Vertex cardinalNeighbour;
+                            if (TryToGetVertex(vertex.RowIndex + i, vertex.ColumnIndex, out cardinalNeighbour))
+                            {
+                                if (cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
+                                {
+                                    if (TryToGetVertex(vertex.RowIndex, vertex.ColumnIndex + j, out cardinalNeighbour))
+                                    {
+                                        if (cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
+                                        {
+                                            neighbours.Add(neighbour);
+                                        }
+                                    }
+                                }
+                            }
+                        } else
+                        {
+                            neighbours.Add(neighbour);
+                        }
                     }
                 }
             }
@@ -153,7 +174,16 @@ public class Graph
 
         return null;
     }
-    protected bool TryGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
+    
+    public bool TryToGetIndexesOnPosition(Vector2 position, out int rowIndex, out int columnIndex)
+    {
+        rowIndex = (int)(position.y / _vertexSize);
+        columnIndex = (int)(position.x / _vertexSize);
+
+        return rowIndex < 0 || columnIndex < 0;
+    }
+
+    protected bool TryToGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
     {
         return _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
     }

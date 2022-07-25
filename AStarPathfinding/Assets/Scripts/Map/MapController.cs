@@ -18,6 +18,7 @@ public class MapController : MonoBehaviour
     private GraphDrawer _ssgDrawer;
 
     private Pathfinding _pathfinding;
+    private Pathfinding _ssgPathfinding;
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
@@ -37,9 +38,10 @@ public class MapController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _ssgOverlayRenderer;
 
-    private Vertex _selectedVertex;
+    private Vertex _sourceVertex;
     private Vertex _targetVertex;
-    private Vertex _visibilityGraphSelectedVertex;
+    private Vertex _ssgSourceVertex;
+    private Vertex _ssgTargetVertex;
 
     private void Awake()
     {
@@ -54,83 +56,127 @@ public class MapController : MonoBehaviour
             {
                 if (_targetVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_targetVertex);
+                    _graphDrawer.DrawVertex(_targetVertex, false);
                 }
 
                 _targetVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                if (_targetVertex != null)
+
+                if (_sourceVertex != null)
                 {
                     _graphDrawer.DrawVertex(_targetVertex, Color.yellow);
                 }
+
             } else if (Input.GetKey(KeyCode.LeftAlt))
             {
-
-                Vertex temp = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-                if (temp != null)
+                if (_ssgSourceVertex != null)
                 {
-                    _graphDrawer.DrawVertex(temp, Color.blue);
+                    _ssgDrawer.DrawVertex(_ssgSourceVertex, false);
                 }
 
+                _ssgSourceVertex = _ssg.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-                /*                if (_visibilityGraphSelectedVertex != null)
-                                {
-                                    _graph.UpdateOverlay(_visibilityGraphSelectedVertex, Color.blue, true);
-                                }
-
-                                _graph.TryGetSubgoal(_graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Identifier, out _visibilityGraphSelectedVertex);
-
-                                if (_visibilityGraphSelectedVertex != null)
-                                {
-                                    _graph.UpdateOverlay(_visibilityGraphSelectedVertex, Color.cyan);
-                                }*/
+                if (_ssgSourceVertex != null)
+                {
+                    _ssgDrawer.DrawVertex(_ssgSourceVertex, Color.yellow);
+                }
             } else if (Input.GetKey(KeyCode.LeftControl))
             {
-                Vertex temp = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-                if (temp != null)
+                if (_ssgTargetVertex != null)
                 {
-                    _graphDrawer.DrawVertex(temp, Color.red);
+                    _ssgDrawer.DrawVertex(_ssgTargetVertex, false);
                 }
 
+                _ssgTargetVertex = _ssg.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+                if (_ssgSourceVertex != null)
+                {
+                    _ssgDrawer.DrawVertex(_ssgTargetVertex, Color.yellow);
+                }
             } else
-            { 
-                if (_selectedVertex != null)
+            {
+                if (_sourceVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_selectedVertex);
+                    _graphDrawer.DrawVertex(_sourceVertex, false);
                 }
 
-                _selectedVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                if (_selectedVertex != null)
+                _sourceVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+                if (_sourceVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_selectedVertex, Color.yellow);
+                    _graphDrawer.DrawVertex(_sourceVertex, Color.yellow);
                 }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && _selectedVertex != null && _targetVertex != null)
+        if (Input.GetKeyDown(KeyCode.F))
         {
             StopAllCoroutines();
-            StartCoroutine(_pathfinding.FindPath(_selectedVertex, _targetVertex));
+
+            if (_sourceVertex != null && _targetVertex != null && _graphOverlayRenderer.gameObject.activeSelf)
+            {
+                StartCoroutine(_pathfinding.FindPath(_sourceVertex, _targetVertex));
+            }
+
+            if (_ssgSourceVertex != null && _ssgTargetVertex != null && _ssgOverlayRenderer.gameObject.activeSelf)
+            {
+                StartCoroutine(_ssgPathfinding.FindPath(_ssgSourceVertex, _ssgTargetVertex));
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _graphOverlayRenderer.gameObject.SetActive(!_graphOverlayRenderer.gameObject.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _ssgOverlayRenderer.gameObject.SetActive(!_ssgOverlayRenderer.gameObject.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (_ssgSourceVertex != null)
+            {
+                _ssg.DrawHReachableSubgoals(_ssgSourceVertex);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            _graphDrawer.Draw();
+            if (_graphOverlayRenderer.gameObject.activeSelf)
+            {
+                _graphDrawer.Draw();
+            }
+
+            if (_ssgOverlayRenderer.gameObject.activeSelf)
+            {
+                _ssgDrawer.Clear();
+                _ssgDrawer.Draw();
+            }            
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            
         }
     }
 
     private void OnPathProcessed(Vertex[] steps)
     {
         _graphDrawer.Draw();
-        DrawSteps(steps);
-    }
 
-    private void DrawSteps(Vertex[] steps)
-    {
         _graphDrawer.DrawVertices(steps, Color.red, false);
         _graphDrawer.DrawVertex(steps[0], Color.yellow, false);
         _graphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+    }
+
+    private void OnSSGPathProcessed(Vertex[] steps)
+    {
+        _ssgDrawer.Draw();
+
+        _ssgDrawer.DrawVertices(steps, Color.blue, false);
+        _ssgDrawer.DrawVertex(steps[0], Color.yellow, false);
+        _ssgDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
     }
 
     private void CreateGridBasedOnSprite(Sprite sprite)
@@ -173,10 +219,14 @@ public class MapController : MonoBehaviour
         _ssg = new SubgoalGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _ssgDrawer = new GraphDrawer(_ssg);
         _ssgOverlayRenderer.sprite = Sprite.Create(_ssgDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _ssg.graphDrawer = _ssgDrawer;
         _ssgDrawer.Draw();
 
         _pathfinding = new Pathfinding(_graph);
         _pathfinding.onPathProcessed += OnPathProcessed;
+
+        _ssgPathfinding = new Pathfinding(_ssg);
+        _ssgPathfinding.onPathProcessed += OnSSGPathProcessed;
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -251,10 +301,10 @@ public class MapController : MonoBehaviour
                     DrawGraph();
                 }
 
-                if (_selectedVertex != null)
+                if (_sourceVertex != null)
                 {
-                    DrawVertex(_selectedVertex, Color.magenta);
-                    DrawVertexConnections(_selectedVertex);
+                    DrawVertex(_sourceVertex, Color.magenta);
+                    DrawVertexConnections(_sourceVertex);
                 }
             }
         }
@@ -307,5 +357,6 @@ public class MapController : MonoBehaviour
     {
         _mapLoader.onSpriteCreated -= CreateGridBasedOnSprite;
         _pathfinding.onPathProcessed -= OnPathProcessed;
+        _ssgPathfinding.onPathProcessed -= OnSSGPathProcessed;
     }
 }
