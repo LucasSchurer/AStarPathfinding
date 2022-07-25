@@ -25,6 +25,7 @@ public class Graph
     private float _vertexSize;
 
     private Vertex[,] _vertices;
+    private Dictionary<int, Vertex> _visibilityGraph;
     public Vertex[,] Vertices => _vertices;
 
     public bool IsIndexValid(int rowIndex, int columnIndex) => rowIndex >= 0 && rowIndex < _rowCount && columnIndex >= 0 && columnIndex < _columnCount;
@@ -46,6 +47,8 @@ public class Graph
     {
         CreateVertices(grid);
         CreateEdges();
+        GenerateVisibilityGraph();
+        /*GenerateSubgoalsEdges();*/
         _graphTexture.Apply();
     }
 
@@ -61,6 +64,53 @@ public class Graph
 
                 _vertices[i, j] = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, grid[i, j]);
                 UpdateOverlay(_vertices[i, j], false);
+            }
+        }
+
+        _graphTexture.Apply();
+    }
+
+    private void GenerateVisibilityGraph()
+    {
+        _visibilityGraph = new Dictionary<int, Vertex>();
+
+        foreach (Vertex vertex in _vertices)
+        {
+            if (vertex.TerrainType != Enums.TerrainType.Path)
+            {
+                continue;
+            }
+            
+
+            for (int i = -1; i < 2; i+=2)
+            {
+                for (int j = -1; j < 2; j+=2)
+                {
+                    int neighbourRowIndex = vertex.RowIndex + i;
+                    int neighbourColumnIndex = vertex.ColumnIndex + j;
+
+                    if (IsIndexValid(neighbourRowIndex, neighbourColumnIndex))
+                    {
+                        if (_vertices[neighbourRowIndex, neighbourColumnIndex].TerrainType == Enums.TerrainType.Wall)
+                        {
+                            if (IsIndexValid(vertex.RowIndex + i, vertex.ColumnIndex))
+                            {
+                                if (_vertices[vertex.RowIndex + i, vertex.ColumnIndex].TerrainType == Enums.TerrainType.Path)
+                                {
+                                    if (IsIndexValid(vertex.RowIndex, vertex.ColumnIndex + j))
+                                    {
+                                        if (_vertices[vertex.RowIndex, vertex.ColumnIndex + j].TerrainType == Enums.TerrainType.Path)
+                                        {
+                                            Vertex subgoal = new Vertex(vertex.Identifier, vertex.RowIndex, vertex.ColumnIndex, vertex.Position, vertex.Size, Enums.TerrainType.Path);
+                                            _visibilityGraph.Add(subgoal.Identifier, subgoal);
+                                            UpdateOverlay(vertex, Color.blue, false);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -84,13 +134,24 @@ public class Graph
         }
     }
 
+    private void GenerateSubgoalsEdges()
+    {
+        foreach (Vertex subgoal in _visibilityGraph.Values)
+        {
+            GenerateSubgoalEdges(subgoal);
+        }
+    }
+
     public void UpdateOverlay(Vertex vertex, bool applyChangesToTexture = true)
     {
         UpdateOverlay(vertex.RowIndex, vertex.ColumnIndex, vertex.TerrainType, applyChangesToTexture);
     }
 
-    private void UpdateOverlay(int row, int column, Enums.TerrainType terrainType, bool applyChangesToTexture = true)
+    public void UpdateOverlay(int row, int column, Enums.TerrainType terrainType, bool applyChangesToTexture = true)
     {
+        if (!IsIndexValid(row, column))
+            return;
+
         _graphTexture.SetPixel(column, row, Vertex.GetColorBasedOnTerrainType(terrainType));
 
         if (applyChangesToTexture)
@@ -112,52 +173,29 @@ public class Graph
     private List<Vertex> GetVertexNeighbours(Vertex vertex)
     {
         List<Vertex> neighbours = new List<Vertex>();
-        int rowIndex;
-        int columnIndex;
-        ReverseCantorPairing(vertex.Identifier, out rowIndex, out columnIndex);
 
-        if (!IsIndexValid(rowIndex, columnIndex))
+        if (!IsIndexValid(vertex.RowIndex, vertex.ColumnIndex))
         {
             return neighbours;
         }
-
-        // Checking the left neighbour index
-        int neighbourIndex = columnIndex - 1;
-        if (IsIndexValid(rowIndex, neighbourIndex))
+        
+        for (int i = -1; i < 2; i++)
         {
-            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
+            for (int j = -1; j < 2; j++)
             {
-                neighbours.Add(_vertices[rowIndex, neighbourIndex]);
-            }
-        }
+                if (i == 0 && j == 0)
+                {
+                    continue;
+                }
 
-        // Checking the right neighbour index
-        neighbourIndex = columnIndex + 1;
-        if (IsIndexValid(rowIndex, neighbourIndex))
-        {
-            if (_vertices[rowIndex, neighbourIndex].TerrainType == Enums.TerrainType.Path)
-            {
-                neighbours.Add(_vertices[rowIndex, neighbourIndex]);
-            }
-        }
-
-        // Checking the down neighbour index
-        neighbourIndex = rowIndex - 1;
-        if (IsIndexValid(neighbourIndex, columnIndex))
-        {
-            if (_vertices[neighbourIndex, columnIndex].TerrainType == Enums.TerrainType.Path)
-            {
-                neighbours.Add(_vertices[neighbourIndex, columnIndex]);
-            }
-        }
-
-        // Checking the up neighbour index
-        neighbourIndex = rowIndex + 1;
-        if (IsIndexValid(neighbourIndex, columnIndex))
-        {
-            if (_vertices[neighbourIndex, columnIndex].TerrainType == Enums.TerrainType.Path)
-            {
-                neighbours.Add(_vertices[neighbourIndex, columnIndex]);
+                Vertex neighbour;
+                if (TryGetVertex(vertex.RowIndex + i, vertex.ColumnIndex + j, out neighbour))
+                {
+                    if (neighbour.TerrainType != Enums.TerrainType.Wall)
+                    {
+                        neighbours.Add(neighbour);
+                    }
+                }
             }
         }
 
@@ -443,6 +481,79 @@ public class Graph
         int xDistance = Mathf.Abs(a.ColumnIndex - b.ColumnIndex);
         int yDistance = Mathf.Abs(a.RowIndex - b.RowIndex);
 
-        return xDistance + yDistance;
+        return 14 * Mathf.Min(xDistance, yDistance) + 10 * Mathf.Abs(xDistance - yDistance);
+    }
+    private bool TryGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
+    {
+        vertex = null;
+
+        if (IsIndexValid(rowIndex, columnIndex))
+        {
+            vertex = _vertices[rowIndex, columnIndex];
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool TryGetSubgoal(int identifier, out Vertex subgoal)
+    {
+        return _visibilityGraph.TryGetValue(identifier, out subgoal);
+    }
+
+    private void GenerateSubgoalEdges(Vertex subgoal)
+    {
+    }
+
+    public void PrintClearance(Vertex vertex)
+    {
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    continue;
+                }
+
+                UnityEngine.Debug.Log($"Direction: {i} {j} Clearance: {Clearance(vertex, i, j)}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="vertex"></param>
+    /// <param name="cardinal"></param>
+    /// <param name="diagonal"></param>
+    /// <returns></returns>
+    private int Clearance(Vertex vertex, int verticalMovement, int horizontalMovement)
+    {
+        int distance = 1;
+
+        while (true)
+        {
+            int currentRow = vertex.RowIndex + (verticalMovement * distance);
+            int currentColumn = vertex.ColumnIndex + (horizontalMovement * distance);
+
+            if (_visibilityGraph.ContainsKey(CantorPairing(currentRow, currentColumn)))
+            {
+                return distance;
+            }
+
+            if (IsIndexValid(currentRow, currentColumn))
+            {
+                if (_vertices[currentRow, currentColumn].TerrainType == Enums.TerrainType.Wall)
+                {
+                    return distance - 1;
+                }
+            } else
+            {
+                return distance - 1;
+            }
+
+            distance++;
+        }
     }
 }

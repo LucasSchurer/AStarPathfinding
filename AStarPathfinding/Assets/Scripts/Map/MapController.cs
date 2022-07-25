@@ -30,6 +30,7 @@ public class MapController : MonoBehaviour
 
     private Vertex _selectedVertex;
     private Vertex _targetVertex;
+    private Vertex _visibilityGraphSelectedVertex;
 
     private void Awake()
     {
@@ -52,8 +53,39 @@ public class MapController : MonoBehaviour
                 {
                     _graph.UpdateOverlay(_targetVertex, Color.yellow);
                 }
-            } else
+            } else if (Input.GetKey(KeyCode.LeftAlt))
             {
+
+                Vertex temp = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+                if (temp != null)
+                {
+                    _graph.UpdateOverlay(temp, Color.blue);
+                }
+
+
+                /*                if (_visibilityGraphSelectedVertex != null)
+                                {
+                                    _graph.UpdateOverlay(_visibilityGraphSelectedVertex, Color.blue, true);
+                                }
+
+                                _graph.TryGetSubgoal(_graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)).Identifier, out _visibilityGraphSelectedVertex);
+
+                                if (_visibilityGraphSelectedVertex != null)
+                                {
+                                    _graph.UpdateOverlay(_visibilityGraphSelectedVertex, Color.cyan);
+                                }*/
+            } else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                Vertex temp = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+                if (temp != null)
+                {
+                    _graph.UpdateOverlay(temp, Color.red);
+                }
+
+            } else
+            { 
                 if (_selectedVertex != null)
                 {
                     _graph.UpdateOverlay(_selectedVertex);
@@ -82,6 +114,11 @@ public class MapController : MonoBehaviour
 
             _graph._graphTexture.Apply();
         }
+
+        if (Input.GetKeyDown(KeyCode.H) && _selectedVertex != null)
+        {
+            _graph.PrintClearance(_selectedVertex);
+        }
     }
 
     private void OnPathProcessed(Vertex[] steps)
@@ -94,7 +131,7 @@ public class MapController : MonoBehaviour
     {
         foreach (Vertex vertex in steps)
         {
-            _graph.UpdateOverlay(vertex, Color.green, false);
+            _graph.UpdateOverlay(vertex, Color.red, false);
         }
 
         _graph.UpdateOverlay(steps[0], Color.yellow, false);
@@ -219,10 +256,10 @@ public class MapController : MonoBehaviour
                     DrawGraph();
                 }
 
-                if (_selectedVertex != null)
+                if (_visibilityGraphSelectedVertex != null)
                 {
-                    DrawVertex(_selectedVertex, Color.magenta);
-                    DrawVertexConnections(_selectedVertex);
+                    DrawVertex(_visibilityGraphSelectedVertex, Color.magenta);
+                    DrawVertexConnections(_visibilityGraphSelectedVertex);
                 }
             }
         }
@@ -267,7 +304,7 @@ public class MapController : MonoBehaviour
     {
         foreach (Vertex connection in vertex.GetConnectedVertices())
         {
-            DrawVertex(connection, Color.blue);
+            DrawVertex(connection, Color.red);
         }
     }
 
