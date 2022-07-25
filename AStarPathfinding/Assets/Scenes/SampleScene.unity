@@ -569,8 +569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd9241c019dcde4883b54129e1f0e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageUrl: https://movingai.com/benchmarks/street/Denver_1_1024.png
-  _pixelsPerUnit: 53.65
+  _imageUrl: https://i.imgur.com/uluS2rP.png
+  _pixelsPerUnit: 1
   _spriteRenderer: {fileID: 1857118990}
 --- !u!114 &1909400684
 MonoBehaviour:

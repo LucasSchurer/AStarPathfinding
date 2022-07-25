@@ -82,7 +82,7 @@ public class Vertex : IHeapNode<Vertex>
         int compare = fCost.CompareTo(other.fCost);
         if (compare == 0)
         {
-            compare = hCost.CompareTo(other.hCost);
+            compare = gCost.CompareTo(other.gCost);
         }
 
         return -compare;

@@ -31,6 +31,7 @@ public class Pathfinding
         Vertex currentVertex;
 
         source.hCost = DistanceBetweenVertices(source, target);
+        source.gCost = 0;
         source.parent = null;
         openSet.Add(source);
 
@@ -68,11 +69,6 @@ public class Pathfinding
                         openSet.Add(connectedVertex);
                     }
                 }
-            }
-
-            if (sw.ElapsedMilliseconds > 10000)
-            {
-                break;
             }
         }
 
