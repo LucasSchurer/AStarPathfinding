@@ -13,12 +13,12 @@ public class Graph
         j = m - t * (t + 1) / 2;
     }
 
-    private Enums.TerrainType[,] _grid;
-    private int _rowCount;
-    private int _columnCount;
-    private float _vertexSize;
+    protected Enums.TerrainType[,] _grid;
+    protected int _rowCount;
+    protected int _columnCount;
+    protected float _vertexSize;
 
-    private Dictionary<int, Vertex> _vertices;
+    protected Dictionary<int, Vertex> _vertices;
     public int VerticesCount => _vertices.Count;
     public int RowCount => _rowCount;
     public int ColumnCount => _columnCount;
@@ -36,77 +36,24 @@ public class Graph
         GenerateGraph();
     }
 
-    private void GenerateGraph()
+    protected virtual void GenerateGraph()
     {
         CreateVertices();
         CreateEdges();
     }
 
-    private void CreateVertices()
+    protected virtual void CreateVertices()
     {
         for (int i = 0; i < _rowCount; i++)
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                Vector2 vertexPosition;
-                vertexPosition.x = j * _vertexSize + _vertexSize / 2;
-                vertexPosition.y = i * _vertexSize + _vertexSize / 2;
-
-                Vertex newVertex = new Vertex(CantorPairing(i, j), i, j, vertexPosition, _vertexSize, _grid[i, j]);
-
-                _vertices.Add(newVertex.Identifier, newVertex); 
+                TryCreateVertex(i, j, out _);
             }
         }
     }
 
-   /* private void GenerateVisibilityGraph()
-    {
-        _visibilityGraph = new Dictionary<int, Vertex>();
-
-        foreach (Vertex vertex in _vertices.Values)
-        {
-            if (vertex.TerrainType != Enums.TerrainType.Path)
-            {
-                continue;
-            }
-            
-
-            for (int i = -1; i < 2; i+=2)
-            {
-                for (int j = -1; j < 2; j+=2)
-                {
-                    int neighbourRowIndex = vertex.RowIndex + i;
-                    int neighbourColumnIndex = vertex.ColumnIndex + j;
-
-                    if (IsIndexValid(neighbourRowIndex, neighbourColumnIndex))
-                    {
-                        if (_vertices[neighbourRowIndex, neighbourColumnIndex].TerrainType == Enums.TerrainType.Wall)
-                        {
-                            if (IsIndexValid(vertex.RowIndex + i, vertex.ColumnIndex))
-                            {
-                                if (_vertices[vertex.RowIndex + i, vertex.ColumnIndex].TerrainType == Enums.TerrainType.Path)
-                                {
-                                    if (IsIndexValid(vertex.RowIndex, vertex.ColumnIndex + j))
-                                    {
-                                        if (_vertices[vertex.RowIndex, vertex.ColumnIndex + j].TerrainType == Enums.TerrainType.Path)
-                                        {
-                                            Vertex subgoal = new Vertex(vertex.Identifier, vertex.RowIndex, vertex.ColumnIndex, vertex.Position, vertex.Size, Enums.TerrainType.Path);
-                                            _visibilityGraph.Add(subgoal.Identifier, subgoal);
-                                            UpdateOverlay(vertex, Color.blue, false);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        _graphTexture.Apply();
-    }*/
-
-    private void CreateEdges()
+    protected virtual void CreateEdges()
     {
         foreach (Vertex vertex in _vertices.Values)
         {
@@ -134,6 +81,30 @@ public class Graph
                 }
             }
         }*/
+    }
+
+    protected bool TryCreateVertex(int row, int column, out Vertex createdVertex)
+    {
+        if (IsIndexValid(row, column))
+        {
+            int identifier = CantorPairing(row, column);
+
+            if (!_vertices.ContainsKey(identifier))
+            {
+                Vector2 vertexPosition;
+                vertexPosition.x = column * _vertexSize + _vertexSize / 2;
+                vertexPosition.y = row * _vertexSize + _vertexSize / 2;
+
+                createdVertex = new Vertex(identifier, row, column, vertexPosition, _vertexSize, _grid[row, column]);
+
+                _vertices.Add(createdVertex.Identifier, createdVertex);
+
+                return true;
+            }
+        }
+
+        createdVertex = null;
+        return false;
     }
 
     private List<Vertex> GetVertexNeighbours(Vertex vertex)
@@ -182,38 +153,8 @@ public class Graph
 
         return null;
     }
-    private bool TryGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
+    protected bool TryGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
     {
         return _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
-    }
-    private int Clearance(Vertex vertex, int verticalMovement, int horizontalMovement)
-    {
-        /*        int distance = 1;
-
-                while (true)
-                {
-                    int currentRow = vertex.RowIndex + (verticalMovement * distance);
-                    int currentColumn = vertex.ColumnIndex + (horizontalMovement * distance);
-
-                    if (_visibilityGraph.ContainsKey(CantorPairing(currentRow, currentColumn)))
-                    {
-                        return distance;
-                    }
-
-                    if (IsIndexValid(currentRow, currentColumn))
-                    {
-                        if (_vertices[currentRow, currentColumn].TerrainType == Enums.TerrainType.Wall)
-                        {
-                            return distance - 1;
-                        }
-                    } else
-                    {
-                        return distance - 1;
-                    }
-
-                    distance++;
-                }*/
-
-        return 0;
     }
 }

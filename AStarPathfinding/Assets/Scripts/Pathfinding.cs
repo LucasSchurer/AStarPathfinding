@@ -22,6 +22,7 @@ public class Pathfinding
     /// <param name="target"></param>
     public IEnumerator FindPath(Vertex source, Vertex target)
     {
+        bool reachedGoal = false;
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
@@ -43,11 +44,9 @@ public class Pathfinding
             if (currentVertex == target)
             {
                 sw.Stop();
-                UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
-
                 steps = RetraceSteps(currentVertex);
 
-                break;
+                reachedGoal = true;
             }
 
             foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
@@ -72,7 +71,17 @@ public class Pathfinding
             }
         }
 
-        onPathProcessed?.Invoke(steps);
+        sw.Stop();
+
+        if (reachedGoal)
+        {
+            onPathProcessed?.Invoke(steps);
+        } else
+        {
+            UnityEngine.Debug.Log("Unreachable Goal");
+        }
+
+        UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
 
         yield return null;
     }
