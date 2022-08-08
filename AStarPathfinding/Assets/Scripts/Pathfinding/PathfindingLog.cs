@@ -12,6 +12,9 @@ public struct PathfindingLog
     public int goalColumn;
     public int goalIdentifier;
 
+    public int openSetSize;
+    public int closedSetSize;
+
     public float elapsedTime;
     public int distance;
 
@@ -32,6 +35,63 @@ public struct PathfindingLog
     public override string ToString()
     {
         string s = $"Found Path: {reachedGoal} Source: {startIdentifier} = [{startRow}, {startColumn}] Target: {goalIdentifier} = [{goalRow}, {goalColumn}] Time: {elapsedTime}ms Distance: {distance}";
+
+        return s;
+    }
+
+    public static string JoinLogs(PathfindingLog a, PathfindingLog b)
+    {
+        string s = "{\n";
+
+        if (a.startIdentifier != b.startIdentifier)
+        {
+            s += $"\tStart A: [{a.startRow}, {a.startColumn}] ({a.startIdentifier})\n";
+            s += $"\tStart B: [{b.startRow}, {b.startColumn}] ({b.startIdentifier})\n";
+
+        } else
+        {
+            s += $"\tStart: [{a.startRow}, {a.startColumn}] ({a.startIdentifier})\n";
+        }
+
+        if (a.goalIdentifier != b.goalIdentifier)
+        {
+            s += $"\tGoal A: [{a.goalRow}, {a.goalColumn}] ({a.goalIdentifier})\n";
+            s += $"\tGoal B: [{b.goalRow}, {b.goalColumn}] ({b.goalIdentifier})\n";
+        } else
+        {
+            s += $"\tGoal: [{a.goalRow}, {a.goalColumn}] ({a.goalIdentifier})\n";
+        }
+
+        if (a.reachedGoal != b.reachedGoal)
+        {
+            s += $"\tReached Goal A: {a.reachedGoal}\n";
+            s += $"\tReached Goal B: {b.reachedGoal}\n";
+        } else
+        {
+            s += $"\tReached Goal: {a.reachedGoal}\n";
+        }
+
+        if (a.distance != b.distance)
+        {
+            s += $"\tDistance A: {a.distance}\n";
+            s += $"\tDistance B: {b.distance}\n";
+        } else
+        {
+            s += $"\tDistance: {a.distance}\n";
+        }
+
+        s += $"\tOpen Set Size A: {a.openSetSize}\n";
+        s += $"\tOpen Set Size B: {b.openSetSize}\n";
+
+        s += $"\tClosed Set Size A: {a.closedSetSize}\n";
+        s += $"\tClosed Set Size B: {b.closedSetSize}\n";
+
+        s += $"\tElapsed Time A: {a.elapsedTime}ms\n";
+        s += $"\tElapsed Time B: {b.elapsedTime}ms\n";
+
+        s += $"\tTime Difference: {Mathf.Abs(a.elapsedTime - b.elapsedTime)}ms\n";
+
+        s += "}";
 
         return s;
     }

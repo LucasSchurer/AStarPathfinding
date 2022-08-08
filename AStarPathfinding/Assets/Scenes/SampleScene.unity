@@ -670,7 +670,7 @@ MonoBehaviour:
   executionTime: 1
   _mapLoader: {fileID: 1909400683}
   _vertexCount: 10
-  _unitsPerVertex: 50
+  _unitsPerVertex: 3
   _graphOverlayRenderer: {fileID: 277766480}
   _ssgOverlayRenderer: {fileID: 1253344168}
   _numberOfPoints: 5

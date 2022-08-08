@@ -22,7 +22,7 @@ public class MapController : MonoBehaviour
     private GraphDrawer _ssgDrawer;
 
     private Pathfinding _pathfinding;
-    private SubgoalGraphPathfinding _ssgPathfinding;
+    private VisibilityGraphPathfinding _ssgPathfinding;
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
@@ -54,75 +54,66 @@ public class MapController : MonoBehaviour
         _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
     }
 
+    private int GetNonWallIdentifier()
+    {
+        int aRow = UnityEngine.Random.Range(0, _gridRowCount);
+        int aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+
+        while (_grid[aRow, aColumn] == Enums.TerrainType.Wall)
+        {
+            aRow = UnityEngine.Random.Range(0, _gridRowCount);
+            aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+        }
+
+        return Graph.CantorPairing(aRow, aColumn);
+    }
+
     private IEnumerator FindNPoints(int n)
     {
         UnityEngine.Debug.Log("Pathfinding Started");
 
         Stopwatch sw = new Stopwatch();
-        float timeElapsed = 0f;
-        float ssgTimeElapsed = 0f;
-        float normalTimeElapsed = 0f;
+        float elapsedTime = 0f;
+        float visibilityGraphElapsedTime = 0f;
+        float fullGraphElapsedTime = 0f;
 
         string path = "Assets/Output.txt";
         StreamWriter writer = new StreamWriter(path, false);
 
         for (int i = 0; i < n; i++)
         {
-            PathfindingLog normalLog = new PathfindingLog();
-            PathfindingLog ssgLog = new PathfindingLog();
+            PathfindingLog fullGraphLog = new PathfindingLog();
+            PathfindingLog visibilityGraphLog = new PathfindingLog();
 
-            int aRow = UnityEngine.Random.Range(0, _gridRowCount);
-            int aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
-
-            while (_grid[aRow, aColumn] == Enums.TerrainType.Wall)
-            {
-                aRow = UnityEngine.Random.Range(0, _gridRowCount);
-                aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
-            }
-
-            int bRow = UnityEngine.Random.Range(0, _gridRowCount);
-            int bColumn = UnityEngine.Random.Range(0, _gridColumnCount);
-
-            while (_grid[bRow, bColumn] == Enums.TerrainType.Wall)
-            {
-                bRow = UnityEngine.Random.Range(0, _gridRowCount);
-                bColumn = UnityEngine.Random.Range(0, _gridColumnCount);
-            }
-
-            normalLog.startRow = ssgLog.startRow = aRow;
-            normalLog.startColumn = ssgLog.startColumn = aColumn;
-            normalLog.startIdentifier = ssgLog.startIdentifier = Graph.CantorPairing(aRow, aColumn);
-
-            normalLog.goalRow = ssgLog.goalRow = bRow;
-            normalLog.goalColumn = ssgLog.goalColumn = bColumn;
-            normalLog.goalIdentifier = ssgLog.goalIdentifier = Graph.CantorPairing(bRow, bColumn);
+            int startIdentifier = GetNonWallIdentifier();
+            int goalIdentifier = GetNonWallIdentifier();
 
             sw.Restart();
             sw.Start();
 
-            _ssgPathfinding.FindPath(normalLog.startIdentifier, normalLog.goalIdentifier, ref ssgLog, false);
-            _pathfinding.FindPath(normalLog.startIdentifier, normalLog.goalIdentifier, ref normalLog, false);
+            _ssgPathfinding.FindPath(startIdentifier, goalIdentifier, ref visibilityGraphLog, false);
+            _pathfinding.FindPath(startIdentifier, goalIdentifier, ref fullGraphLog, false);
 
             sw.Stop();
 
-            timeElapsed += sw.ElapsedMilliseconds;
-            normalTimeElapsed += normalLog.elapsedTime;
-            ssgTimeElapsed += ssgLog.elapsedTime;
+            elapsedTime += sw.ElapsedMilliseconds;
+            fullGraphElapsedTime += fullGraphLog.elapsedTime;
+            visibilityGraphElapsedTime += visibilityGraphLog.elapsedTime;
 
-            string equalDistance = normalLog.distance != ssgLog.distance ? "Different Distances" : "";
-
-            string output = equalDistance + " " + normalLog.ToString() + " " + ssgLog.ToString();
-
-            writer.WriteLine(output);
+            writer.WriteLine(PathfindingLog.JoinLogs(fullGraphLog, visibilityGraphLog) + ",");
 
             UnityEngine.Debug.Log(i);
 
             yield return null;
         }
 
-        writer.WriteLine("Elapsed Time: " + timeElapsed + "ms");
-        writer.WriteLine("SSG elapsed Time: " + ssgTimeElapsed + "ms");
-        writer.WriteLine("Normal elapsed Time: " + normalTimeElapsed + "ms");
+        writer.WriteLine("-----------------------------------------------------------------");
+        writer.WriteLine($"Elapsed Time: {elapsedTime}ms");
+        writer.WriteLine($"Full Graph (A) Elapsed Time : {fullGraphElapsedTime}ms");
+        writer.WriteLine($"Visibility Graph (B) Elapsed Time : {visibilityGraphElapsedTime}ms");
+        writer.WriteLine($"Average Full Graph (B) Processing Time : {fullGraphElapsedTime/n}ms");
+        writer.WriteLine($"Average Visibility Graph (B) Processing Time : {visibilityGraphElapsedTime/n}ms");
+        writer.WriteLine("-----------------------------------------------------------------");
 
         writer.Close();
 
@@ -317,7 +308,7 @@ public class MapController : MonoBehaviour
         _pathfinding = new Pathfinding(_graph);
         _pathfinding.onPathProcessed += OnPathProcessed;
 
-        _ssgPathfinding = new SubgoalGraphPathfinding(_ssg);
+        _ssgPathfinding = new VisibilityGraphPathfinding(_ssg);
         _ssgPathfinding.onPathProcessed += OnSSGPathProcessed;
     }
 

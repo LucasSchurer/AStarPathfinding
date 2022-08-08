@@ -75,6 +75,7 @@ public class Pathfinding
         {
             currentVertex = openSet.RemoveFirst();
             closedSet.Add(currentVertex);
+            log.closedSetSize++;
 
             if (currentVertex == goal)
             {
@@ -101,6 +102,7 @@ public class Pathfinding
                     if (!openSet.Contains(connectedVertex))
                     {
                         openSet.Add(connectedVertex);
+                        log.openSetSize++;
                     }
                     else
                     {
@@ -145,7 +147,7 @@ public class Pathfinding
         UpdatePathfindingLog(reachedGoal, elapsedTime, reachedGoal ? goal.gCost : - 1, ref log);
     }
 
-    private void UpdatePathfindingLog(bool reachedGoal, float elapsedTime, int distance, ref PathfindingLog log)
+    protected void UpdatePathfindingLog(bool reachedGoal, float elapsedTime, int distance, ref PathfindingLog log)
     {
         log.reachedGoal = reachedGoal;
         log.elapsedTime = elapsedTime;

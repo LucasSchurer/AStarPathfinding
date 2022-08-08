@@ -82,6 +82,16 @@ public class Graph
         return null;
     }
 
+    public Vertex CreateVertex(int identifier, bool shouldCreateWalls = true)
+    {
+        int row;
+        int column;
+
+        ReverseCantorPairing(identifier, out row, out column);
+
+        return CreateVertex(row, column, shouldCreateWalls);
+    }
+
     /// <summary>
     /// Remove a vertex from the dictionary and remove all of its connections.
     /// </summary>
@@ -165,6 +175,16 @@ public class Graph
         {
             return null;
         }
+    }
+
+    public Vertex GetVertex(int identifier)
+    {
+        int row;
+        int column;
+
+        ReverseCantorPairing(identifier, out row, out column);
+
+        return GetVertex(row, column);
     }
 
     /// <summary>
