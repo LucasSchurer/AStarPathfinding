@@ -5,14 +5,10 @@ using UnityEngine;
 
 public class Pathfinding
 {
-    public delegate void OnPathProcessed(Vertex[] steps);
+    public delegate void OnPathProcessed(PathfindingLog log, Vertex[] steps);
     public OnPathProcessed onPathProcessed;
 
     private Graph _graph;
-
-    public GraphDrawer _drawer;
-    public MapController mapController;
-
 
     public Pathfinding(Graph graph)
     {
@@ -24,131 +20,66 @@ public class Pathfinding
     /// </summary>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    public virtual IEnumerator FindPath(int sourceIdentifier, int targetIdentifier)
+    public virtual IEnumerator FindPathCoroutine(int startIdentifier, int goalIdentifier)
     {
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
-
-        Vertex source;
-        Vertex target;
-
-        if (!_graph.Vertices.TryGetValue(sourceIdentifier, out source))
-        {
-            yield break;
-        }
-
-        if (!_graph.Vertices.TryGetValue(targetIdentifier, out target))
-        {
-            yield break;
-        }
-
-        bool reachedGoal = false;
-
-        HashSet<Vertex> closedSet = new HashSet<Vertex>();
-        Heap<Vertex> openSet = new Heap<Vertex>(_graph.VerticesCount);
-        Vertex[] steps = new Vertex[] { source };
-        Vertex currentVertex;
-
-        source.hCost = DistanceBetweenVertices(source, target);
-        source.gCost = 0;
-        source.parent = null;
-        openSet.Add(source);
-
-        while (openSet.Count > 0)
-        {
-            currentVertex = openSet.RemoveFirst();
-            closedSet.Add(currentVertex);
-            _drawer.DrawVertex(currentVertex, Color.cyan);
-
-            if (currentVertex == target)
-            {
-                steps = RetraceSteps(currentVertex);
-                reachedGoal = true;
-                break;
-            }
-
-            foreach (Vertex connectedVertex in currentVertex.GetConnectedVertices())
-            {
-                if (closedSet.Contains(connectedVertex))
-                {
-                    continue;
-                }
-
-                int movementCostToConnectedVertex = currentVertex.gCost + DistanceBetweenVertices(currentVertex, connectedVertex);
-                if (!openSet.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
-                {
-                    connectedVertex.gCost = movementCostToConnectedVertex;
-                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
-                    connectedVertex.parent = currentVertex;
-
-                    if (!openSet.Contains(connectedVertex))
-                    {
-                        openSet.Add(connectedVertex);
-                        _drawer.DrawVertex(connectedVertex, Color.white);
-                    } else
-                    {
-                        openSet.UpdateNode(connectedVertex);
-                    }
-                }
-            }
-
-            yield return new WaitForSeconds(mapController.executionTime);
-            _drawer.DrawVertex(currentVertex, Color.grey);
-        }
-
-        if (reachedGoal)
-        {
-            onPathProcessed?.Invoke(steps);
-        } else
-        {
-            UnityEngine.Debug.Log("Unreachable Goal");
-        }
-
-        sw.Stop();
-
-        UnityEngine.Debug.Log(sw.ElapsedMilliseconds + "ms");
-
-
+        PathfindingLog log = new PathfindingLog();
+        FindPath(startIdentifier, goalIdentifier, ref log);
         yield return null;
     }
 
-    public virtual void FindPathUsingLog(int sourceIdentifier, int targetIdentifier, ref PathfindingLog log)
+    public virtual void FindPath(int startIdentifier, int goalIdentifier, ref PathfindingLog log, bool invokeOnPathProcessed = true)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
-        Vertex source;
-        Vertex target;
-
-        if (!_graph.Vertices.TryGetValue(sourceIdentifier, out source))
-        {
-            return;
-        }
-
-        if (!_graph.Vertices.TryGetValue(targetIdentifier, out target))
-        {
-            return;
-        }
-
         bool reachedGoal = false;
+
+        if (startIdentifier == goalIdentifier)
+        {
+            sw.Stop();
+            reachedGoal = true;
+            UpdatePathfindingLog(reachedGoal, sw.ElapsedMilliseconds, 0, ref log);
+            if (invokeOnPathProcessed)
+            {
+                onPathProcessed?.Invoke(log, null);
+            }
+            return;
+        }
+
+        Vertex start;
+        Vertex goal;
+
+        if (!_graph.Vertices.TryGetValue(startIdentifier, out start) || !_graph.Vertices.TryGetValue(goalIdentifier, out goal))
+        {
+            sw.Stop();
+            reachedGoal = false;
+            UpdatePathfindingLog(reachedGoal, sw.ElapsedMilliseconds, -1, ref log);
+            if (invokeOnPathProcessed)
+            {
+                onPathProcessed?.Invoke(log, null);
+            }
+            return;
+        }
 
         HashSet<Vertex> closedSet = new HashSet<Vertex>();
         Heap<Vertex> openSet = new Heap<Vertex>(_graph.VerticesCount);
+        Vertex[] steps = null;
         Vertex currentVertex;
 
-        source.hCost = DistanceBetweenVertices(source, target);
-        source.gCost = 0;
-        source.parent = null;
-        openSet.Add(source);
+        start.hCost = DistanceBetweenVertices(start, goal);
+        start.gCost = 0;
+        start.parent = null;
+        openSet.Add(start);
 
         while (openSet.Count > 0)
         {
             currentVertex = openSet.RemoveFirst();
             closedSet.Add(currentVertex);
 
-            if (currentVertex == target)
+            if (currentVertex == goal)
             {
                 sw.Stop();
+                steps = RetraceSteps(goal);
                 reachedGoal = true;
                 break;
             }
@@ -164,7 +95,7 @@ public class Pathfinding
                 if (!openSet.Contains(connectedVertex) || movementCostToConnectedVertex < connectedVertex.gCost)
                 {
                     connectedVertex.gCost = movementCostToConnectedVertex;
-                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, target);
+                    connectedVertex.hCost = DistanceBetweenVertices(connectedVertex, goal);
                     connectedVertex.parent = currentVertex;
 
                     if (!openSet.Contains(connectedVertex))
@@ -180,10 +111,12 @@ public class Pathfinding
         }
 
         sw.Stop();
-
-        log.foundPath = reachedGoal;
-        log.timeSpent = sw.ElapsedMilliseconds;
-        log.distance = reachedGoal ? target.gCost : -1;
+        UpdatePathfindingLog(start, goal, reachedGoal, sw.ElapsedMilliseconds, ref log);
+        
+        if (invokeOnPathProcessed)
+        {
+            onPathProcessed?.Invoke(log, steps);
+        }
     }
 
     /// <summary>
@@ -195,8 +128,6 @@ public class Pathfinding
     {
         List<Vertex> steps = new List<Vertex>();
 
-        UnityEngine.Debug.Log("Distance: " + target.gCost);
-
         while (target != null)
         {
             steps.Add(target);
@@ -205,6 +136,20 @@ public class Pathfinding
 
         steps.Reverse();
         return steps.ToArray();
+    }
+
+    protected void UpdatePathfindingLog(Vertex start, Vertex goal, bool reachedGoal, float elapsedTime, ref PathfindingLog log)
+    {
+        log.SetStartInfo(start.Identifier);
+        log.SetGoalInfo(goal.Identifier);
+        UpdatePathfindingLog(reachedGoal, elapsedTime, reachedGoal ? goal.gCost : - 1, ref log);
+    }
+
+    private void UpdatePathfindingLog(bool reachedGoal, float elapsedTime, int distance, ref PathfindingLog log)
+    {
+        log.reachedGoal = reachedGoal;
+        log.elapsedTime = elapsedTime;
+        log.distance = distance;
     }
 
     public static int DistanceBetweenVertices(Vertex a, Vertex b)

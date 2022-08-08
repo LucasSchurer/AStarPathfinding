@@ -4,22 +4,34 @@ using UnityEngine;
 
 public struct PathfindingLog
 {
-    public int sourceRow;
-    public int sourceColumn;
-    public int sourceIdentifier;
+    public int startRow;
+    public int startColumn;
+    public int startIdentifier;
 
-    public int targetRow;
-    public int targetColumn;
-    public int targetIdentifier;
+    public int goalRow;
+    public int goalColumn;
+    public int goalIdentifier;
 
-    public float timeSpent;
+    public float elapsedTime;
     public int distance;
 
-    public bool foundPath;
+    public bool reachedGoal;
+
+    public void SetStartInfo(int identifier)
+    {
+        startIdentifier = identifier;
+        Graph.ReverseCantorPairing(identifier, out startRow, out startColumn);
+    }
+
+    public void SetGoalInfo(int identifier)
+    {
+        goalIdentifier = identifier;
+        Graph.ReverseCantorPairing(identifier, out goalRow, out goalColumn);
+    }
 
     public override string ToString()
     {
-        string s = $"Found Path: {foundPath} Source: {sourceIdentifier} = [{sourceRow}, {sourceColumn}] Target: {targetIdentifier} = [{targetRow}, {targetColumn}] Time: {timeSpent}ms Distance: {distance}";
+        string s = $"Found Path: {reachedGoal} Source: {startIdentifier} = [{startRow}, {startColumn}] Target: {goalIdentifier} = [{goalRow}, {goalColumn}] Time: {elapsedTime}ms Distance: {distance}";
 
         return s;
     }

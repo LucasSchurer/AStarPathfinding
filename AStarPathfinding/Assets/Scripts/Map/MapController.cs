@@ -89,25 +89,25 @@ public class MapController : MonoBehaviour
                 bColumn = UnityEngine.Random.Range(0, _gridColumnCount);
             }
 
-            normalLog.sourceRow = ssgLog.sourceRow = aRow;
-            normalLog.sourceColumn = ssgLog.sourceColumn = aColumn;
-            normalLog.sourceIdentifier = ssgLog.sourceIdentifier = Graph.CantorPairing(aRow, aColumn);
+            normalLog.startRow = ssgLog.startRow = aRow;
+            normalLog.startColumn = ssgLog.startColumn = aColumn;
+            normalLog.startIdentifier = ssgLog.startIdentifier = Graph.CantorPairing(aRow, aColumn);
 
-            normalLog.targetRow = ssgLog.targetRow = bRow;
-            normalLog.targetColumn = ssgLog.targetColumn = bColumn;
-            normalLog.targetIdentifier = ssgLog.targetIdentifier = Graph.CantorPairing(bRow, bColumn);
+            normalLog.goalRow = ssgLog.goalRow = bRow;
+            normalLog.goalColumn = ssgLog.goalColumn = bColumn;
+            normalLog.goalIdentifier = ssgLog.goalIdentifier = Graph.CantorPairing(bRow, bColumn);
 
             sw.Restart();
             sw.Start();
 
-            _ssgPathfinding.FindPathUsingLog(normalLog.sourceIdentifier, normalLog.targetIdentifier, ref ssgLog);
-            _pathfinding.FindPathUsingLog(normalLog.sourceIdentifier, normalLog.targetIdentifier, ref normalLog);
+            _ssgPathfinding.FindPath(normalLog.startIdentifier, normalLog.goalIdentifier, ref ssgLog, false);
+            _pathfinding.FindPath(normalLog.startIdentifier, normalLog.goalIdentifier, ref normalLog, false);
 
             sw.Stop();
 
             timeElapsed += sw.ElapsedMilliseconds;
-            normalTimeElapsed += normalLog.timeSpent;
-            ssgTimeElapsed += ssgLog.timeSpent;
+            normalTimeElapsed += normalLog.elapsedTime;
+            ssgTimeElapsed += ssgLog.elapsedTime;
 
             string equalDistance = normalLog.distance != ssgLog.distance ? "Different Distances" : "";
 
@@ -195,7 +195,7 @@ public class MapController : MonoBehaviour
 
             if (_sourceVertex != null && _targetVertex != null)
             {
-                StartCoroutine(_pathfinding.FindPath(_sourceVertex.Identifier, _targetVertex.Identifier));
+                StartCoroutine(_pathfinding.FindPathCoroutine(_sourceVertex.Identifier, _targetVertex.Identifier));
             }
         }
 
@@ -205,7 +205,7 @@ public class MapController : MonoBehaviour
 
             if (_sourceVertex != null && _targetVertex != null)
             {
-                StartCoroutine(_ssgPathfinding.FindPath(_sourceVertex.Identifier, _targetVertex.Identifier));
+                StartCoroutine(_ssgPathfinding.FindPathCoroutine(_sourceVertex.Identifier, _targetVertex.Identifier));
             }
         }
 
@@ -244,22 +244,32 @@ public class MapController : MonoBehaviour
         }
     }    
 
-    private void OnPathProcessed(Vertex[] steps)
+    private void OnPathProcessed(PathfindingLog log, Vertex[] steps)
     {
         _graphDrawer.Draw();
 
-        _graphDrawer.DrawVertices(steps, Color.red, false);
-        _graphDrawer.DrawVertex(steps[0], Color.yellow, false);
-        _graphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+        if (log.reachedGoal)
+        {
+            _graphDrawer.DrawVertices(steps, Color.red, false);
+            _graphDrawer.DrawVertex(steps[0], Color.yellow, false);
+            _graphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+        }
+
+        UnityEngine.Debug.Log(log.ToString());
     }
 
-    private void OnSSGPathProcessed(Vertex[] steps)
+    private void OnSSGPathProcessed(PathfindingLog log, Vertex[] steps)
     {
         _ssgDrawer.Draw();
 
-        _ssgDrawer.DrawVertices(steps, Color.blue, false);
-        _ssgDrawer.DrawVertex(steps[0], Color.yellow, false);
-        _ssgDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+        if (log.reachedGoal)
+        {
+            _ssgDrawer.DrawVertices(steps, Color.blue, false);
+            _ssgDrawer.DrawVertex(steps[0], Color.yellow, false);
+            _ssgDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+        }
+
+        UnityEngine.Debug.Log(log.ToString());
     }
 
     private void CreateGridBasedOnSprite(Sprite sprite)
@@ -305,14 +315,10 @@ public class MapController : MonoBehaviour
         _ssgDrawer.Draw();
 
         _pathfinding = new Pathfinding(_graph);
-        _pathfinding._drawer = _graphDrawer;
         _pathfinding.onPathProcessed += OnPathProcessed;
-        _pathfinding.mapController = this;
 
         _ssgPathfinding = new SubgoalGraphPathfinding(_ssg);
-        _ssgPathfinding._drawer = _ssgDrawer;
         _ssgPathfinding.onPathProcessed += OnSSGPathProcessed;
-        _ssgPathfinding.mapController = this;
     }
 
     private void ResizeGrid(int verticesByUnit)

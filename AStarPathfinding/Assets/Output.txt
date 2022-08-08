@@ -1,23 +1,53 @@
- Found Path: True Source: 1027037 = [423, 1009] Target: 725738 = [876, 328] Time: 197ms Distance: 8688 Found Path: True Source: 1027037 = [423, 1009] Target: 725738 = [876, 328] Time: 65ms Distance: 8688
- Found Path: True Source: 64383 = [236, 122] Target: 742728 = [861, 357] Time: 298ms Distance: 7430 Found Path: True Source: 64383 = [236, 122] Target: 742728 = [861, 357] Time: 67ms Distance: 7430
- Found Path: True Source: 395785 = [709, 180] Target: 500146 = [353, 646] Time: 248ms Distance: 6438 Found Path: True Source: 395785 = [709, 180] Target: 500146 = [353, 646] Time: 33ms Distance: 6438
- Found Path: False Source: 995184 = [981, 429] Target: 570974 = [940, 128] Time: 4092ms Distance: -1 Found Path: False Source: 995184 = [981, 429] Target: 570974 = [940, 128] Time: 791ms Distance: -1
- Found Path: True Source: 748276 = [199, 1023] Target: 1045547 = [633, 812] Time: 149ms Distance: 5344 Found Path: True Source: 748276 = [199, 1023] Target: 1045547 = [633, 812] Time: 9ms Distance: 5344
- Found Path: True Source: 120802 = [475, 16] Target: 684018 = [1016, 153] Time: 150ms Distance: 6390 Found Path: True Source: 120802 = [475, 16] Target: 684018 = [1016, 153] Time: 32ms Distance: 6390
- Found Path: True Source: 434483 = [294, 637] Target: 179077 = [23, 574] Time: 114ms Distance: 2962 Found Path: True Source: 434483 = [294, 637] Target: 179077 = [23, 574] Time: 31ms Distance: 2962
- Found Path: True Source: 408891 = [168, 735] Target: 1200995 = [1029, 520] Time: 2362ms Distance: 12676 Found Path: True Source: 408891 = [168, 735] Target: 1200995 = [1029, 520] Time: 490ms Distance: 12676
- Found Path: True Source: 131375 = [465, 47] Target: 658019 = [358, 788] Time: 84ms Distance: 7838 Found Path: True Source: 131375 = [465, 47] Target: 658019 = [358, 788] Time: 32ms Distance: 7838
- Found Path: True Source: 1249679 = [891, 689] Target: 1806841 = [1009, 891] Time: 80ms Distance: 2738 Found Path: True Source: 1249679 = [891, 689] Target: 1806841 = [1009, 891] Time: 63ms Distance: 2738
- Found Path: True Source: 905848 = [682, 663] Target: 71896 = [113, 265] Time: 309ms Distance: 7282 Found Path: True Source: 905848 = [682, 663] Target: 71896 = [113, 265] Time: 17ms Distance: 7282
- Found Path: True Source: 254857 = [397, 316] Target: 367047 = [605, 251] Time: 149ms Distance: 4400 Found Path: True Source: 254857 = [397, 316] Target: 367047 = [605, 251] Time: 29ms Distance: 4400
- Found Path: True Source: 192999 = [131, 489] Target: 496494 = [11, 984] Time: 205ms Distance: 5430 Found Path: True Source: 192999 = [131, 489] Target: 496494 = [11, 984] Time: 21ms Distance: 5430
- Found Path: True Source: 206222 = [180, 461] Target: 647035 = [1055, 82] Time: 482ms Distance: 10798 Found Path: True Source: 206222 = [180, 461] Target: 647035 = [1055, 82] Time: 81ms Distance: 10798
- Found Path: True Source: 892448 = [667, 668] Target: 1270526 = [688, 905] Time: 15ms Distance: 2510 Found Path: True Source: 892448 = [667, 668] Target: 1270526 = [688, 905] Time: 10ms Distance: 2510
- Found Path: True Source: 1110322 = [472, 1017] Target: 1486231 = [718, 1005] Time: 37ms Distance: 2892 Found Path: True Source: 1110322 = [472, 1017] Target: 1486231 = [718, 1005] Time: 13ms Distance: 2892
- Found Path: True Source: 1148927 = [958, 557] Target: 1515490 = [920, 820] Time: 122ms Distance: 5032 Found Path: True Source: 1148927 = [958, 557] Target: 1515490 = [920, 820] Time: 48ms Distance: 5032
- Found Path: False Source: 905750 = [780, 565] Target: 394218 = [497, 390] Time: 29ms Distance: -1 Found Path: False Source: 905750 = [780, 565] Target: 394218 = [497, 390] Time: 22ms Distance: -1
- Found Path: True Source: 1101404 = [465, 1018] Target: 43535 = [124, 170] Time: 1692ms Distance: 11122 Found Path: True Source: 1101404 = [465, 1018] Target: 43535 = [124, 170] Time: 79ms Distance: 11122
- Found Path: True Source: 195518 = [106, 518] Target: 616269 = [335, 774] Time: 27ms Distance: 3476 Found Path: True Source: 195518 = [106, 518] Target: 616269 = [335, 774] Time: 25ms Distance: 3476
-Elapsed Time: 12812ms
-SSG elapsed Time: 1958ms
-Normal elapsed Time: 10841ms
+ Found Path: True Source: 542 = [18, 14] Target: 761 = [18, 20] Time: 0ms Distance: 60 Found Path: True Source: 542 = [18, 14] Target: 761 = [18, 20] Time: 5ms Distance: 60
+ Found Path: True Source: 130 = [5, 10] Target: 339 = [11, 14] Time: 0ms Distance: 76 Found Path: True Source: 130 = [5, 10] Target: 339 = [11, 14] Time: 0ms Distance: 76
+ Found Path: True Source: 41 = [3, 5] Target: 50 = [4, 5] Time: 0ms Distance: 10 Found Path: True Source: 41 = [3, 5] Target: 50 = [4, 5] Time: 0ms Distance: 10
+ Found Path: True Source: 202 = [7, 12] Target: 7 = [2, 1] Time: 0ms Distance: 130 Found Path: True Source: 202 = [7, 12] Target: 7 = [2, 1] Time: 0ms Distance: 130
+ Found Path: True Source: 336 = [14, 11] Target: 345 = [5, 20] Time: 0ms Distance: 138 Found Path: True Source: 336 = [14, 11] Target: 345 = [5, 20] Time: 0ms Distance: 138
+ Found Path: True Source: 188 = [1, 17] Target: 294 = [5, 18] Time: 0ms Distance: 44 Found Path: True Source: 188 = [1, 17] Target: 294 = [5, 18] Time: 0ms Distance: 44
+ Found Path: True Source: 22 = [5, 1] Target: 162 = [8, 9] Time: 0ms Distance: 92 Found Path: True Source: 22 = [5, 1] Target: 162 = [8, 9] Time: 0ms Distance: 92
+ Found Path: False Source: 33 = [2, 5] Target: 507 = [20, 11] Time: 1ms Distance: -1 Found Path: False Source: 33 = [2, 5] Target: 507 = [20, 11] Time: 0ms Distance: -1
+ Found Path: True Source: 189 = [0, 18] Target: 164 = [6, 11] Time: 0ms Distance: 94 Found Path: True Source: 189 = [0, 18] Target: 164 = [6, 11] Time: 0ms Distance: 94
+ Found Path: True Source: 245 = [7, 14] Target: 318 = [6, 18] Time: 0ms Distance: 44 Found Path: True Source: 245 = [7, 14] Target: 318 = [6, 18] Time: 0ms Distance: 44
+ Found Path: True Source: 295 = [4, 19] Target: 8 = [1, 2] Time: 0ms Distance: 182 Found Path: True Source: 295 = [4, 19] Target: 8 = [1, 2] Time: 0ms Distance: 182
+ Found Path: True Source: 721 = [19, 18] Target: 336 = [14, 11] Time: 0ms Distance: 114 Found Path: True Source: 721 = [19, 18] Target: 336 = [14, 11] Time: 0ms Distance: 114
+ Found Path: True Source: 365 = [12, 14] Target: 269 = [6, 16] Time: 0ms Distance: 68 Found Path: True Source: 365 = [12, 14] Target: 269 = [6, 16] Time: 0ms Distance: 68
+ Found Path: True Source: 610 = [19, 15] Target: 166 = [4, 13] Time: 0ms Distance: 184 Found Path: True Source: 610 = [19, 15] Target: 166 = [4, 13] Time: 0ms Distance: 184
+ Found Path: True Source: 64 = [1, 9] Target: 187 = [2, 16] Time: 0ms Distance: 74 Found Path: True Source: 64 = [1, 9] Target: 187 = [2, 16] Time: 0ms Distance: 74
+ Found Path: True Source: 219 = [11, 9] Target: 31 = [4, 3] Time: 0ms Distance: 106 Found Path: True Source: 219 = [11, 9] Target: 31 = [4, 3] Time: 0ms Distance: 106
+ Found Path: True Source: 128 = [7, 8] Target: 336 = [14, 11] Time: 0ms Distance: 82 Found Path: True Source: 128 = [7, 8] Target: 336 = [14, 11] Time: 0ms Distance: 82
+ Found Path: True Source: 288 = [11, 12] Target: 202 = [7, 12] Time: 0ms Distance: 40 Found Path: True Source: 288 = [11, 12] Target: 202 = [7, 12] Time: 0ms Distance: 40
+ Found Path: True Source: 122 = [13, 2] Target: 37 = [7, 1] Time: 0ms Distance: 64 Found Path: True Source: 122 = [13, 2] Target: 37 = [7, 1] Time: 0ms Distance: 64
+ Found Path: True Source: 227 = [3, 17] Target: 368 = [9, 17] Time: 0ms Distance: 60 Found Path: True Source: 227 = [3, 17] Target: 368 = [9, 17] Time: 0ms Distance: 60
+ Found Path: True Source: 363 = [14, 12] Target: 514 = [13, 18] Time: 0ms Distance: 64 Found Path: True Source: 363 = [14, 12] Target: 514 = [13, 18] Time: 0ms Distance: 64
+ Found Path: True Source: 135 = [0, 15] Target: 71 = [6, 5] Time: 0ms Distance: 124 Found Path: True Source: 135 = [0, 15] Target: 71 = [6, 5] Time: 0ms Distance: 124
+ Found Path: True Source: 114 = [5, 9] Target: 201 = [8, 11] Time: 0ms Distance: 38 Found Path: True Source: 114 = [5, 9] Target: 201 = [8, 11] Time: 0ms Distance: 38
+ Found Path: True Source: 122 = [13, 2] Target: 89 = [1, 11] Time: 0ms Distance: 182 Found Path: True Source: 122 = [13, 2] Target: 89 = [1, 11] Time: 0ms Distance: 182
+ Found Path: True Source: 648 = [17, 18] Target: 163 = [7, 10] Time: 0ms Distance: 176 Found Path: True Source: 648 = [17, 18] Target: 163 = [7, 10] Time: 0ms Distance: 176
+ Found Path: True Source: 61 = [4, 6] Target: 81 = [9, 3] Time: 0ms Distance: 82 Found Path: True Source: 61 = [4, 6] Target: 81 = [9, 3] Time: 0ms Distance: 82
+ Found Path: True Source: 40 = [4, 4] Target: 21 = [6, 0] Time: 0ms Distance: 48 Found Path: True Source: 40 = [4, 4] Target: 21 = [6, 0] Time: 0ms Distance: 48
+ Found Path: True Source: 140 = [12, 4] Target: 251 = [1, 20] Time: 0ms Distance: 210 Found Path: True Source: 140 = [12, 4] Target: 251 = [1, 20] Time: 0ms Distance: 210
+ Found Path: True Source: 135 = [0, 15] Target: 396 = [9, 18] Time: 0ms Distance: 102 Found Path: True Source: 135 = [0, 15] Target: 396 = [9, 18] Time: 0ms Distance: 102
+ Found Path: True Source: 287 = [12, 11] Target: 336 = [14, 11] Time: 0ms Distance: 20 Found Path: True Source: 287 = [12, 11] Target: 336 = [14, 11] Time: 0ms Distance: 20
+ Found Path: True Source: 314 = [10, 14] Target: 13 = [1, 3] Time: 0ms Distance: 146 Found Path: True Source: 314 = [10, 14] Target: 13 = [1, 3] Time: 0ms Distance: 146
+ Found Path: True Source: 189 = [0, 18] Target: 62 = [3, 7] Time: 0ms Distance: 122 Found Path: True Source: 189 = [0, 18] Target: 62 = [3, 7] Time: 0ms Distance: 122
+ Found Path: True Source: 480 = [15, 15] Target: 21 = [6, 0] Time: 0ms Distance: 198 Found Path: True Source: 480 = [15, 15] Target: 21 = [6, 0] Time: 0ms Distance: 198
+ Found Path: True Source: 36 = [8, 0] Target: 174 = [15, 3] Time: 0ms Distance: 82 Found Path: True Source: 36 = [8, 0] Target: 174 = [15, 3] Time: 0ms Distance: 82
+ Found Path: True Source: 308 = [16, 8] Target: 165 = [5, 12] Time: 0ms Distance: 132 Found Path: True Source: 308 = [16, 8] Target: 165 = [5, 12] Time: 0ms Distance: 132
+ Found Path: True Source: 450 = [14, 15] Target: 313 = [11, 13] Time: 0ms Distance: 44 Found Path: True Source: 450 = [14, 15] Target: 313 = [11, 13] Time: 0ms Distance: 44
+ Found Path: True Source: 147 = [5, 11] Target: 117 = [2, 12] Time: 0ms Distance: 34 Found Path: True Source: 147 = [5, 11] Target: 117 = [2, 12] Time: 0ms Distance: 34
+ Found Path: True Source: 89 = [1, 11] Target: 244 = [8, 13] Time: 0ms Distance: 78 Found Path: True Source: 89 = [1, 11] Target: 244 = [8, 13] Time: 0ms Distance: 78
+ Found Path: False Source: 357 = [20, 6] Target: 135 = [0, 15] Time: 0ms Distance: -1 Found Path: False Source: 357 = [20, 6] Target: 135 = [0, 15] Time: 0ms Distance: -1
+ Found Path: False Source: 476 = [19, 11] Target: 49 = [5, 4] Time: 0ms Distance: -1 Found Path: False Source: 476 = [19, 11] Target: 49 = [5, 4] Time: 0ms Distance: -1
+ Found Path: True Source: 580 = [14, 19] Target: 256 = [19, 3] Time: 0ms Distance: 192 Found Path: True Source: 580 = [14, 19] Target: 256 = [19, 3] Time: 0ms Distance: 192
+ Found Path: True Source: 576 = [18, 15] Target: 102 = [2, 11] Time: 0ms Distance: 202 Found Path: True Source: 576 = [18, 15] Target: 102 = [2, 11] Time: 0ms Distance: 202
+ Found Path: True Source: 294 = [5, 18] Target: 516 = [11, 20] Time: 0ms Distance: 74 Found Path: True Source: 294 = [5, 18] Target: 516 = [11, 20] Time: 0ms Distance: 74
+ Found Path: True Source: 418 = [16, 12] Target: 150 = [2, 14] Time: 0ms Distance: 148 Found Path: True Source: 418 = [16, 12] Target: 150 = [2, 14] Time: 0ms Distance: 148
+ Found Path: True Source: 419 = [15, 13] Target: 88 = [2, 10] Time: 0ms Distance: 142 Found Path: True Source: 419 = [15, 13] Target: 88 = [2, 10] Time: 0ms Distance: 142
+ Found Path: True Source: 173 = [16, 2] Target: 20 = [0, 5] Time: 0ms Distance: 180 Found Path: True Source: 173 = [16, 2] Target: 20 = [0, 5] Time: 0ms Distance: 180
+ Found Path: True Source: 289 = [10, 13] Target: 92 = [12, 1] Time: 0ms Distance: 134 Found Path: True Source: 289 = [10, 13] Target: 92 = [12, 1] Time: 0ms Distance: 134
+ Found Path: True Source: 290 = [9, 14] Target: 116 = [3, 11] Time: 0ms Distance: 72 Found Path: True Source: 290 = [9, 14] Target: 116 = [3, 11] Time: 0ms Distance: 72
+ Found Path: True Source: 73 = [4, 7] Target: 52 = [2, 7] Time: 0ms Distance: 20 Found Path: True Source: 73 = [4, 7] Target: 52 = [2, 7] Time: 0ms Distance: 20
+ Found Path: True Source: 19 = [1, 4] Target: 126 = [9, 6] Time: 0ms Distance: 150 Found Path: True Source: 19 = [1, 4] Target: 126 = [9, 6] Time: 0ms Distance: 150
+Elapsed Time: 6ms
+SSG elapsed Time: 5ms
+Normal elapsed Time: 1ms
