@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class MapController : MonoBehaviour
 {
+    public float executionTime = 1f;
+
     [SerializeField]
     private MapLoader _mapLoader;
 
@@ -18,7 +22,7 @@ public class MapController : MonoBehaviour
     private GraphDrawer _ssgDrawer;
 
     private Pathfinding _pathfinding;
-    private Pathfinding _ssgPathfinding;
+    private SubgoalGraphPathfinding _ssgPathfinding;
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
@@ -42,10 +46,87 @@ public class MapController : MonoBehaviour
     private Vertex _targetVertex;
     private Vertex _ssgSourceVertex;
     private Vertex _ssgTargetVertex;
+    [SerializeField]
+    private int _numberOfPoints = 2;
 
     private void Awake()
     {
         _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
+    }
+
+    private IEnumerator FindNPoints(int n)
+    {
+        UnityEngine.Debug.Log("Pathfinding Started");
+
+        Stopwatch sw = new Stopwatch();
+        float timeElapsed = 0f;
+        float ssgTimeElapsed = 0f;
+        float normalTimeElapsed = 0f;
+
+        string path = "Assets/Output.txt";
+        StreamWriter writer = new StreamWriter(path, false);
+
+        for (int i = 0; i < n; i++)
+        {
+            PathfindingLog normalLog = new PathfindingLog();
+            PathfindingLog ssgLog = new PathfindingLog();
+
+            int aRow = UnityEngine.Random.Range(0, _gridRowCount);
+            int aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+
+            while (_grid[aRow, aColumn] == Enums.TerrainType.Wall)
+            {
+                aRow = UnityEngine.Random.Range(0, _gridRowCount);
+                aColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+            }
+
+            int bRow = UnityEngine.Random.Range(0, _gridRowCount);
+            int bColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+
+            while (_grid[bRow, bColumn] == Enums.TerrainType.Wall)
+            {
+                bRow = UnityEngine.Random.Range(0, _gridRowCount);
+                bColumn = UnityEngine.Random.Range(0, _gridColumnCount);
+            }
+
+            normalLog.sourceRow = ssgLog.sourceRow = aRow;
+            normalLog.sourceColumn = ssgLog.sourceColumn = aColumn;
+            normalLog.sourceIdentifier = ssgLog.sourceIdentifier = Graph.CantorPairing(aRow, aColumn);
+
+            normalLog.targetRow = ssgLog.targetRow = bRow;
+            normalLog.targetColumn = ssgLog.targetColumn = bColumn;
+            normalLog.targetIdentifier = ssgLog.targetIdentifier = Graph.CantorPairing(bRow, bColumn);
+
+            sw.Restart();
+            sw.Start();
+
+            _ssgPathfinding.FindPathUsingLog(normalLog.sourceIdentifier, normalLog.targetIdentifier, ref ssgLog);
+            _pathfinding.FindPathUsingLog(normalLog.sourceIdentifier, normalLog.targetIdentifier, ref normalLog);
+
+            sw.Stop();
+
+            timeElapsed += sw.ElapsedMilliseconds;
+            normalTimeElapsed += normalLog.timeSpent;
+            ssgTimeElapsed += ssgLog.timeSpent;
+
+            string equalDistance = normalLog.distance != ssgLog.distance ? "Different Distances" : "";
+
+            string output = equalDistance + " " + normalLog.ToString() + " " + ssgLog.ToString();
+
+            writer.WriteLine(output);
+
+            UnityEngine.Debug.Log(i);
+
+            yield return null;
+        }
+
+        writer.WriteLine("Elapsed Time: " + timeElapsed + "ms");
+        writer.WriteLine("SSG elapsed Time: " + ssgTimeElapsed + "ms");
+        writer.WriteLine("Normal elapsed Time: " + normalTimeElapsed + "ms");
+
+        writer.Close();
+
+        UnityEngine.Debug.Log("Pathfinding Ended");
     }
 
     private void Update()
@@ -112,15 +193,25 @@ public class MapController : MonoBehaviour
         {
             StopAllCoroutines();
 
-            if (_sourceVertex != null && _targetVertex != null && _graphOverlayRenderer.gameObject.activeSelf)
+            if (_sourceVertex != null && _targetVertex != null)
             {
-                StartCoroutine(_pathfinding.FindPath(_sourceVertex, _targetVertex));
+                StartCoroutine(_pathfinding.FindPath(_sourceVertex.Identifier, _targetVertex.Identifier));
             }
+        }
 
-            if (_ssgSourceVertex != null && _ssgTargetVertex != null && _ssgOverlayRenderer.gameObject.activeSelf)
+        if (Input.GetKeyDown(KeyCode.F) && Input.GetKey(KeyCode.LeftShift))
+        {
+            StopAllCoroutines();
+
+            if (_sourceVertex != null && _targetVertex != null)
             {
-                StartCoroutine(_ssgPathfinding.FindPath(_ssgSourceVertex, _ssgTargetVertex));
+                StartCoroutine(_ssgPathfinding.FindPath(_sourceVertex.Identifier, _targetVertex.Identifier));
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            StartCoroutine(FindNPoints(_numberOfPoints));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -131,14 +222,6 @@ public class MapController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             _ssgOverlayRenderer.gameObject.SetActive(!_ssgOverlayRenderer.gameObject.activeSelf);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (_ssgSourceVertex != null)
-            {
-                _ssg.DrawHReachableSubgoals(_ssgSourceVertex);
-            }
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
@@ -159,7 +242,7 @@ public class MapController : MonoBehaviour
         {
             
         }
-    }
+    }    
 
     private void OnPathProcessed(Vertex[] steps)
     {
@@ -219,14 +302,17 @@ public class MapController : MonoBehaviour
         _ssg = new SubgoalGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _ssgDrawer = new GraphDrawer(_ssg);
         _ssgOverlayRenderer.sprite = Sprite.Create(_ssgDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
-        _ssg.graphDrawer = _ssgDrawer;
         _ssgDrawer.Draw();
 
         _pathfinding = new Pathfinding(_graph);
+        _pathfinding._drawer = _graphDrawer;
         _pathfinding.onPathProcessed += OnPathProcessed;
+        _pathfinding.mapController = this;
 
-        _ssgPathfinding = new Pathfinding(_ssg);
+        _ssgPathfinding = new SubgoalGraphPathfinding(_ssg);
+        _ssgPathfinding._drawer = _ssgDrawer;
         _ssgPathfinding.onPathProcessed += OnSSGPathProcessed;
+        _ssgPathfinding.mapController = this;
     }
 
     private void ResizeGrid(int verticesByUnit)
@@ -286,7 +372,7 @@ public class MapController : MonoBehaviour
                 s += $"{connectedVertex.Identifier} ";
             }
 
-            Debug.Log(s);
+            UnityEngine.Debug.Log(s);
         }
     }
 
@@ -296,7 +382,7 @@ public class MapController : MonoBehaviour
         {
             if (_grid != null)
             {
-                if (_grid.Length < 2000)
+                if (_grid.Length < 10000)
                 {
                     DrawGraph();
                 }
@@ -305,6 +391,13 @@ public class MapController : MonoBehaviour
                 {
                     DrawVertex(_sourceVertex, Color.magenta);
                     DrawVertexConnections(_sourceVertex);
+
+                    if (_ssg.Vertices.ContainsKey(_sourceVertex.Identifier))
+                    {
+                        Vertex vertex = null;
+                        _ssg.Vertices.TryGetValue(_sourceVertex.Identifier, out vertex);
+                        DrawVertexConnectionsAux(vertex);
+                    }
                 }
             }
         }
@@ -317,14 +410,30 @@ public class MapController : MonoBehaviour
             return;
         }
 
-        foreach (Vertex vertex in _graph.Vertices.Values)
+        if (_ssgOverlayRenderer.gameObject.activeSelf)
         {
-            if (vertex == null)
+            foreach (Vertex vertex in _ssg.Vertices.Values)
             {
-                continue;
-            }
+                if (vertex == null)
+                {
+                    continue;
+                }
 
-            DrawVertex(vertex);
+                DrawVertex(vertex);
+            }
+        }
+
+        if (_graphOverlayRenderer.gameObject.activeSelf)
+        {
+            foreach (Vertex vertex in _graph.Vertices.Values)
+            {
+                if (vertex == null)
+                {
+                    continue;
+                }
+
+                DrawVertex(vertex);
+            }
         }
     }
 
@@ -338,11 +447,15 @@ public class MapController : MonoBehaviour
         int columnIndex;
         Graph.ReverseCantorPairing(vertex.Identifier, out rowIndex, out columnIndex);
 
-        Handles.color = Color.black;
-        Handles.Label(vertex.Position, vertex.Identifier.ToString());
+        GUIStyle style = new GUIStyle();
+        style.normal.textColor = Color.black;
+        Handles.Label(vertex.Position, vertex.Identifier.ToString(), style);
         Vector2 columnRowHandlePosition = vertex.Position;
         columnRowHandlePosition.y -= vertex.Size / 6;
-        Handles.Label(columnRowHandlePosition, $"{rowIndex},{columnIndex}");
+        Handles.Label(columnRowHandlePosition, $"{rowIndex},{columnIndex}", style);
+
+        columnRowHandlePosition.y += vertex.Size / 3f;
+        Handles.Label(columnRowHandlePosition, $"{vertex.gCost},{vertex.hCost}, {vertex.fCost}", style);
     }
     
     private void DrawVertexConnections(Vertex vertex)
@@ -350,6 +463,14 @@ public class MapController : MonoBehaviour
         foreach (Vertex connection in vertex.GetConnectedVertices())
         {
             DrawVertex(connection, Color.red);
+        }
+    }
+
+    private void DrawVertexConnectionsAux(Vertex vertex)
+    {
+        foreach (Vertex connection in vertex.GetConnectedVertices())
+        {
+            DrawVertex(connection, Color.yellow);
         }
     }
 

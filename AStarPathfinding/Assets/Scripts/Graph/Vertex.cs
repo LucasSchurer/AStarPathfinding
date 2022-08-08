@@ -59,6 +59,14 @@ public class Vertex : IHeapNode<Vertex>
         return connectedVertices;
     }
 
+    public void RemoveConnectedVertex(Vertex vertex)
+    {
+        if (_edges.ContainsKey(vertex.Identifier))
+        {
+            _edges.Remove(vertex.Identifier);
+        }
+    }
+
     public static Color GetColorBasedOnTerrainType(Enums.TerrainType terrainType)
     {
         switch (terrainType)

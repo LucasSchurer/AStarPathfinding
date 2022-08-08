@@ -23,9 +23,6 @@ public class Graph
     public int RowCount => _rowCount;
     public int ColumnCount => _columnCount;
     public Dictionary<int, Vertex> Vertices => _vertices;
-
-    public bool isSSG = false;
-    public GraphDrawer graphDrawer;
     public bool IsIndexValid(int rowIndex, int columnIndex) => rowIndex >= 0 && rowIndex < _rowCount && columnIndex >= 0 && columnIndex < _columnCount;
 
     public Graph(Enums.TerrainType[,] grid, int rowCount, int columnCount, float vertexSize)
@@ -50,7 +47,7 @@ public class Graph
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                TryCreateVertex(i, j, out _);
+                TryToCreateVertex(i, j, out _);
             }
         }
     }
@@ -67,25 +64,9 @@ public class Graph
                 }
             }
         }
-/*
-
-
-        for (int i = 0; i < _rowCount; i++)
-        {
-            for (int j = 0; j < _columnCount; j++)
-            {
-                if (_vertices[i, j] != null && _vertices[i, j].TerrainType != Enums.TerrainType.Wall)
-                {
-                    foreach (Vertex neighbour in GetVertexNeighbours(_vertices[i, j]))
-                    {
-                        _vertices[i, j].ConnectTo(neighbour, 1);
-                    }
-                }
-            }
-        }*/
     }
 
-    protected bool TryCreateVertex(int row, int column, out Vertex createdVertex)
+    protected bool TryToCreateVertex(int row, int column, out Vertex createdVertex)
     {
         if (IsIndexValid(row, column))
         {
@@ -185,6 +166,13 @@ public class Graph
 
     protected bool TryToGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
     {
-        return _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
+        if (IsIndexValid(rowIndex, columnIndex))
+        {
+            return _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
+        } else
+        {
+            vertex = null;
+            return false;
+        }
     }
 }
