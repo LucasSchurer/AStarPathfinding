@@ -10,9 +10,9 @@ public class SubgoalGraph : Graph
 
     protected override void CreateVertices()
     {
-        for (int i = 0; i < _rowCount; i++)
+        for (int i = 0; i < _gridRowCount; i++)
         {
-            for (int j = 0; j < _columnCount; j++)
+            for (int j = 0; j < _gridColumnCount; j++)
             {
                 if (_grid[i, j] == Enums.TerrainType.Wall)
                 {
@@ -121,7 +121,7 @@ public class SubgoalGraph : Graph
                     if (IsIndexValid(rowIndex + i, columnIndex) && IsIndexValid(rowIndex, columnIndex + j) &&
                         _grid[rowIndex + i, columnIndex] == Enums.TerrainType.Path && _grid[rowIndex, columnIndex + j] == Enums.TerrainType.Path)
                     {
-                        TryToCreateVertex(rowIndex, columnIndex, out _);
+                        CreateVertex(rowIndex, columnIndex);
                     }
                 }
             }
@@ -205,9 +205,9 @@ public class SubgoalGraph : Graph
         }
     }
 
-    public void AddVertex(int rowIndex, int columnIndex, out Vertex vertex)
+    public void AddVertex(int rowIndex, int columnIndex)
     {
-        TryToCreateVertex(rowIndex, columnIndex, out vertex);
+        CreateVertex(rowIndex, columnIndex);
     }
 
     public void RemoveVertex(Vertex vertex)
@@ -227,8 +227,7 @@ public class SubgoalGraph : Graph
 
         if (TryToGetIndexesOnPosition(position, out rowIndex, out columnIndex))
         {
-            AddVertex(rowIndex, columnIndex, out _);
-            return true;
+            return CreateVertex(rowIndex, columnIndex) != null;
         }
 
         return false;

@@ -10,7 +10,7 @@ public class GraphDrawer
     public GraphDrawer(Graph graph)
     {
         _graph = graph;
-        texture2D = new Texture2D(_graph.ColumnCount, _graph.RowCount);
+        texture2D = new Texture2D(_graph.GridColumnCount, _graph.GridRowCount);
         texture2D.filterMode = FilterMode.Point;
         Clear();
     }
@@ -27,8 +27,8 @@ public class GraphDrawer
 
     public void Clear()
     {
-        Color32[] pixels = new Color32[_graph.ColumnCount * _graph.RowCount];
-        for (int i = 0; i < _graph.ColumnCount * _graph.RowCount; i++)
+        Color32[] pixels = new Color32[_graph.GridColumnCount * _graph.GridRowCount];
+        for (int i = 0; i < _graph.GridColumnCount * _graph.GridRowCount; i++)
         {
             pixels[i] = new Color32(0, 0, 0, 0);
         }

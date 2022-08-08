@@ -27,7 +27,7 @@ public class SubgoalGraphPathfinding : Pathfinding
             int sourceRow;
             int sourceColumn;
             Graph.ReverseCantorPairing(sourceIdentifier, out sourceRow, out sourceColumn);
-            _graph.AddVertex(sourceRow, sourceColumn, out sourceVertex);
+            sourceVertex = _graph.CreateVertex(sourceRow, sourceColumn);
             addedSource = true;
         }
 
@@ -36,7 +36,7 @@ public class SubgoalGraphPathfinding : Pathfinding
             int targetRow;
             int targetColumn;
             Graph.ReverseCantorPairing(targetIdentifier, out targetRow, out targetColumn);
-            _graph.AddVertex(targetRow, targetColumn, out targetVertex);
+            targetVertex = _graph.CreateVertex(targetRow, targetColumn);
             addedTarget = true;
         }
 
@@ -83,7 +83,7 @@ public class SubgoalGraphPathfinding : Pathfinding
             int sourceRow;
             int sourceColumn;
             Graph.ReverseCantorPairing(sourceIdentifier, out sourceRow, out sourceColumn);
-            _graph.AddVertex(sourceRow, sourceColumn, out sourceVertex);
+            sourceVertex = _graph.CreateVertex(sourceRow, sourceColumn);
             addedSource = true;
         }
 
@@ -92,7 +92,7 @@ public class SubgoalGraphPathfinding : Pathfinding
             int targetRow;
             int targetColumn;
             Graph.ReverseCantorPairing(targetIdentifier, out targetRow, out targetColumn);
-            _graph.AddVertex(targetRow, targetColumn, out targetVertex);
+            targetVertex = _graph.CreateVertex(targetRow, targetColumn);
             addedTarget = true;
         }
 
