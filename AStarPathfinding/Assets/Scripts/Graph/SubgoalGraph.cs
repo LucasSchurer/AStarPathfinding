@@ -209,27 +209,4 @@ public class SubgoalGraph : Graph
     {
         CreateVertex(rowIndex, columnIndex);
     }
-
-    public void RemoveVertex(Vertex vertex)
-    {
-        foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
-        {
-            connectedVertex.RemoveConnectedVertex(vertex);
-        }
-
-        _vertices.Remove(vertex.Identifier);
-    }
-
-    public bool TryToInsertSubgoalOnPosition(Vector2 position)
-    {
-        int rowIndex;
-        int columnIndex;
-
-        if (TryToGetIndexesOnPosition(position, out rowIndex, out columnIndex))
-        {
-            return CreateVertex(rowIndex, columnIndex) != null;
-        }
-
-        return false;
-    }
 }

@@ -1,53 +1,13 @@
- Found Path: True Source: 1759572 = [1053, 822] Target: 1531173 = [951, 798] Time: 11ms Distance: 1116 Found Path: True Source: 1759572 = [1053, 822] Target: 1531173 = [951, 798] Time: 7ms Distance: 1116
- Found Path: True Source: 1243286 = [966, 610] Target: 271133 = [82, 653] Time: 55ms Distance: 9068 Found Path: True Source: 1243286 = [966, 610] Target: 271133 = [82, 653] Time: 7ms Distance: 9068
- Found Path: True Source: 532445 = [582, 449] Target: 350875 = [665, 172] Time: 79ms Distance: 3102 Found Path: True Source: 532445 = [582, 449] Target: 350875 = [665, 172] Time: 19ms Distance: 3102
- Found Path: True Source: 347569 = [625, 208] Target: 1353020 = [814, 830] Time: 239ms Distance: 6988 Found Path: True Source: 347569 = [625, 208] Target: 1353020 = [814, 830] Time: 14ms Distance: 6988
- Found Path: True Source: 635346 = [281, 845] Target: 783475 = [902, 349] Time: 247ms Distance: 8248 Found Path: True Source: 635346 = [281, 845] Target: 783475 = [902, 349] Time: 12ms Distance: 8248
- Found Path: True Source: 687729 = [821, 351] Target: 315871 = [538, 256] Time: 149ms Distance: 3210 Found Path: True Source: 687729 = [821, 351] Target: 315871 = [538, 256] Time: 23ms Distance: 3210
- Found Path: True Source: 1284972 = [633, 969] Target: 567160 = [484, 580] Time: 28ms Distance: 4540 Found Path: True Source: 1284972 = [633, 969] Target: 567160 = [484, 580] Time: 9ms Distance: 4540
- Found Path: True Source: 517513 = [139, 877] Target: 1661611 = [964, 858] Time: 105ms Distance: 8446 Found Path: True Source: 517513 = [139, 877] Target: 1661611 = [964, 858] Time: 7ms Distance: 8446
- Found Path: True Source: 329468 = [609, 202] Target: 532831 = [196, 835] Time: 458ms Distance: 8294 Found Path: True Source: 329468 = [609, 202] Target: 532831 = [196, 835] Time: 16ms Distance: 8294
- Found Path: True Source: 455203 = [331, 622] Target: 1756069 = [805, 1068] Time: 265ms Distance: 7016 Found Path: True Source: 455203 = [331, 622] Target: 1756069 = [805, 1068] Time: 10ms Distance: 7016
- Found Path: True Source: 606434 = [216, 884] Target: 83157 = [278, 129] Time: 74ms Distance: 7798 Found Path: True Source: 606434 = [216, 884] Target: 83157 = [278, 129] Time: 15ms Distance: 7798
- Found Path: True Source: 374720 = [690, 175] Target: 609184 = [775, 328] Time: 28ms Distance: 1870 Found Path: True Source: 374720 = [690, 175] Target: 609184 = [775, 328] Time: 20ms Distance: 1870
- Found Path: True Source: 1129230 = [1025, 477] Target: 139900 = [284, 244] Time: 452ms Distance: 8342 Found Path: True Source: 1129230 = [1025, 477] Target: 139900 = [284, 244] Time: 14ms Distance: 8342
- Found Path: True Source: 545774 = [760, 284] Target: 650696 = [814, 326] Time: 4ms Distance: 708 Found Path: True Source: 545774 = [760, 284] Target: 650696 = [814, 326] Time: 21ms Distance: 708
- Found Path: True Source: 717226 = [974, 223] Target: 487295 = [282, 704] Time: 306ms Distance: 8946 Found Path: True Source: 717226 = [974, 223] Target: 487295 = [282, 704] Time: 12ms Distance: 8946
- Found Path: True Source: 316686 = [519, 276] Target: 620191 = [863, 250] Time: 42ms Distance: 3544 Found Path: True Source: 316686 = [519, 276] Target: 620191 = [863, 250] Time: 22ms Distance: 3544
- Found Path: True Source: 468166 = [829, 138] Target: 1654323 = [966, 852] Time: 196ms Distance: 7688 Found Path: True Source: 468166 = [829, 138] Target: 1654323 = [966, 852] Time: 16ms Distance: 7688
- Found Path: True Source: 739770 = [165, 1050] Target: 260453 = [549, 172] Time: 328ms Distance: 10316 Found Path: True Source: 739770 = [165, 1050] Target: 260453 = [549, 172] Time: 15ms Distance: 10316
- Found Path: True Source: 562209 = [120, 939] Target: 537044 = [121, 914] Time: 3ms Distance: 254 Found Path: True Source: 562209 = [120, 939] Target: 537044 = [121, 914] Time: 6ms Distance: 254
- Found Path: True Source: 646815 = [137, 999] Target: 53949 = [6, 321] Time: 82ms Distance: 7362 Found Path: True Source: 646815 = [137, 999] Target: 53949 = [6, 321] Time: 2ms Distance: 7362
- Found Path: True Source: 1235819 = [558, 1013] Target: 1356083 = [1044, 602] Time: 252ms Distance: 7084 Found Path: True Source: 1235819 = [558, 1013] Target: 1356083 = [1044, 602] Time: 6ms Distance: 7084
- Found Path: True Source: 2707 = [67, 6] Target: 1174765 = [1045, 487] Time: 1002ms Distance: 11704 Found Path: True Source: 2707 = [67, 6] Target: 1174765 = [1045, 487] Time: 5ms Distance: 11704
- Found Path: True Source: 75209 = [256, 131] Target: 801713 = [297, 968] Time: 238ms Distance: 8534 Found Path: True Source: 75209 = [256, 131] Target: 801713 = [297, 968] Time: 16ms Distance: 8534
- Found Path: True Source: 1036844 = [675, 764] Target: 448014 = [863, 83] Time: 151ms Distance: 7562 Found Path: True Source: 1036844 = [675, 764] Target: 448014 = [863, 83] Time: 13ms Distance: 7562
- Found Path: True Source: 929862 = [1067, 296] Target: 457461 = [941, 15] Time: 58ms Distance: 3410 Found Path: True Source: 929862 = [1067, 296] Target: 457461 = [941, 15] Time: 17ms Distance: 3410
- Found Path: True Source: 919689 = [356, 999] Target: 415421 = [906, 5] Time: 602ms Distance: 12140 Found Path: True Source: 919689 = [356, 999] Target: 415421 = [906, 5] Time: 16ms Distance: 12140
- Found Path: True Source: 322650 = [155, 647] Target: 108376 = [434, 31] Time: 209ms Distance: 7276 Found Path: True Source: 322650 = [155, 647] Target: 108376 = [434, 31] Time: 16ms Distance: 7276
- Found Path: True Source: 579040 = [385, 690] Target: 596175 = [602, 489] Time: 15ms Distance: 2974 Found Path: True Source: 579040 = [385, 690] Target: 596175 = [602, 489] Time: 14ms Distance: 2974
- Found Path: True Source: 106998 = [417, 45] Target: 633152 = [222, 902] Time: 478ms Distance: 9350 Found Path: True Source: 106998 = [417, 45] Target: 633152 = [222, 902] Time: 19ms Distance: 9350
- Found Path: True Source: 1164044 = [1056, 469] Target: 237444 = [260, 428] Time: 285ms Distance: 8492 Found Path: True Source: 1164044 = [1056, 469] Target: 237444 = [260, 428] Time: 18ms Distance: 8492
- Found Path: True Source: 359159 = [816, 31] Target: 1316809 = [1066, 556] Time: 148ms Distance: 6310 Found Path: True Source: 359159 = [816, 31] Target: 1316809 = [1066, 556] Time: 19ms Distance: 6310
- Found Path: True Source: 65378 = [324, 37] Target: 975653 = [849, 547] Time: 79ms Distance: 7344 Found Path: True Source: 65378 = [324, 37] Target: 975653 = [849, 547] Time: 15ms Distance: 7344
- Found Path: True Source: 407554 = [601, 301] Target: 658142 = [235, 911] Time: 368ms Distance: 7930 Found Path: True Source: 407554 = [601, 301] Target: 658142 = [235, 911] Time: 17ms Distance: 7930
- Found Path: True Source: 664788 = [492, 660] Target: 999856 = [548, 865] Time: 114ms Distance: 2722 Found Path: True Source: 664788 = [492, 660] Target: 999856 = [548, 865] Time: 10ms Distance: 2722
- Found Path: True Source: 359246 = [729, 118] Target: 208032 = [302, 342] Time: 212ms Distance: 5166 Found Path: True Source: 359246 = [729, 118] Target: 208032 = [302, 342] Time: 22ms Distance: 5166
- Found Path: True Source: 363493 = [737, 115] Target: 683172 = [692, 476] Time: 51ms Distance: 3790 Found Path: True Source: 363493 = [737, 115] Target: 683172 = [692, 476] Time: 25ms Distance: 3790
- Found Path: True Source: 83385 = [50, 357] Target: 213566 = [618, 35] Time: 83ms Distance: 6968 Found Path: True Source: 83385 = [50, 357] Target: 213566 = [618, 35] Time: 15ms Distance: 6968
- Found Path: True Source: 758486 = [1041, 190] Target: 1283264 = [738, 863] Time: 198ms Distance: 8062 Found Path: True Source: 758486 = [1041, 190] Target: 1283264 = [738, 863] Time: 7ms Distance: 8062
- Found Path: True Source: 908154 = [1071, 276] Target: 403769 = [780, 118] Time: 45ms Distance: 3554 Found Path: True Source: 908154 = [1071, 276] Target: 403769 = [780, 118] Time: 15ms Distance: 3554
- Found Path: True Source: 407846 = [309, 593] Target: 820817 = [303, 977] Time: 10ms Distance: 3864 Found Path: True Source: 407846 = [309, 593] Target: 820817 = [303, 977] Time: 13ms Distance: 3864
- Found Path: True Source: 47334 = [251, 56] Target: 1244821 = [1009, 568] Time: 638ms Distance: 9644 Found Path: True Source: 47334 = [251, 56] Target: 1244821 = [1009, 568] Time: 19ms Distance: 9644
- Found Path: True Source: 1552236 = [966, 795] Target: 900617 = [535, 806] Time: 16ms Distance: 4354 Found Path: True Source: 1552236 = [966, 795] Target: 900617 = [535, 806] Time: 9ms Distance: 4354
- Found Path: True Source: 454983 = [551, 402] Target: 1213658 = [802, 755] Time: 93ms Distance: 4684 Found Path: True Source: 454983 = [551, 402] Target: 1213658 = [802, 755] Time: 15ms Distance: 4684
- Found Path: True Source: 1219932 = [770, 791] Target: 685560 = [645, 525] Time: 42ms Distance: 3220 Found Path: True Source: 1219932 = [770, 791] Target: 685560 = [645, 525] Time: 9ms Distance: 3220
- Found Path: True Source: 1742762 = [1015, 851] Target: 380351 = [276, 595] Time: 183ms Distance: 8414 Found Path: True Source: 1742762 = [1015, 851] Target: 380351 = [276, 595] Time: 11ms Distance: 8414
- Found Path: True Source: 574313 = [814, 257] Target: 437191 = [388, 546] Time: 241ms Distance: 5686 Found Path: True Source: 574313 = [814, 257] Target: 437191 = [388, 546] Time: 18ms Distance: 5686
- Found Path: True Source: 994023 = [731, 678] Target: 1672645 = [889, 939] Time: 59ms Distance: 3242 Found Path: True Source: 994023 = [731, 678] Target: 1672645 = [889, 939] Time: 6ms Distance: 3242
- Found Path: True Source: 156174 = [345, 213] Target: 350040 = [662, 174] Time: 54ms Distance: 3326 Found Path: True Source: 156174 = [345, 213] Target: 350040 = [662, 174] Time: 23ms Distance: 3326
- Found Path: True Source: 256093 = [592, 123] Target: 1491452 = [675, 1051] Time: 283ms Distance: 9612 Found Path: True Source: 256093 = [592, 123] Target: 1491452 = [675, 1051] Time: 18ms Distance: 9612
- Found Path: True Source: 49996 = [89, 226] Target: 1555673 = [1056, 707] Time: 601ms Distance: 11786 Found Path: True Source: 49996 = [89, 226] Target: 1555673 = [1056, 707] Time: 8ms Distance: 11786
-Elapsed Time: 10683ms
-SSG elapsed Time: 701ms
-Normal elapsed Time: 9959ms
+ Found Path: True Source: 496814 = [688, 308] Target: 265820 = [264, 464] Time: 212ms Distance: 6462 Found Path: True Source: 496814 = [688, 308] Target: 265820 = [264, 464] Time: 65ms Distance: 6462
+ Found Path: True Source: 1161401 = [648, 875] Target: 59155 = [184, 159] Time: 650ms Distance: 9756 Found Path: True Source: 1161401 = [648, 875] Target: 59155 = [184, 159] Time: 48ms Distance: 9756
+ Found Path: True Source: 324440 = [780, 25] Target: 1066925 = [1065, 395] Time: 180ms Distance: 5968 Found Path: True Source: 324440 = [780, 25] Target: 1066925 = [1065, 395] Time: 46ms Distance: 5968
+ Found Path: True Source: 1060291 = [404, 1051] Target: 90927 = [23, 402] Time: 260ms Distance: 8166 Found Path: True Source: 1060291 = [404, 1051] Target: 90927 = [23, 402] Time: 19ms Distance: 8166
+ Found Path: True Source: 473478 = [372, 600] Target: 334896 = [74, 743] Time: 99ms Distance: 3552 Found Path: True Source: 473478 = [372, 600] Target: 334896 = [74, 743] Time: 27ms Distance: 3552
+ Found Path: True Source: 376876 = [269, 598] Target: 592882 = [622, 466] Time: 128ms Distance: 4058 Found Path: True Source: 376876 = [269, 598] Target: 592882 = [622, 466] Time: 21ms Distance: 4058
+ Found Path: True Source: 622221 = [1064, 51] Target: 91856 = [378, 50] Time: 59ms Distance: 7384 Found Path: True Source: 622221 = [1064, 51] Target: 91856 = [378, 50] Time: 21ms Distance: 7384
+ Found Path: True Source: 1824165 = [839, 1070] Target: 630097 = [1028, 94] Time: 252ms Distance: 10860 Found Path: True Source: 1824165 = [839, 1070] Target: 630097 = [1028, 94] Time: 106ms Distance: 10860
+ Found Path: True Source: 123781 = [469, 28] Target: 218978 = [474, 187] Time: 5ms Distance: 1610 Found Path: True Source: 123781 = [469, 28] Target: 218978 = [474, 187] Time: 11ms Distance: 1610
+ Found Path: True Source: 208972 = [8, 637] Target: 1019448 = [857, 570] Time: 504ms Distance: 9126 Found Path: True Source: 208972 = [8, 637] Target: 1019448 = [857, 570] Time: 26ms Distance: 9126
+Elapsed Time: 2746ms
+SSG elapsed Time: 390ms
+Normal elapsed Time: 2349ms

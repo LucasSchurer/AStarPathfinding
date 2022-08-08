@@ -47,48 +47,22 @@ public class Graph
         GenerateGraph();
     }
 
-    protected virtual void GenerateGraph()
-    {
-        CreateVertices();
-        CreateEdges();
-    }
-
-    protected virtual void CreateVertices()
-    {
-        for (int i = 0; i < _gridRowCount; i++)
-        {
-            for (int j = 0; j < _gridColumnCount; j++)
-            {
-                CreateVertex(i, j);
-            }
-        }
-    }
-
-    protected virtual void CreateEdges()
-    {
-        foreach (Vertex vertex in _vertices.Values)
-        {
-            if (vertex.TerrainType != Enums.TerrainType.Wall)
-            {
-                foreach (Vertex neighbour in GetVertexNeighbours(vertex))
-                {
-                    vertex.ConnectTo(neighbour, 1);
-                }
-            }
-        }
-    }
-
     /// <summary>
-    /// Create and add a vertex based on the given row and column.
+    /// Create and add a vertex to the dictionary based on the given row and column.
     /// The grid will be used to determine the terrain type of the vertex.
     /// </summary>
     /// <param name="row"></param>
     /// <param name="column"></param>
     /// <returns></returns>
-    public Vertex CreateVertex(int row, int column)
+    public Vertex CreateVertex(int row, int column, bool shouldCreateWalls = true)
     {
         if (IsIndexValid(row, column))
         {
+            if (!shouldCreateWalls && _grid[row, column] == Enums.TerrainType.Wall)
+            {
+                return null;
+            }
+
             int identifier = CantorPairing(row, column);
 
             if (!_vertices.ContainsKey(identifier))
@@ -108,57 +82,30 @@ public class Graph
         return null;
     }
 
-    private Vertex[] GetVertexNeighbours(Vertex vertex)
+    /// <summary>
+    /// Remove a vertex from the dictionary and remove all of its connections.
+    /// </summary>
+    /// <param name="vertex"></param>
+    public void RemoveVertex(Vertex vertex)
     {
-        List<Vertex> neighbours = new List<Vertex>();
-
-        if (!IsIndexValid(vertex.RowIndex, vertex.ColumnIndex))
+        if (_vertices.ContainsKey(vertex.Identifier))
         {
-            return neighbours.ToArray();
-        }
-        
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
+            foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
             {
-                if (i == 0 && j == 0)
-                {
-                    continue;
-                }
-
-                Vertex neighbour;
-                if (TryToGetVertex(vertex.RowIndex + i, vertex.ColumnIndex + j, out neighbour))
-                {
-                    if (neighbour.TerrainType != Enums.TerrainType.Wall)
-                    {
-                        if (i != 0 && j != 0)
-                        {
-                            Vertex cardinalNeighbour;
-                            if (TryToGetVertex(vertex.RowIndex + i, vertex.ColumnIndex, out cardinalNeighbour))
-                            {
-                                if (cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
-                                {
-                                    if (TryToGetVertex(vertex.RowIndex, vertex.ColumnIndex + j, out cardinalNeighbour))
-                                    {
-                                        if (cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
-                                        {
-                                            neighbours.Add(neighbour);
-                                        }
-                                    }
-                                }
-                            }
-                        } else
-                        {
-                            neighbours.Add(neighbour);
-                        }
-                    }
-                }
+                connectedVertex.RemoveConnectedVertex(vertex);
             }
-        }
 
-        return neighbours.ToArray();
+            _vertices.Remove(vertex.Identifier);
+        }
     }
 
+    /// <summary>
+    /// Get a vertex based on a given world position.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns>
+    /// Return the vertex if there is a vertex on the position or null if not.
+    /// </returns>
     public Vertex GetVertexOnPosition(Vector2 position)
     {
         int rowIndex = (int)(position.y / _vertexSize);
@@ -173,24 +120,112 @@ public class Graph
 
         return null;
     }
-    
-    public bool TryToGetIndexesOnPosition(Vector2 position, out int rowIndex, out int columnIndex)
-    {
-        rowIndex = (int)(position.y / _vertexSize);
-        columnIndex = (int)(position.x / _vertexSize);
 
-        return rowIndex < 0 || columnIndex < 0;
+    protected virtual void GenerateGraph()
+    {
+        CreateVertices();
+        CreateEdges();
     }
 
-    protected bool TryToGetVertex(int rowIndex, int columnIndex, out Vertex vertex)
+    protected virtual void CreateVertices()
+    {
+        for (int i = 0; i < _gridRowCount; i++)
+        {
+            for (int j = 0; j < _gridColumnCount; j++)
+            {
+                CreateVertex(i, j, false);
+            }
+        }
+    }
+
+    protected virtual void CreateEdges()
+    {
+        foreach (Vertex vertex in _vertices.Values)
+        {
+            if (vertex.TerrainType != Enums.TerrainType.Wall)
+            {
+                foreach (Vertex neighbour in GetVertexNeighbours(vertex))
+                {
+                    vertex.ConnectTo(neighbour, 1);
+                }
+            }
+        }
+    }
+
+    protected Vertex GetVertex(int rowIndex, int columnIndex)
     {
         if (IsIndexValid(rowIndex, columnIndex))
         {
-            return _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
-        } else
-        {
-            vertex = null;
-            return false;
+            Vertex vertex;
+            _vertices.TryGetValue(CantorPairing(rowIndex, columnIndex), out vertex);
+
+            return vertex;
         }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Get all valid vertices surrounding a given vertex.
+    /// </summary>
+    /// For a neighbour be considered valid
+    /// it must be:
+    /// TerrainType != Wall
+    /// If its a diagonal neighbour, we must check if there
+    /// is a way that the vertex can access that neighbour. 
+    /// <example>
+    /// [0, W, 2]
+    /// [3, 4, W]
+    /// [6, 7, 8]
+    /// W = Walls
+    /// N = Vertex Identifier
+    /// 
+    /// Checking the neighbours of vertex 4.
+    /// 3 and 7 are valid cardinal neighbours.
+    /// 0, 6 and 8 are valid diagonal neighbours.
+    /// 2 is invalid because there is no way you can access 2 from 4.
+    /// There are two walls blocking the passage.
+    /// </example>
+    /// <param name="vertex"></param>
+    /// <returns></returns>
+    private Vertex[] GetVertexNeighbours(Vertex vertex)
+    {
+        List<Vertex> neighbours = new List<Vertex>();
+        
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    continue;
+                }
+
+                Vertex neighbour = GetVertex(vertex.RowIndex + i, vertex.ColumnIndex + j);
+                if (neighbour != null && neighbour.TerrainType != Enums.TerrainType.Wall)
+                {
+                    if (i != 0 && j != 0)
+                    {
+                        Vertex cardinalNeighbour = GetVertex(vertex.RowIndex + i, vertex.ColumnIndex);
+                        if (cardinalNeighbour != null && cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
+                        {
+                            cardinalNeighbour = GetVertex(vertex.RowIndex, vertex.ColumnIndex + j);
+
+                            if (cardinalNeighbour != null && cardinalNeighbour.TerrainType != Enums.TerrainType.Wall)
+                            {
+                                neighbours.Add(neighbour);
+                            }
+                        }
+                    } else
+                    {
+                        neighbours.Add(neighbour);
+                    }
+                }
+            }
+        }
+
+        return neighbours.ToArray();
     }
 }
