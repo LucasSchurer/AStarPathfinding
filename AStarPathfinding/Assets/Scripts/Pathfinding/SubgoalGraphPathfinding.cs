@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class SubgoalGraphPathfinding : Pathfinding
 {
-    private SubgoalGraph _graph;
+    private VisibilityGraph _graph;
 
-    public SubgoalGraphPathfinding(SubgoalGraph graph) : base(graph)
+    public SubgoalGraphPathfinding(VisibilityGraph graph) : base(graph)
     {
         _graph = graph;
     }

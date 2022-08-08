@@ -59,11 +59,10 @@ public class Heap<T> where T : IHeapNode<T>
 		{
 			int leftChildIndex = LeftChildIndex(node.Index);
 			int rightChildIndex = RightChildIndex(node.Index);
-			int swapIndex = 0;
 
 			if (leftChildIndex < nodesCount)
 			{
-				swapIndex = leftChildIndex;
+				int swapIndex = leftChildIndex;
 
 				if (rightChildIndex < nodesCount)
 				{

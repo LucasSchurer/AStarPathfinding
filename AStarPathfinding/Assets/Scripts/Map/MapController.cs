@@ -18,7 +18,7 @@ public class MapController : MonoBehaviour
     private Graph _graph;
     private GraphDrawer _graphDrawer;
 
-    private SubgoalGraph _ssg;
+    private VisibilityGraph _ssg;
     private GraphDrawer _ssgDrawer;
 
     private Pathfinding _pathfinding;
@@ -299,7 +299,7 @@ public class MapController : MonoBehaviour
         _graphOverlayRenderer.sprite = Sprite.Create(_graphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
         _graphDrawer.Draw();
 
-        _ssg = new SubgoalGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
+        _ssg = new VisibilityGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
         _ssgDrawer = new GraphDrawer(_ssg);
         _ssgOverlayRenderer.sprite = Sprite.Create(_ssgDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
         _ssgDrawer.Draw();

@@ -146,7 +146,7 @@ public class Graph
             {
                 foreach (Vertex neighbour in GetVertexNeighbours(vertex))
                 {
-                    vertex.ConnectTo(neighbour, 1);
+                    vertex.ConnectTo(neighbour);
                 }
             }
         }

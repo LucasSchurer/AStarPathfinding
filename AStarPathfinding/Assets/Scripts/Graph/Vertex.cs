@@ -39,11 +39,11 @@ public class Vertex : IHeapNode<Vertex>
         _terrainType = terrainType;
     }
 
-    public void ConnectTo(Vertex target, float cost)
+    public void ConnectTo(Vertex target)
     {
-        if (!_edges.ContainsKey(target.Identifier))
+        if (!_edges.ContainsKey(target.Identifier) && target.Identifier != Identifier)
         {
-            _edges.Add(target.Identifier, new Edge(this, target, cost));
+            _edges.Add(target.Identifier, new Edge(this, target));
         }
     }
 

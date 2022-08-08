@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SubgoalGraph : Graph
+public class VisibilityGraph : Graph
 {
-    public SubgoalGraph(Enums.TerrainType[,] grid, int rowCount, int columnCount, float vertexSize) : base(grid, rowCount, columnCount, vertexSize)
+    public VisibilityGraph(Enums.TerrainType[,] grid, int rowCount, int columnCount, float vertexSize) : base(grid, rowCount, columnCount, vertexSize)
     {
     }
 
@@ -32,6 +32,11 @@ public class SubgoalGraph : Graph
         }
     }
 
+    /// <summary>
+    /// Create vertex edges based on 
+    /// SSG rules.
+    /// </summary>
+    /// <param name="vertex"></param>
     public void CreateVertexEdges(Vertex vertex)
     {
         for (int i = -1; i < 2; i++)
@@ -49,19 +54,21 @@ public class SubgoalGraph : Graph
 
                 if (i != 0 && j != 0)
                 {
-                    CreateTwoMovementHReachableEdges(vertex, i, j, clearance);
+                    CreateTwoMovementEdges(vertex, i, j, clearance);
                 }
             }
         }
     }
 
-    private void CreateTwoMovementHReachableEdges(Vertex vertex, int verticalMovement, int horizontalMovement, int diagonalClearance)
+    /// <summary>
+    /// Create edges that can be reached in two movements.
+    /// </summary>
+    /// <param name="vertex"></param>
+    /// <param name="verticalMovement"></param>
+    /// <param name="horizontalMovement"></param>
+    /// <param name="diagonalClearance"></param>
+    private void CreateTwoMovementEdges(Vertex vertex, int verticalMovement, int horizontalMovement, int diagonalClearance)
     {
-        if (vertex.Identifier == 73)
-        {
-            int aaa = 1;
-        }
-
         int verticalClearance = Clearance(vertex.RowIndex, vertex.ColumnIndex, verticalMovement, 0);
         int horizontalClearance = Clearance(vertex.RowIndex, vertex.ColumnIndex, 0, horizontalMovement);
 
@@ -92,21 +99,19 @@ public class SubgoalGraph : Graph
 
     private void TryToCreateConnection(Vertex vertex, int connectionRow, int connectionColumn)
     {
-        int possibleIdentifier = CantorPairing(connectionRow, connectionColumn);
-
-        if (vertex.Identifier == possibleIdentifier)
+        Vertex possibleVertex = GetVertex(connectionRow, connectionColumn);
+        if (possibleVertex != null)
         {
-            return;
-        }
-
-        Vertex possibleVertex;
-        if (_vertices.TryGetValue(possibleIdentifier, out possibleVertex))
-        {
-            vertex.ConnectTo(possibleVertex, Pathfinding.DistanceBetweenVertices(vertex, possibleVertex));
-            possibleVertex.ConnectTo(vertex, Pathfinding.DistanceBetweenVertices(vertex, possibleVertex));
+            vertex.ConnectTo(possibleVertex);
+            possibleVertex.ConnectTo(vertex);
         }
     }
 
+    /// <summary>
+    /// Create a vertex for each corner of the grid.
+    /// </summary>
+    /// <param name="rowIndex"></param>
+    /// <param name="columnIndex"></param>
     private void AddCorners(int rowIndex, int columnIndex)
     {
         for (int i = -1; i < 2; i += 2)
@@ -128,6 +133,14 @@ public class SubgoalGraph : Graph
         }
     }
 
+    /// <summary>
+    /// Returns the max distance that a cell can "move" towards a direction.
+    /// </summary>
+    /// <param name="rowIndex"></param>
+    /// <param name="columnIndex"></param>
+    /// <param name="verticalMovement"></param>
+    /// <param name="horizontalMovement"></param>
+    /// <returns></returns>
     private int Clearance(int rowIndex, int columnIndex, int verticalMovement, int horizontalMovement)
     {
         int distance = 1;
@@ -151,7 +164,7 @@ public class SubgoalGraph : Graph
                     int nextColumnIndex = currentColumnIndex - horizontalMovement;
                     int blockedWall = 0;
                     int blockedGoal = 0;
-
+                    
                     if (IsIndexValid(nextRowIndex, currentColumnIndex))
                     {
                         if (_grid[nextRowIndex, currentColumnIndex] == Enums.TerrainType.Wall)
@@ -203,10 +216,5 @@ public class SubgoalGraph : Graph
             currentColumnIndex += horizontalMovement;
             distance++;
         }
-    }
-
-    public void AddVertex(int rowIndex, int columnIndex)
-    {
-        CreateVertex(rowIndex, columnIndex);
     }
 }
