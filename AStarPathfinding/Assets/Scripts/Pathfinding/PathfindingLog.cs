@@ -34,7 +34,23 @@ public struct PathfindingLog
 
     public override string ToString()
     {
-        string s = $"Found Path: {reachedGoal} Source: {startIdentifier} = [{startRow}, {startColumn}] Target: {goalIdentifier} = [{goalRow}, {goalColumn}] Time: {elapsedTime}ms Distance: {distance}";
+        string s = "{\n";
+
+        s += $"\tStart: [{startRow}, {startColumn}] ({startIdentifier})\n";
+
+        s += $"\tGoal: [{goalRow}, {goalColumn}] ({goalIdentifier})\n";
+
+        s += $"\tReached Goal: {reachedGoal}\n";
+
+        s += $"\tDistance: {distance}\n";
+
+        s += $"\tOpen Set Size: {openSetSize}\n";
+
+        s += $"\tClosed Set Size A: {closedSetSize}\n";
+
+        s += $"\tElapsed Time A: {elapsedTime}ms\n";
+
+        s += "}";
 
         return s;
     }

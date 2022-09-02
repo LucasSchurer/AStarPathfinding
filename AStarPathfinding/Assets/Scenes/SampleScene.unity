@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 277766479}
   - component: {fileID: 277766480}
   m_Layer: 0
-  m_Name: GraphOverlay
+  m_Name: FullGraphOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 1253344167}
   - component: {fileID: 1253344168}
   m_Layer: 0
-  m_Name: SSGOverlay
+  m_Name: VisibilityGraphOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,10 +667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f368d2b85db0d1541bcfcede2374fd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  executionTime: 1
   _mapLoader: {fileID: 1909400683}
-  _vertexCount: 10
-  _unitsPerVertex: 3
-  _graphOverlayRenderer: {fileID: 277766480}
-  _ssgOverlayRenderer: {fileID: 1253344168}
-  _numberOfPoints: 5
+  _unitsPerVertex: 1
+  _fullGraphOverlay: {fileID: 277766480}
+  _visibilityGraphOverlay: {fileID: 1253344168}
+  _numberOfPoints: 100

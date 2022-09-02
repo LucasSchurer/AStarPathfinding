@@ -9,20 +9,17 @@ using UnityEngine.Networking;
 
 public class MapController : MonoBehaviour
 {
-    public float executionTime = 1f;
-
     [SerializeField]
     private MapLoader _mapLoader;
 
-    [SerializeField]
-    private Graph _graph;
-    private GraphDrawer _graphDrawer;
+    private Graph _fullGraph;
+    private GraphDrawer _fullGraphDrawer;
 
-    private VisibilityGraph _ssg;
-    private GraphDrawer _ssgDrawer;
+    private VisibilityGraph _visibilityGraph;
+    private GraphDrawer _visibilityGraphDrawer;
 
-    private Pathfinding _pathfinding;
-    private VisibilityGraphPathfinding _ssgPathfinding;
+    private Pathfinding _fullGraphPathfinding;
+    private VisibilityGraphPathfinding _visibilityGraphPathfinding;
 
     [SerializeField]
     private Enums.TerrainType[,] _grid;
@@ -30,28 +27,23 @@ public class MapController : MonoBehaviour
     private int _gridColumnCount;
 
     [SerializeField]
-    private int _vertexCount = 0;
-
-    [SerializeField]
     [Range(1, 50)]
     private int _unitsPerVertex = 1;
 
     [SerializeField]
-    private SpriteRenderer _graphOverlayRenderer;
+    private SpriteRenderer _fullGraphOverlay;
 
     [SerializeField]
-    private SpriteRenderer _ssgOverlayRenderer;
+    private SpriteRenderer _visibilityGraphOverlay;
 
-    private Vertex _sourceVertex;
-    private Vertex _targetVertex;
-    private Vertex _ssgSourceVertex;
-    private Vertex _ssgTargetVertex;
+    private Vertex _startVertex;
+    private Vertex _goalVertex;
     [SerializeField]
-    private int _numberOfPoints = 2;
+    private int _numberOfPoints = 50;
 
     private void Awake()
     {
-        _mapLoader.onSpriteCreated += CreateGridBasedOnSprite;
+        _mapLoader.onMapSpriteCreated += CreateGridBasedOnSprite;
     }
 
     private int GetNonWallIdentifier()
@@ -91,8 +83,8 @@ public class MapController : MonoBehaviour
             sw.Restart();
             sw.Start();
 
-            _ssgPathfinding.FindPath(startIdentifier, goalIdentifier, ref visibilityGraphLog, false);
-            _pathfinding.FindPath(startIdentifier, goalIdentifier, ref fullGraphLog, false);
+            _visibilityGraphPathfinding.FindPath(startIdentifier, goalIdentifier, ref visibilityGraphLog, false);
+            _fullGraphPathfinding.FindPath(startIdentifier, goalIdentifier, ref fullGraphLog, false);
 
             sw.Stop();
 
@@ -108,6 +100,7 @@ public class MapController : MonoBehaviour
         }
 
         writer.WriteLine("-----------------------------------------------------------------");
+        writer.WriteLine($"Map Used: {_mapLoader.ImageURL}");
         writer.WriteLine($"Elapsed Time: {elapsedTime}ms");
         writer.WriteLine($"Full Graph (A) Elapsed Time : {fullGraphElapsedTime}ms");
         writer.WriteLine($"Visibility Graph (B) Elapsed Time : {visibilityGraphElapsedTime}ms");
@@ -126,67 +119,30 @@ public class MapController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (_targetVertex != null)
+                if (_goalVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_targetVertex, false);
+                    _fullGraphDrawer.DrawVertex(_goalVertex, false);
                 }
 
-                _targetVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                _goalVertex = _fullGraph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-                if (_sourceVertex != null)
+                if (_startVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_targetVertex, Color.yellow);
-                }
-
-            } else if (Input.GetKey(KeyCode.LeftAlt))
-            {
-                if (_ssgSourceVertex != null)
-                {
-                    _ssgDrawer.DrawVertex(_ssgSourceVertex, false);
-                }
-
-                _ssgSourceVertex = _ssg.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-                if (_ssgSourceVertex != null)
-                {
-                    _ssgDrawer.DrawVertex(_ssgSourceVertex, Color.yellow);
-                }
-            } else if (Input.GetKey(KeyCode.LeftControl))
-            {
-                if (_ssgTargetVertex != null)
-                {
-                    _ssgDrawer.DrawVertex(_ssgTargetVertex, false);
-                }
-
-                _ssgTargetVertex = _ssg.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-                if (_ssgSourceVertex != null)
-                {
-                    _ssgDrawer.DrawVertex(_ssgTargetVertex, Color.yellow);
+                    _fullGraphDrawer.DrawVertex(_goalVertex, Color.yellow);
                 }
             } else
             {
-                if (_sourceVertex != null)
+                if (_startVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_sourceVertex, false);
+                    _fullGraphDrawer.DrawVertex(_startVertex, false);
                 }
 
-                _sourceVertex = _graph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                _startVertex = _fullGraph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-                if (_sourceVertex != null)
+                if (_startVertex != null)
                 {
-                    _graphDrawer.DrawVertex(_sourceVertex, Color.yellow);
+                    _fullGraphDrawer.DrawVertex(_startVertex, Color.yellow);
                 }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            StopAllCoroutines();
-
-            if (_sourceVertex != null && _targetVertex != null)
-            {
-                StartCoroutine(_pathfinding.FindPathCoroutine(_sourceVertex.Identifier, _targetVertex.Identifier));
             }
         }
 
@@ -194,9 +150,18 @@ public class MapController : MonoBehaviour
         {
             StopAllCoroutines();
 
-            if (_sourceVertex != null && _targetVertex != null)
+            if (_startVertex != null && _goalVertex != null)
             {
-                StartCoroutine(_ssgPathfinding.FindPathCoroutine(_sourceVertex.Identifier, _targetVertex.Identifier));
+                StartCoroutine(_visibilityGraphPathfinding.FindPathCoroutine(_startVertex.Identifier, _goalVertex.Identifier));
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            StopAllCoroutines();
+
+            if (_startVertex != null && _goalVertex != null)
+            {
+                StartCoroutine(_fullGraphPathfinding.FindPathCoroutine(_startVertex.Identifier, _goalVertex.Identifier));
             }
         }
 
@@ -207,57 +172,53 @@ public class MapController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _graphOverlayRenderer.gameObject.SetActive(!_graphOverlayRenderer.gameObject.activeSelf);
+            _fullGraphOverlay.gameObject.SetActive(!_fullGraphOverlay.gameObject.activeSelf);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _ssgOverlayRenderer.gameObject.SetActive(!_ssgOverlayRenderer.gameObject.activeSelf);
+            _visibilityGraphOverlay.gameObject.SetActive(!_visibilityGraphOverlay.gameObject.activeSelf);
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            if (_graphOverlayRenderer.gameObject.activeSelf)
+            if (_fullGraphOverlay.gameObject.activeSelf)
             {
-                _graphDrawer.Draw();
+                _fullGraphDrawer.Clear();
+                _fullGraphDrawer.Draw();
             }
 
-            if (_ssgOverlayRenderer.gameObject.activeSelf)
+            if (_visibilityGraphOverlay.gameObject.activeSelf)
             {
-                _ssgDrawer.Clear();
-                _ssgDrawer.Draw();
+                _visibilityGraphDrawer.Clear();
+                _visibilityGraphDrawer.Draw();
             }            
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            
         }
     }    
 
-    private void OnPathProcessed(PathfindingLog log, Vertex[] steps)
+    private void OnFullGraphPathProcessed(PathfindingLog log, Vertex[] steps)
     {
-        _graphDrawer.Draw();
+        _fullGraphDrawer.Draw();
 
         if (log.reachedGoal)
         {
-            _graphDrawer.DrawVertices(steps, Color.red, false);
-            _graphDrawer.DrawVertex(steps[0], Color.yellow, false);
-            _graphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+            _fullGraphDrawer.DrawVertices(steps, Color.red, false);
+            _fullGraphDrawer.DrawVertex(steps[0], Color.yellow, false);
+            _fullGraphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
         }
 
         UnityEngine.Debug.Log(log.ToString());
     }
 
-    private void OnSSGPathProcessed(PathfindingLog log, Vertex[] steps)
+    private void OnVisibilityGraphPathProcessed(PathfindingLog log, Vertex[] steps)
     {
-        _ssgDrawer.Draw();
+        _visibilityGraphDrawer.Draw();
 
         if (log.reachedGoal)
         {
-            _ssgDrawer.DrawVertices(steps, Color.blue, false);
-            _ssgDrawer.DrawVertex(steps[0], Color.yellow, false);
-            _ssgDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
+            _visibilityGraphDrawer.DrawVertices(steps, Color.blue, false);
+            _visibilityGraphDrawer.DrawVertex(steps[0], Color.yellow, false);
+            _visibilityGraphDrawer.DrawVertex(steps[steps.Length - 1], Color.yellow, true);
         }
 
         UnityEngine.Debug.Log(log.ToString());
@@ -292,26 +253,37 @@ public class MapController : MonoBehaviour
         _gridRowCount = textureHeight;
         _gridColumnCount = textureWidth;
         ResizeGrid(_unitsPerVertex);
-        
-        
-        _graph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
-        _graphDrawer = new GraphDrawer(_graph);
-        _vertexCount = _graph.Vertices.Count;
-        _graphOverlayRenderer.sprite = Sprite.Create(_graphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
-        _graphDrawer.Draw();
 
-        _ssg = new VisibilityGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
-        _ssgDrawer = new GraphDrawer(_ssg);
-        _ssgOverlayRenderer.sprite = Sprite.Create(_ssgDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
-        _ssgDrawer.Draw();
-
-        _pathfinding = new Pathfinding(_graph);
-        _pathfinding.onPathProcessed += OnPathProcessed;
-
-        _ssgPathfinding = new VisibilityGraphPathfinding(_ssg);
-        _ssgPathfinding.onPathProcessed += OnSSGPathProcessed;
+        InitializeFullGraph(pixelsPerUnit);
+        InitializeVisibilityGraph(pixelsPerUnit);
     }
 
+    public void InitializeFullGraph(float pixelsPerUnit)
+    {
+        _fullGraph = new Graph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
+        _fullGraphDrawer = new GraphDrawer(_fullGraph);
+        _fullGraphOverlay.sprite = Sprite.Create(_fullGraphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _fullGraphDrawer.Draw();
+
+        _fullGraphPathfinding = new Pathfinding(_fullGraph);
+        _fullGraphPathfinding.onPathProcessed += OnFullGraphPathProcessed;
+    }
+
+    public void InitializeVisibilityGraph(float pixelsPerUnit)
+    {
+        _visibilityGraph = new VisibilityGraph(_grid, _gridRowCount, _gridColumnCount, _unitsPerVertex / pixelsPerUnit);
+        _visibilityGraphDrawer = new GraphDrawer(_visibilityGraph);
+        _visibilityGraphOverlay.sprite = Sprite.Create(_visibilityGraphDrawer.texture2D, new Rect(0, 0, _gridColumnCount, _gridRowCount), transform.position, pixelsPerUnit / _unitsPerVertex);
+        _visibilityGraphDrawer.Draw();
+
+        _visibilityGraphPathfinding = new VisibilityGraphPathfinding(_visibilityGraph);
+        _visibilityGraphPathfinding.onPathProcessed += OnVisibilityGraphPathProcessed;
+    }
+
+    /// <summary>
+    /// Resize grid to fit more cells per map sprite pixel.
+    /// </summary>
+    /// <param name="verticesByUnit"></param>
     private void ResizeGrid(int verticesByUnit)
     {
         Enums.TerrainType[,] resizedGrid = new Enums.TerrainType[_gridRowCount/verticesByUnit, _gridColumnCount/verticesByUnit];
@@ -353,25 +325,14 @@ public class MapController : MonoBehaviour
         _grid = resizedGrid;
     }
 
-    private void PrintGraph()
+    private void OnDisable()
     {
-        foreach (Vertex vertex in _graph.Vertices.Values)
-        {
-            if (vertex == null)
-            {
-                continue;
-            }
-
-            string s = $"Vertex: {vertex.Identifier}\nConnected Vertices: ";
-
-            foreach (Vertex connectedVertex in vertex.GetConnectedVertices())
-            {
-                s += $"{connectedVertex.Identifier} ";
-            }
-
-            UnityEngine.Debug.Log(s);
-        }
+        _mapLoader.onMapSpriteCreated -= CreateGridBasedOnSprite;
+        _fullGraphPathfinding.onPathProcessed -= OnFullGraphPathProcessed;
+        _visibilityGraphPathfinding.onPathProcessed -= OnVisibilityGraphPathProcessed;
     }
+
+    #region DEBUG
 
     private void OnDrawGizmosSelected()
     {
@@ -381,60 +342,60 @@ public class MapController : MonoBehaviour
             {
                 if (_grid.Length < 10000)
                 {
-                    DrawGraph();
+                    DrawGizmosGraph();
                 }
 
-                if (_sourceVertex != null)
+                if (_startVertex != null)
                 {
-                    DrawVertex(_sourceVertex, Color.magenta);
-                    DrawVertexConnections(_sourceVertex);
+                    DrawGizmosVertex(_startVertex, Color.magenta);
+                    DrawGizmosVertexConnections(_startVertex, Color.red);
 
-                    if (_ssg.Vertices.ContainsKey(_sourceVertex.Identifier))
+                    if (_visibilityGraph.Vertices.ContainsKey(_startVertex.Identifier))
                     {
                         Vertex vertex = null;
-                        _ssg.Vertices.TryGetValue(_sourceVertex.Identifier, out vertex);
-                        DrawVertexConnectionsAux(vertex);
+                        _visibilityGraph.Vertices.TryGetValue(_startVertex.Identifier, out vertex);
+                        DrawGizmosVertexConnections(vertex, Color.yellow);
                     }
                 }
             }
         }
     }
 
-    private void DrawGraph()
+    private void DrawGizmosGraph()
     {
-        if (_graph == null)
+        if (_fullGraph == null)
         {
             return;
         }
 
-        if (_ssgOverlayRenderer.gameObject.activeSelf)
+        if (_visibilityGraphOverlay.gameObject.activeSelf)
         {
-            foreach (Vertex vertex in _ssg.Vertices.Values)
+            foreach (Vertex vertex in _visibilityGraph.Vertices.Values)
             {
                 if (vertex == null)
                 {
                     continue;
                 }
 
-                DrawVertex(vertex);
+                DrawGizmosVertex(vertex);
             }
         }
 
-        if (_graphOverlayRenderer.gameObject.activeSelf)
+        if (_fullGraphOverlay.gameObject.activeSelf)
         {
-            foreach (Vertex vertex in _graph.Vertices.Values)
+            foreach (Vertex vertex in _fullGraph.Vertices.Values)
             {
                 if (vertex == null)
                 {
                     continue;
                 }
 
-                DrawVertex(vertex);
+                DrawGizmosVertex(vertex);
             }
         }
     }
 
-    private void DrawVertex(Vertex vertex, Color? c = null)
+    private void DrawGizmosVertex(Vertex vertex, Color? c = null)
     {
         Gizmos.color = c ?? Vertex.GetColorBasedOnTerrainType(vertex.TerrainType);
 
@@ -455,26 +416,13 @@ public class MapController : MonoBehaviour
         Handles.Label(columnRowHandlePosition, $"{vertex.gCost},{vertex.hCost}, {vertex.fCost}", style);
     }
     
-    private void DrawVertexConnections(Vertex vertex)
+    private void DrawGizmosVertexConnections(Vertex vertex, Color color)
     {
         foreach (Vertex connection in vertex.GetConnectedVertices())
         {
-            DrawVertex(connection, Color.red);
+            DrawGizmosVertex(connection, color);
         }
     }
 
-    private void DrawVertexConnectionsAux(Vertex vertex)
-    {
-        foreach (Vertex connection in vertex.GetConnectedVertices())
-        {
-            DrawVertex(connection, Color.yellow);
-        }
-    }
-
-    private void OnDisable()
-    {
-        _mapLoader.onSpriteCreated -= CreateGridBasedOnSprite;
-        _pathfinding.onPathProcessed -= OnPathProcessed;
-        _ssgPathfinding.onPathProcessed -= OnSSGPathProcessed;
-    }
+    #endregion
 }

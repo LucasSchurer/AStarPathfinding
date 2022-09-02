@@ -7,6 +7,7 @@ public class MapLoader : MonoBehaviour
 {
     [SerializeField]
     private string _imageUrl;
+    public string ImageURL => _imageUrl;
 
     [SerializeField]
     private float _pixelsPerUnit = 1;
@@ -16,15 +17,15 @@ public class MapLoader : MonoBehaviour
 
     private Texture2D _mapTexture;
 
-    public delegate void OnSpriteCreated(Sprite sprite);
-    public OnSpriteCreated onSpriteCreated;
+    public delegate void OnMapSpriteCreated(Sprite sprite);
+    public OnMapSpriteCreated onMapSpriteCreated;
 
     private void Start()
     {
-        StartCoroutine(CreateSprite());
+        StartCoroutine(CreateMapSprite());
     }
 
-    private IEnumerator CreateSprite()
+    private IEnumerator CreateMapSprite()
     {
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(_imageUrl);
         yield return www.SendWebRequest();
@@ -39,7 +40,7 @@ public class MapLoader : MonoBehaviour
             _mapTexture.filterMode = FilterMode.Point;
             _mapTexture.Apply();
             _spriteRenderer.sprite = Sprite.Create(_mapTexture, new Rect(0, 0, _mapTexture.width, _mapTexture.height), transform.position, _pixelsPerUnit);
-            onSpriteCreated?.Invoke(_spriteRenderer.sprite);
+            onMapSpriteCreated?.Invoke(_spriteRenderer.sprite);
         }
     }
 }
