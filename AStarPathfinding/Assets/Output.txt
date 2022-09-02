@@ -1,1308 +1,398 @@
 {
-	Start: [24, 984] (509520)
-	Goal: [467, 476] (445572)
+	Start: [802, 835] (1341538)
+	Goal: [906, 393] (844743)
 	Reached Goal: True
-	Distance: 6852
-	Open Set Size A: 10798
-	Open Set Size B: 317
-	Closed Set Size A: 8902
-	Closed Set Size B: 14
-	Elapsed Time A: 40ms
-	Elapsed Time B: 25ms
-	Time Difference: 15ms
+	Distance: 4836
+	Open Set Size A: 19731
+	Open Set Size B: 91
+	Closed Set Size A: 18657
+	Closed Set Size B: 24
+	Elapsed Time A: 44ms
+	Elapsed Time B: 7ms
+	Time Difference: 37ms
 },
 {
-	Start: [50, 617] (223395)
-	Goal: [877, 823] (1446673)
+	Start: [137, 1059] (716865)
+	Goal: [1015, 582] (1276585)
 	Reached Goal: True
-	Distance: 9094
-	Open Set Size A: 101041
-	Open Set Size B: 888
-	Closed Set Size A: 99262
-	Closed Set Size B: 100
-	Elapsed Time A: 460ms
-	Elapsed Time B: 27ms
-	Time Difference: 433ms
+	Distance: 10688
+	Open Set Size A: 62513
+	Open Set Size B: 199
+	Closed Set Size A: 59809
+	Closed Set Size B: 60
+	Elapsed Time A: 138ms
+	Elapsed Time B: 2ms
+	Time Difference: 136ms
 },
 {
-	Start: [1002, 549] (1204125)
-	Goal: [910, 764] (1402739)
+	Start: [500, 739] (768919)
+	Goal: [938, 648] (1259139)
 	Reached Goal: True
-	Distance: 5338
-	Open Set Size A: 33250
-	Open Set Size B: 1531
-	Closed Set Size A: 32856
-	Closed Set Size B: 1045
-	Elapsed Time A: 143ms
-	Elapsed Time B: 61ms
-	Time Difference: 82ms
+	Distance: 4744
+	Open Set Size A: 24042
+	Open Set Size B: 92
+	Closed Set Size A: 23173
+	Closed Set Size B: 15
+	Elapsed Time A: 53ms
+	Elapsed Time B: 5ms
+	Time Difference: 48ms
 },
 {
-	Start: [632, 803] (1031133)
-	Goal: [1062, 727] (1601882)
+	Start: [895, 942] (1689145)
+	Goal: [637, 463] (606013)
 	Reached Goal: True
-	Distance: 6210
-	Open Set Size A: 62540
-	Open Set Size B: 2076
-	Closed Set Size A: 61485
-	Closed Set Size B: 1047
-	Elapsed Time A: 380ms
-	Elapsed Time B: 119ms
-	Time Difference: 261ms
+	Distance: 5882
+	Open Set Size A: 38569
+	Open Set Size B: 96
+	Closed Set Size A: 37297
+	Closed Set Size B: 25
+	Elapsed Time A: 87ms
+	Elapsed Time B: 6ms
+	Time Difference: 81ms
 },
 {
-	Start: [615, 410] (526235)
-	Goal: [48, 734] (306887)
+	Start: [1030, 276] (853747)
+	Goal: [452, 157] (185902)
 	Reached Goal: True
-	Distance: 6966
-	Open Set Size A: 68017
-	Open Set Size B: 240
-	Closed Set Size A: 66274
-	Closed Set Size B: 33
-	Elapsed Time A: 447ms
-	Elapsed Time B: 25ms
-	Time Difference: 422ms
-},
-{
-	Start: [492, 508] (501008)
-	Goal: [154, 863] (518516)
-	Reached Goal: True
-	Distance: 4902
-	Open Set Size A: 7492
-	Open Set Size B: 165
-	Closed Set Size A: 6102
-	Closed Set Size B: 2
-	Elapsed Time A: 27ms
-	Elapsed Time B: 25ms
-	Time Difference: 2ms
-},
-{
-	Start: [776, 538] (864493)
-	Goal: [409, 479] (395195)
-	Reached Goal: False
-	Distance: -1
-	Open Set Size A: 6321
-	Open Set Size B: 279
-	Closed Set Size A: 6322
-	Closed Set Size B: 280
-	Elapsed Time A: 26ms
-	Elapsed Time B: 32ms
-	Time Difference: 6ms
-},
-{
-	Start: [176, 1040] (740976)
-	Goal: [346, 500] (358781)
-	Reached Goal: True
-	Distance: 6440
-	Open Set Size A: 19372
-	Open Set Size B: 478
-	Closed Set Size A: 18164
-	Closed Set Size B: 129
-	Elapsed Time A: 82ms
-	Elapsed Time B: 23ms
-	Time Difference: 59ms
-},
-{
-	Start: [61, 177] (28618)
-	Goal: [640, 671] (860687)
-	Reached Goal: True
-	Distance: 8672
-	Open Set Size A: 42994
-	Open Set Size B: 446
-	Closed Set Size A: 41157
-	Closed Set Size B: 153
-	Elapsed Time A: 179ms
-	Elapsed Time B: 28ms
-	Time Difference: 151ms
-},
-{
-	Start: [356, 125] (116046)
-	Goal: [470, 25] (122785)
-	Reached Goal: True
-	Distance: 1540
-	Open Set Size A: 1947
-	Open Set Size B: 157
-	Closed Set Size A: 1515
-	Closed Set Size B: 2
-	Elapsed Time A: 7ms
-	Elapsed Time B: 21ms
-	Time Difference: 14ms
-},
-{
-	Start: [795, 236] (532232)
-	Goal: [560, 439] (499939)
-	Reached Goal: True
-	Distance: 4650
-	Open Set Size A: 16074
-	Open Set Size B: 1075
-	Closed Set Size A: 15534
-	Closed Set Size B: 529
-	Elapsed Time A: 67ms
-	Elapsed Time B: 53ms
-	Time Difference: 14ms
-},
-{
-	Start: [949, 264] (736555)
-	Goal: [308, 701] (510246)
-	Reached Goal: True
-	Distance: 8158
-	Open Set Size A: 52938
-	Open Set Size B: 1084
-	Closed Set Size A: 50830
-	Closed Set Size B: 230
-	Elapsed Time A: 231ms
-	Elapsed Time B: 50ms
-	Time Difference: 181ms
-},
-{
-	Start: [520, 177] (243430)
-	Goal: [155, 6] (13047)
-	Reached Goal: True
-	Distance: 4374
-	Open Set Size A: 25360
-	Open Set Size B: 365
-	Closed Set Size A: 24474
-	Closed Set Size B: 53
-	Elapsed Time A: 110ms
-	Elapsed Time B: 8ms
-	Time Difference: 102ms
-},
-{
-	Start: [903, 1017] (1845177)
-	Goal: [40, 242] (40145)
-	Reached Goal: True
-	Distance: 12270
-	Open Set Size A: 115539
-	Open Set Size B: 1277
-	Closed Set Size A: 112478
-	Closed Set Size B: 483
-	Elapsed Time A: 530ms
-	Elapsed Time B: 57ms
-	Time Difference: 473ms
-},
-{
-	Start: [905, 845] (1532970)
-	Goal: [1038, 606] (1352796)
-	Reached Goal: True
-	Distance: 3948
-	Open Set Size A: 32071
-	Open Set Size B: 1198
-	Closed Set Size A: 31347
-	Closed Set Size B: 636
-	Elapsed Time A: 137ms
-	Elapsed Time B: 78ms
-	Time Difference: 59ms
-},
-{
-	Start: [339, 650] (490205)
-	Goal: [463, 223] (235864)
-	Reached Goal: True
-	Distance: 5936
-	Open Set Size A: 129472
-	Open Set Size B: 669
-	Closed Set Size A: 127654
-	Closed Set Size B: 200
-	Elapsed Time A: 595ms
-	Elapsed Time B: 43ms
-	Time Difference: 552ms
-},
-{
-	Start: [734, 809] (1192005)
-	Goal: [278, 820] (604171)
-	Reached Goal: True
-	Distance: 5644
-	Open Set Size A: 41498
-	Open Set Size B: 1144
-	Closed Set Size A: 40158
-	Closed Set Size B: 213
-	Elapsed Time A: 179ms
-	Elapsed Time B: 35ms
-	Time Difference: 144ms
-},
-{
-	Start: [515, 334] (361159)
-	Goal: [1034, 705] (1513635)
-	Reached Goal: True
-	Distance: 9812
-	Open Set Size A: 207533
-	Open Set Size B: 4164
-	Closed Set Size A: 205862
-	Closed Set Size B: 2807
-	Elapsed Time A: 976ms
-	Elapsed Time B: 307ms
-	Time Difference: 669ms
-},
-{
-	Start: [143, 853] (497359)
-	Goal: [338, 592] (433507)
-	Reached Goal: True
-	Distance: 3390
-	Open Set Size A: 14048
-	Open Set Size B: 119
-	Closed Set Size A: 13132
-	Closed Set Size B: 2
-	Elapsed Time A: 64ms
-	Elapsed Time B: 24ms
-	Time Difference: 40ms
-},
-{
-	Start: [85, 99] (17119)
-	Goal: [391, 109] (125359)
-	Reached Goal: True
-	Distance: 3360
-	Open Set Size A: 8556
-	Open Set Size B: 210
-	Closed Set Size A: 7965
-	Closed Set Size B: 54
-	Elapsed Time A: 41ms
-	Elapsed Time B: 14ms
-	Time Difference: 27ms
-},
-{
-	Start: [868, 378] (777259)
-	Goal: [414, 990] (987300)
-	Reached Goal: True
-	Distance: 8026
-	Open Set Size A: 29749
-	Open Set Size B: 1116
-	Closed Set Size A: 27913
-	Closed Set Size B: 231
-	Elapsed Time A: 164ms
-	Elapsed Time B: 20ms
-	Time Difference: 144ms
-},
-{
-	Start: [954, 920] (1757795)
-	Goal: [117, 167] (40637)
-	Reached Goal: True
-	Distance: 12088
-	Open Set Size A: 175579
-	Open Set Size B: 2473
-	Closed Set Size A: 172734
-	Closed Set Size B: 1093
-	Elapsed Time A: 852ms
-	Elapsed Time B: 258ms
-	Time Difference: 594ms
-},
-{
-	Start: [350, 1071] (1011402)
-	Goal: [123, 752] (384002)
-	Reached Goal: True
-	Distance: 5012
-	Open Set Size A: 50320
-	Open Set Size B: 619
-	Closed Set Size A: 49366
-	Closed Set Size B: 264
-	Elapsed Time A: 221ms
-	Elapsed Time B: 33ms
-	Time Difference: 188ms
-},
-{
-	Start: [305, 86] (76722)
-	Goal: [1062, 607] (1394222)
-	Reached Goal: True
-	Distance: 12552
-	Open Set Size A: 330359
-	Open Set Size B: 4131
-	Closed Set Size A: 328427
-	Closed Set Size B: 3084
-	Elapsed Time A: 1603ms
-	Elapsed Time B: 316ms
-	Time Difference: 1287ms
-},
-{
-	Start: [238, 924] (676627)
-	Goal: [722, 465] (705543)
-	Reached Goal: True
-	Distance: 6810
-	Open Set Size A: 24564
-	Open Set Size B: 731
-	Closed Set Size A: 22915
-	Closed Set Size B: 80
-	Elapsed Time A: 108ms
-	Elapsed Time B: 10ms
+	Distance: 6256
+	Open Set Size A: 46829
+	Open Set Size B: 97
+	Closed Set Size A: 45607
+	Closed Set Size B: 20
+	Elapsed Time A: 104ms
+	Elapsed Time B: 6ms
 	Time Difference: 98ms
 },
 {
-	Start: [863, 851] (1470606)
-	Goal: [645, 1040] (1421495)
+	Start: [5, 295] (45445)
+	Goal: [1068, 82] (661907)
 	Reached Goal: True
-	Distance: 4412
-	Open Set Size A: 24801
-	Open Set Size B: 1010
-	Closed Set Size A: 23880
-	Closed Set Size B: 314
-	Elapsed Time A: 104ms
-	Elapsed Time B: 41ms
+	Distance: 11666
+	Open Set Size A: 168663
+	Open Set Size B: 243
+	Closed Set Size A: 166577
+	Closed Set Size B: 166
+	Elapsed Time A: 519ms
+	Elapsed Time B: 4ms
+	Time Difference: 515ms
+},
+{
+	Start: [30, 620] (212195)
+	Goal: [291, 366] (216519)
+	Reached Goal: True
+	Distance: 4316
+	Open Set Size A: 19237
+	Open Set Size B: 96
+	Closed Set Size A: 18419
+	Closed Set Size B: 36
+	Elapsed Time A: 42ms
+	Elapsed Time B: 4ms
+	Time Difference: 38ms
+},
+{
+	Start: [217, 926] (654722)
+	Goal: [158, 424] (170077)
+	Reached Goal: True
+	Distance: 5672
+	Open Set Size A: 30170
+	Open Set Size B: 115
+	Closed Set Size A: 28916
+	Closed Set Size B: 37
+	Elapsed Time A: 65ms
+	Elapsed Time B: 2ms
 	Time Difference: 63ms
 },
 {
-	Start: [14, 788] (322791)
-	Goal: [140, 609] (281484)
+	Start: [214, 1021] (764251)
+	Goal: [168, 1046] (738551)
 	Reached Goal: True
-	Distance: 2294
-	Open Set Size A: 7472
-	Open Set Size B: 187
-	Closed Set Size A: 6858
+	Distance: 560
+	Open Set Size A: 718
+	Open Set Size B: 10
+	Closed Set Size A: 572
 	Closed Set Size B: 2
-	Elapsed Time A: 30ms
-	Elapsed Time B: 27ms
-	Time Difference: 3ms
-},
-{
-	Start: [1026, 955] (1964126)
-	Goal: [186, 902] (593318)
-	Reached Goal: True
-	Distance: 10246
-	Open Set Size A: 194120
-	Open Set Size B: 3189
-	Closed Set Size A: 192513
-	Closed Set Size B: 2214
-	Elapsed Time A: 896ms
-	Elapsed Time B: 195ms
-	Time Difference: 701ms
-},
-{
-	Start: [162, 609] (298215)
-	Goal: [273, 500] (299651)
-	Reached Goal: True
-	Distance: 1546
-	Open Set Size A: 774
-	Open Set Size B: 265
-	Closed Set Size A: 330
-	Closed Set Size B: 2
-	Elapsed Time A: 5ms
-	Elapsed Time B: 27ms
-	Time Difference: 22ms
-},
-{
-	Start: [476, 306] (306459)
-	Goal: [1064, 307] (940813)
-	Reached Goal: True
-	Distance: 7368
-	Open Set Size A: 73141
-	Open Set Size B: 2139
-	Closed Set Size A: 71773
-	Closed Set Size B: 1441
-	Elapsed Time A: 393ms
-	Elapsed Time B: 132ms
-	Time Difference: 261ms
-},
-{
-	Start: [41, 519] (157599)
-	Goal: [122, 181] (46237)
-	Reached Goal: True
-	Distance: 4504
-	Open Set Size A: 65681
-	Open Set Size B: 426
-	Closed Set Size A: 64823
-	Closed Set Size B: 71
-	Elapsed Time A: 292ms
-	Elapsed Time B: 122ms
-	Time Difference: 170ms
-},
-{
-	Start: [67, 117] (17137)
-	Goal: [362, 776] (648867)
-	Reached Goal: True
-	Distance: 8298
-	Open Set Size A: 76170
-	Open Set Size B: 270
-	Closed Set Size A: 74116
-	Closed Set Size B: 98
-	Elapsed Time A: 335ms
-	Elapsed Time B: 18ms
-	Time Difference: 317ms
-},
-{
-	Start: [698, 1028] (1491429)
-	Goal: [472, 515] (488093)
-	Reached Goal: True
-	Distance: 6058
-	Open Set Size A: 10945
-	Open Set Size B: 628
-	Closed Set Size A: 9629
-	Closed Set Size B: 74
-	Elapsed Time A: 42ms
-	Elapsed Time B: 24ms
-	Time Difference: 18ms
-},
-{
-	Start: [291, 412] (247868)
-	Goal: [92, 346] (96487)
-	Reached Goal: True
-	Distance: 2254
-	Open Set Size A: 9512
-	Open Set Size B: 221
-	Closed Set Size A: 8978
-	Closed Set Size B: 2
-	Elapsed Time A: 39ms
-	Elapsed Time B: 25ms
-	Time Difference: 14ms
-},
-{
-	Start: [541, 504] (547039)
-	Goal: [230, 382] (187960)
-	Reached Goal: True
-	Distance: 3598
-	Open Set Size A: 20364
-	Open Set Size B: 227
-	Closed Set Size A: 19527
-	Closed Set Size B: 14
-	Elapsed Time A: 87ms
-	Elapsed Time B: 22ms
-	Time Difference: 65ms
-},
-{
-	Start: [1060, 408] (1078654)
-	Goal: [16, 304] (51664)
-	Reached Goal: True
-	Distance: 12884
-	Open Set Size A: 119722
-	Open Set Size B: 2511
-	Closed Set Size A: 117402
-	Closed Set Size B: 1447
-	Elapsed Time A: 538ms
-	Elapsed Time B: 140ms
-	Time Difference: 398ms
-},
-{
-	Start: [237, 720] (459123)
-	Goal: [498, 140] (203981)
-	Reached Goal: True
-	Distance: 7398
-	Open Set Size A: 123284
-	Open Set Size B: 477
-	Closed Set Size A: 121644
-	Closed Set Size B: 132
-	Elapsed Time A: 573ms
-	Elapsed Time B: 39ms
-	Time Difference: 534ms
-},
-{
-	Start: [240, 210] (101685)
-	Goal: [897, 727] (1320227)
-	Reached Goal: True
-	Distance: 10678
-	Open Set Size A: 296105
-	Open Set Size B: 3240
-	Closed Set Size A: 293452
-	Closed Set Size B: 1647
-	Elapsed Time A: 1445ms
-	Elapsed Time B: 202ms
-	Time Difference: 1243ms
-},
-{
-	Start: [458, 627] (589782)
-	Goal: [908, 1043] (1905219)
-	Reached Goal: True
-	Distance: 6830
-	Open Set Size A: 42078
-	Open Set Size B: 1174
-	Closed Set Size A: 40679
-	Closed Set Size B: 203
-	Elapsed Time A: 187ms
-	Elapsed Time B: 32ms
-	Time Difference: 155ms
-},
-{
-	Start: [551, 520] (574576)
-	Goal: [281, 665] (448596)
-	Reached Goal: True
-	Distance: 3280
-	Open Set Size A: 19230
-	Open Set Size B: 141
-	Closed Set Size A: 18396
-	Closed Set Size B: 2
-	Elapsed Time A: 81ms
-	Elapsed Time B: 21ms
-	Time Difference: 60ms
-},
-{
-	Start: [634, 552] (704443)
-	Goal: [535, 874] (994219)
-	Reached Goal: True
-	Distance: 3994
-	Open Set Size A: 28686
-	Open Set Size B: 819
-	Closed Set Size A: 27654
-	Closed Set Size B: 63
-	Elapsed Time A: 121ms
-	Elapsed Time B: 11ms
-	Time Difference: 110ms
-},
-{
-	Start: [772, 1018] (1603963)
-	Goal: [905, 957] (1735410)
-	Reached Goal: True
-	Distance: 1724
-	Open Set Size A: 3121
-	Open Set Size B: 311
-	Closed Set Size A: 2756
-	Closed Set Size B: 72
-	Elapsed Time A: 15ms
-	Elapsed Time B: 8ms
-	Time Difference: 7ms
-},
-{
-	Start: [228, 398] (196649)
-	Goal: [611, 471] (586374)
-	Reached Goal: True
-	Distance: 4202
-	Open Set Size A: 20913
-	Open Set Size B: 311
-	Closed Set Size A: 20122
-	Closed Set Size B: 48
-	Elapsed Time A: 99ms
-	Elapsed Time B: 24ms
-	Time Difference: 75ms
-},
-{
-	Start: [103, 603] (250174)
-	Goal: [1028, 160] (706426)
-	Reached Goal: True
-	Distance: 11088
-	Open Set Size A: 100434
-	Open Set Size B: 1174
-	Closed Set Size A: 97690
-	Closed Set Size B: 228
-	Elapsed Time A: 595ms
-	Elapsed Time B: 51ms
-	Time Difference: 544ms
-},
-{
-	Start: [303, 182] (118037)
-	Goal: [59, 857] (420843)
-	Reached Goal: True
-	Distance: 7726
-	Open Set Size A: 107682
-	Open Set Size B: 123
-	Closed Set Size A: 105840
-	Closed Set Size B: 2
-	Elapsed Time A: 487ms
-	Elapsed Time B: 23ms
-	Time Difference: 464ms
-},
-{
-	Start: [524, 788] (862116)
-	Goal: [119, 1011] (640026)
-	Reached Goal: True
-	Distance: 6228
-	Open Set Size A: 82056
-	Open Set Size B: 959
-	Closed Set Size A: 80906
-	Closed Set Size B: 456
-	Elapsed Time A: 375ms
-	Elapsed Time B: 49ms
-	Time Difference: 326ms
-},
-{
-	Start: [428, 10] (96151)
-	Goal: [964, 783] (1527661)
-	Reached Goal: True
-	Distance: 11176
-	Open Set Size A: 182523
-	Open Set Size B: 3036
-	Closed Set Size A: 180660
-	Closed Set Size B: 1978
-	Elapsed Time A: 857ms
-	Elapsed Time B: 207ms
-	Time Difference: 650ms
-},
-{
-	Start: [971, 529] (1126279)
-	Goal: [685, 72] (286975)
-	Reached Goal: True
-	Distance: 9092
-	Open Set Size A: 54510
-	Open Set Size B: 2316
-	Closed Set Size A: 53890
-	Closed Set Size B: 1661
-	Elapsed Time A: 234ms
-	Elapsed Time B: 106ms
-	Time Difference: 128ms
-},
-{
-	Start: [161, 824] (486429)
-	Goal: [316, 450] (294211)
-	Reached Goal: True
-	Distance: 4360
-	Open Set Size A: 35382
-	Open Set Size B: 209
-	Closed Set Size A: 34320
-	Closed Set Size B: 2
-	Elapsed Time A: 152ms
-	Elapsed Time B: 25ms
-	Time Difference: 127ms
-},
-{
-	Start: [770, 1062] (1680090)
-	Goal: [106, 947] (555878)
-	Reached Goal: True
-	Distance: 7682
-	Open Set Size A: 81899
-	Open Set Size B: 1350
-	Closed Set Size A: 81201
-	Closed Set Size B: 942
-	Elapsed Time A: 369ms
-	Elapsed Time B: 65ms
-	Time Difference: 304ms
-},
-{
-	Start: [693, 460] (665741)
-	Goal: [558, 522] (584262)
-	Reached Goal: True
-	Distance: 1646
-	Open Set Size A: 5876
-	Open Set Size B: 352
-	Closed Set Size A: 5506
-	Closed Set Size B: 27
-	Elapsed Time A: 23ms
-	Elapsed Time B: 10ms
-	Time Difference: 13ms
-},
-{
-	Start: [428, 479] (412257)
-	Goal: [171, 144] (49914)
-	Reached Goal: True
-	Distance: 4816
-	Open Set Size A: 55420
-	Open Set Size B: 365
-	Closed Set Size A: 54280
-	Closed Set Size B: 91
-	Elapsed Time A: 251ms
-	Elapsed Time B: 35ms
-	Time Difference: 216ms
-},
-{
-	Start: [378, 76] (103361)
-	Goal: [243, 528] (298134)
-	Reached Goal: True
-	Distance: 5060
-	Open Set Size A: 44040
-	Open Set Size B: 217
-	Closed Set Size A: 42871
-	Closed Set Size B: 7
-	Elapsed Time A: 192ms
-	Elapsed Time B: 23ms
-	Time Difference: 169ms
-},
-{
-	Start: [542, 968] (1141773)
-	Goal: [1026, 876] (1810629)
-	Reached Goal: True
-	Distance: 5704
-	Open Set Size A: 43245
-	Open Set Size B: 999
-	Closed Set Size A: 41886
-	Closed Set Size B: 558
-	Elapsed Time A: 186ms
-	Elapsed Time B: 38ms
-	Time Difference: 148ms
-},
-{
-	Start: [95, 536] (199932)
-	Goal: [364, 983] (908861)
-	Reached Goal: True
-	Distance: 5800
-	Open Set Size A: 66285
-	Open Set Size B: 551
-	Closed Set Size A: 64799
-	Closed Set Size B: 65
-	Elapsed Time A: 306ms
-	Elapsed Time B: 31ms
-	Time Difference: 275ms
-},
-{
-	Start: [1028, 565] (1270186)
-	Goal: [871, 470] (900281)
-	Reached Goal: True
-	Distance: 5210
-	Open Set Size A: 32041
-	Open Set Size B: 1419
-	Closed Set Size A: 31549
-	Closed Set Size B: 1015
-	Elapsed Time A: 156ms
-	Elapsed Time B: 60ms
-	Time Difference: 96ms
-},
-{
-	Start: [530, 776] (854247)
-	Goal: [870, 709] (1248119)
-	Reached Goal: True
-	Distance: 7174
-	Open Set Size A: 123111
-	Open Set Size B: 2383
-	Closed Set Size A: 121418
-	Closed Set Size B: 936
-	Elapsed Time A: 666ms
-	Elapsed Time B: 123ms
-	Time Difference: 543ms
-},
-{
-	Start: [869, 45] (418200)
-	Goal: [522, 830] (915458)
-	Reached Goal: True
-	Distance: 10556
-	Open Set Size A: 145976
-	Open Set Size B: 2537
-	Closed Set Size A: 144713
-	Closed Set Size B: 1578
-	Elapsed Time A: 653ms
-	Elapsed Time B: 117ms
-	Time Difference: 536ms
-},
-{
-	Start: [605, 1006] (1299472)
-	Goal: [824, 407] (758703)
-	Reached Goal: True
-	Distance: 7200
-	Open Set Size A: 21281
-	Open Set Size B: 1397
-	Closed Set Size A: 19864
-	Closed Set Size B: 388
-	Elapsed Time A: 88ms
-	Elapsed Time B: 46ms
-	Time Difference: 42ms
-},
-{
-	Start: [947, 644] (1267080)
-	Goal: [1014, 694] (1460180)
-	Reached Goal: True
-	Distance: 870
-	Open Set Size A: 1015
-	Open Set Size B: 165
-	Closed Set Size A: 802
-	Closed Set Size B: 21
-	Elapsed Time A: 3ms
-	Elapsed Time B: 2ms
+	Elapsed Time A: 1ms
+	Elapsed Time B: 0ms
 	Time Difference: 1ms
 },
 {
-	Start: [546, 570] (623856)
-	Goal: [262, 207] (110422)
+	Start: [204, 802] (507323)
+	Goal: [346, 801] (659179)
 	Reached Goal: True
-	Distance: 4766
-	Open Set Size A: 21132
-	Open Set Size B: 242
-	Closed Set Size A: 20027
-	Closed Set Size B: 46
-	Elapsed Time A: 88ms
-	Elapsed Time B: 30ms
-	Time Difference: 58ms
-},
-{
-	Start: [256, 947] (725153)
-	Goal: [299, 402] (246453)
-	Reached Goal: True
-	Distance: 5854
-	Open Set Size A: 19517
-	Open Set Size B: 344
-	Closed Set Size A: 18386
-	Closed Set Size B: 53
-	Elapsed Time A: 80ms
-	Elapsed Time B: 17ms
-	Time Difference: 63ms
-},
-{
-	Start: [1065, 740] (1630655)
-	Goal: [174, 490] (221270)
-	Reached Goal: True
-	Distance: 11158
-	Open Set Size A: 112821
-	Open Set Size B: 1987
-	Closed Set Size A: 110489
-	Closed Set Size B: 1027
-	Elapsed Time A: 501ms
-	Elapsed Time B: 79ms
-	Time Difference: 422ms
-},
-{
-	Start: [1010, 334] (904174)
-	Goal: [656, 826] (1099729)
-	Reached Goal: True
-	Distance: 6490
-	Open Set Size A: 29392
-	Open Set Size B: 1174
-	Closed Set Size A: 28918
-	Closed Set Size B: 597
-	Elapsed Time A: 124ms
-	Elapsed Time B: 96ms
-	Time Difference: 28ms
-},
-{
-	Start: [803, 772] (1241872)
-	Goal: [365, 84] (101109)
-	Reached Goal: True
-	Distance: 8854
-	Open Set Size A: 58817
-	Open Set Size B: 1303
-	Closed Set Size A: 57356
-	Closed Set Size B: 379
-	Elapsed Time A: 275ms
-	Elapsed Time B: 50ms
-	Time Difference: 225ms
-},
-{
-	Start: [82, 628] (253033)
-	Goal: [862, 1066] (1860622)
-	Reached Goal: True
-	Distance: 10470
-	Open Set Size A: 182069
-	Open Set Size B: 1600
-	Closed Set Size A: 179536
-	Closed Set Size B: 536
-	Elapsed Time A: 846ms
-	Elapsed Time B: 66ms
-	Time Difference: 780ms
-},
-{
-	Start: [1038, 658] (1439714)
-	Goal: [623, 81] (248241)
-	Reached Goal: True
-	Distance: 10500
-	Open Set Size A: 64116
-	Open Set Size B: 2718
-	Closed Set Size A: 63453
-	Closed Set Size B: 1992
-	Elapsed Time A: 273ms
-	Elapsed Time B: 119ms
-	Time Difference: 154ms
-},
-{
-	Start: [207, 873] (584613)
-	Goal: [302, 595] (403348)
-	Reached Goal: True
-	Distance: 3160
-	Open Set Size A: 18185
-	Open Set Size B: 195
-	Closed Set Size A: 17439
+	Distance: 1424
+	Open Set Size A: 564
+	Open Set Size B: 27
+	Closed Set Size A: 284
 	Closed Set Size B: 3
-	Elapsed Time A: 80ms
-	Elapsed Time B: 18ms
-	Time Difference: 62ms
+	Elapsed Time A: 1ms
+	Elapsed Time B: 1ms
+	Time Difference: 0ms
 },
 {
-	Start: [454, 607] (563998)
-	Goal: [1048, 553] (1282954)
+	Start: [133, 698] (346394)
+	Goal: [324, 203] (139331)
 	Reached Goal: True
-	Distance: 9798
-	Open Set Size A: 262852
-	Open Set Size B: 4020
-	Closed Set Size A: 260608
-	Closed Set Size B: 2740
-	Elapsed Time A: 1384ms
-	Elapsed Time B: 329ms
-	Time Difference: 1055ms
-},
-{
-	Start: [766, 650] (1003886)
-	Goal: [90, 937] (528815)
-	Reached Goal: True
-	Distance: 8638
-	Open Set Size A: 175556
-	Open Set Size B: 2063
-	Closed Set Size A: 173615
-	Closed Set Size B: 881
-	Elapsed Time A: 830ms
-	Elapsed Time B: 91ms
-	Time Difference: 739ms
-},
-{
-	Start: [548, 438] (487029)
-	Goal: [131, 629] (289809)
-	Reached Goal: True
-	Distance: 5108
-	Open Set Size A: 41069
-	Open Set Size B: 253
-	Closed Set Size A: 39835
-	Closed Set Size B: 31
-	Elapsed Time A: 177ms
-	Elapsed Time B: 19ms
-	Time Difference: 158ms
-},
-{
-	Start: [479, 231] (252636)
-	Goal: [612, 14] (196265)
-	Reached Goal: True
-	Distance: 2702
-	Open Set Size A: 9178
-	Open Set Size B: 204
-	Closed Set Size A: 8513
-	Closed Set Size B: 20
-	Elapsed Time A: 37ms
+	Distance: 5714
+	Open Set Size A: 21025
+	Open Set Size B: 123
+	Closed Set Size A: 20041
+	Closed Set Size B: 18
+	Elapsed Time A: 44ms
 	Elapsed Time B: 5ms
-	Time Difference: 32ms
+	Time Difference: 39ms
 },
 {
-	Start: [132, 908] (542228)
-	Goal: [1033, 222] (788362)
+	Start: [61, 1037] (604388)
+	Goal: [229, 650] (387410)
 	Reached Goal: True
-	Distance: 14798
-	Open Set Size A: 377718
-	Open Set Size B: 3779
-	Closed Set Size A: 374997
-	Closed Set Size B: 2732
-	Elapsed Time A: 1849ms
-	Elapsed Time B: 297ms
-	Time Difference: 1552ms
+	Distance: 4796
+	Open Set Size A: 35878
+	Open Set Size B: 102
+	Closed Set Size A: 35041
+	Closed Set Size B: 60
+	Elapsed Time A: 78ms
+	Elapsed Time B: 1ms
+	Time Difference: 77ms
 },
 {
-	Start: [940, 466] (989587)
-	Goal: [332, 486] (335457)
+	Start: [1017, 671] (1426187)
+	Goal: [30, 182] (22760)
 	Reached Goal: True
-	Distance: 6400
-	Open Set Size A: 16957
-	Open Set Size B: 1082
-	Closed Set Size A: 15820
-	Closed Set Size B: 185
-	Elapsed Time A: 70ms
-	Elapsed Time B: 42ms
-	Time Difference: 28ms
+	Distance: 12036
+	Open Set Size A: 184175
+	Open Set Size B: 272
+	Closed Set Size A: 180802
+	Closed Set Size B: 78
+	Elapsed Time A: 428ms
+	Elapsed Time B: 3ms
+	Time Difference: 425ms
 },
 {
-	Start: [595, 919] (1147774)
-	Goal: [939, 697] (1339763)
+	Start: [206, 231] (95934)
+	Goal: [802, 464] (802475)
 	Reached Goal: True
-	Distance: 5760
-	Open Set Size A: 66230
-	Open Set Size B: 1931
-	Closed Set Size A: 65170
-	Closed Set Size B: 968
-	Elapsed Time A: 314ms
-	Elapsed Time B: 87ms
-	Time Difference: 227ms
+	Distance: 6892
+	Open Set Size A: 71678
+	Open Set Size B: 113
+	Closed Set Size A: 70228
+	Closed Set Size B: 14
+	Elapsed Time A: 161ms
+	Elapsed Time B: 2ms
+	Time Difference: 159ms
 },
 {
-	Start: [523, 693] (740629)
-	Goal: [512, 616] (637372)
+	Start: [36, 290] (53591)
+	Goal: [633, 374] (507902)
 	Reached Goal: True
-	Distance: 814
-	Open Set Size A: 984
-	Open Set Size B: 290
-	Closed Set Size A: 804
-	Closed Set Size B: 2
-	Elapsed Time A: 6ms
-	Elapsed Time B: 24ms
-	Time Difference: 18ms
-},
-{
-	Start: [582, 617] (720017)
-	Goal: [352, 242] (176957)
-	Reached Goal: True
-	Distance: 4670
-	Open Set Size A: 24350
-	Open Set Size B: 470
-	Closed Set Size A: 23343
-	Closed Set Size B: 117
-	Elapsed Time A: 154ms
-	Elapsed Time B: 37ms
-	Time Difference: 117ms
-},
-{
-	Start: [294, 895] (708350)
-	Goal: [167, 1047] (738552)
-	Reached Goal: True
-	Distance: 2376
-	Open Set Size A: 12629
-	Open Set Size B: 307
-	Closed Set Size A: 12178
-	Closed Set Size B: 110
-	Elapsed Time A: 141ms
-	Elapsed Time B: 11ms
-	Time Difference: 130ms
-},
-{
-	Start: [752, 1026] (1582557)
-	Goal: [598, 924] (1159927)
-	Reached Goal: True
-	Distance: 1948
-	Open Set Size A: 5569
-	Open Set Size B: 256
-	Closed Set Size A: 5122
-	Closed Set Size B: 17
-	Elapsed Time A: 22ms
+	Distance: 6618
+	Open Set Size A: 15351
+	Open Set Size B: 71
+	Closed Set Size A: 14271
+	Closed Set Size B: 8
+	Elapsed Time A: 34ms
 	Elapsed Time B: 4ms
-	Time Difference: 18ms
+	Time Difference: 30ms
 },
 {
-	Start: [218, 167] (74472)
-	Goal: [548, 938] (1105779)
+	Start: [286, 883] (684748)
+	Goal: [596, 607] (724813)
 	Reached Goal: True
-	Distance: 10430
-	Open Set Size A: 257023
-	Open Set Size B: 1527
-	Closed Set Size A: 254657
-	Closed Set Size B: 565
-	Elapsed Time A: 1193ms
-	Elapsed Time B: 61ms
-	Time Difference: 1132ms
+	Distance: 4516
+	Open Set Size A: 9323
+	Open Set Size B: 63
+	Closed Set Size A: 8231
+	Closed Set Size B: 16
+	Elapsed Time A: 24ms
+	Elapsed Time B: 4ms
+	Time Difference: 20ms
 },
 {
-	Start: [1050, 983] (2068544)
-	Goal: [553, 252] (324667)
+	Start: [780, 836] (1307372)
+	Goal: [324, 650] (475475)
 	Reached Goal: True
-	Distance: 9580
-	Open Set Size A: 71549
-	Open Set Size B: 1803
-	Closed Set Size A: 69829
-	Closed Set Size B: 881
-	Elapsed Time A: 326ms
-	Elapsed Time B: 108ms
-	Time Difference: 218ms
+	Distance: 5304
+	Open Set Size A: 20413
+	Open Set Size B: 75
+	Closed Set Size A: 19248
+	Closed Set Size B: 9
+	Elapsed Time A: 72ms
+	Elapsed Time B: 3ms
+	Time Difference: 69ms
 },
 {
-	Start: [959, 248] (729276)
-	Goal: [994, 775] (1566340)
+	Start: [251, 20] (36876)
+	Goal: [337, 456] (315277)
 	Reached Goal: True
-	Distance: 9014
-	Open Set Size A: 120342
-	Open Set Size B: 3950
-	Closed Set Size A: 119002
-	Closed Set Size B: 2989
-	Elapsed Time A: 531ms
-	Elapsed Time B: 254ms
-	Time Difference: 277ms
-},
-{
-	Start: [794, 445] (768625)
-	Goal: [358, 1066] (1015666)
-	Reached Goal: True
-	Distance: 8020
-	Open Set Size A: 35089
-	Open Set Size B: 1005
-	Closed Set Size A: 33226
-	Closed Set Size B: 219
-	Elapsed Time A: 148ms
-	Elapsed Time B: 20ms
-	Time Difference: 128ms
-},
-{
-	Start: [828, 100] (431156)
-	Goal: [615, 547] (676250)
-	Reached Goal: True
-	Distance: 6250
-	Open Set Size A: 35161
-	Open Set Size B: 1441
-	Closed Set Size A: 34218
-	Closed Set Size B: 900
-	Elapsed Time A: 152ms
-	Elapsed Time B: 64ms
-	Time Difference: 88ms
-},
-{
-	Start: [693, 690] (957726)
-	Goal: [244, 402] (209383)
-	Reached Goal: True
-	Distance: 5642
-	Open Set Size A: 45656
-	Open Set Size B: 179
-	Closed Set Size A: 44187
-	Closed Set Size B: 6
-	Elapsed Time A: 199ms
-	Elapsed Time B: 17ms
-	Time Difference: 182ms
-},
-{
-	Start: [196, 561] (287464)
-	Goal: [1007, 269] (814995)
-	Reached Goal: True
-	Distance: 11498
-	Open Set Size A: 348650
-	Open Set Size B: 3294
-	Closed Set Size A: 346809
-	Closed Set Size B: 2641
-	Elapsed Time A: 1899ms
-	Elapsed Time B: 298ms
-	Time Difference: 1601ms
-},
-{
-	Start: [348, 97] (99332)
-	Goal: [574, 436] (510991)
-	Reached Goal: True
-	Distance: 4630
-	Open Set Size A: 26974
-	Open Set Size B: 557
-	Closed Set Size A: 25744
-	Closed Set Size B: 134
-	Elapsed Time A: 113ms
-	Elapsed Time B: 22ms
-	Time Difference: 91ms
-},
-{
-	Start: [300, 595] (401555)
-	Goal: [631, 422] (555353)
-	Reached Goal: True
-	Distance: 4002
-	Open Set Size A: 23333
-	Open Set Size B: 355
-	Closed Set Size A: 22356
-	Closed Set Size B: 34
-	Elapsed Time A: 99ms
-	Elapsed Time B: 27ms
-	Time Difference: 72ms
-},
-{
-	Start: [564, 678] (772581)
-	Goal: [369, 583] (454211)
-	Reached Goal: True
-	Distance: 2330
-	Open Set Size A: 10280
-	Open Set Size B: 253
-	Closed Set Size A: 9696
-	Closed Set Size B: 2
-	Elapsed Time A: 42ms
-	Elapsed Time B: 26ms
-	Time Difference: 16ms
-},
-{
-	Start: [560, 209] (296274)
-	Goal: [329, 958] (829786)
-	Reached Goal: True
-	Distance: 8616
-	Open Set Size A: 92101
-	Open Set Size B: 969
-	Closed Set Size A: 90607
-	Closed Set Size B: 175
-	Elapsed Time A: 418ms
-	Elapsed Time B: 22ms
-	Time Difference: 396ms
-},
-{
-	Start: [958, 710] (1392656)
-	Goal: [181, 890] (574946)
-	Reached Goal: True
-	Distance: 9868
-	Open Set Size A: 93606
-	Open Set Size B: 2159
-	Closed Set Size A: 91730
-	Closed Set Size B: 995
-	Elapsed Time A: 410ms
-	Elapsed Time B: 143ms
-	Time Difference: 267ms
-},
-{
-	Start: [246, 468] (255723)
-	Goal: [519, 509] (529415)
-	Reached Goal: True
-	Distance: 2894
-	Open Set Size A: 10414
-	Open Set Size B: 234
-	Closed Set Size A: 9786
+	Distance: 4704
+	Open Set Size A: 31193
+	Open Set Size B: 189
+	Closed Set Size A: 30225
 	Closed Set Size B: 4
-	Elapsed Time A: 42ms
-	Elapsed Time B: 21ms
+	Elapsed Time A: 127ms
+	Elapsed Time B: 7ms
+	Time Difference: 120ms
+},
+{
+	Start: [441, 878] (871418)
+	Goal: [983, 22] (505537)
+	Reached Goal: True
+	Distance: 10728
+	Open Set Size A: 90577
+	Open Set Size B: 211
+	Closed Set Size A: 88155
+	Closed Set Size B: 45
+	Elapsed Time A: 202ms
+	Elapsed Time B: 7ms
+	Time Difference: 195ms
+},
+{
+	Start: [634, 772] (989893)
+	Goal: [72, 211] (40397)
+	Reached Goal: True
+	Distance: 8944
+	Open Set Size A: 106696
+	Open Set Size B: 163
+	Closed Set Size A: 104887
+	Closed Set Size B: 44
+	Elapsed Time A: 254ms
+	Elapsed Time B: 2ms
+	Time Difference: 252ms
+},
+{
+	Start: [287, 509] (317715)
+	Goal: [31, 228] (33898)
+	Reached Goal: True
+	Distance: 4476
+	Open Set Size A: 26717
+	Open Set Size B: 100
+	Closed Set Size A: 25896
+	Closed Set Size B: 19
+	Elapsed Time A: 59ms
+	Elapsed Time B: 4ms
+	Time Difference: 55ms
+},
+{
+	Start: [434, 536] (471471)
+	Goal: [84, 880] (466010)
+	Reached Goal: True
+	Distance: 5374
+	Open Set Size A: 41925
+	Open Set Size B: 117
+	Closed Set Size A: 40678
+	Closed Set Size B: 47
+	Elapsed Time A: 96ms
+	Elapsed Time B: 2ms
+	Time Difference: 94ms
+},
+{
+	Start: [75, 14] (4019)
+	Goal: [562, 718] (820558)
+	Reached Goal: True
+	Distance: 9516
+	Open Set Size A: 70266
+	Open Set Size B: 237
+	Closed Set Size A: 68173
+	Closed Set Size B: 53
+	Elapsed Time A: 156ms
+	Elapsed Time B: 4ms
+	Time Difference: 152ms
+},
+{
+	Start: [458, 796] (787681)
+	Goal: [651, 795] (1046976)
+	Reached Goal: True
+	Distance: 1942
+	Open Set Size A: 949
+	Open Set Size B: 49
+	Closed Set Size A: 603
+	Closed Set Size B: 6
+	Elapsed Time A: 1ms
+	Elapsed Time B: 3ms
+	Time Difference: 2ms
+},
+{
+	Start: [675, 894] (1232559)
+	Goal: [915, 789] (1453449)
+	Reached Goal: True
+	Distance: 2820
+	Open Set Size A: 10198
+	Open Set Size B: 80
+	Closed Set Size A: 9472
+	Closed Set Size B: 11
+	Elapsed Time A: 21ms
+	Elapsed Time B: 2ms
+	Time Difference: 19ms
+},
+{
+	Start: [298, 629] (430757)
+	Goal: [358, 1015] (944266)
+	Reached Goal: True
+	Distance: 4100
+	Open Set Size A: 11671
+	Open Set Size B: 83
+	Closed Set Size A: 10857
+	Closed Set Size B: 13
+	Elapsed Time A: 24ms
+	Elapsed Time B: 3ms
 	Time Difference: 21ms
 },
 {
-	Start: [173, 415] (173581)
-	Goal: [299, 24] (52350)
+	Start: [454, 931] (960736)
+	Goal: [715, 264] (479974)
 	Reached Goal: True
-	Distance: 4414
-	Open Set Size A: 25432
-	Open Set Size B: 351
-	Closed Set Size A: 24529
-	Closed Set Size B: 34
-	Elapsed Time A: 111ms
-	Elapsed Time B: 24ms
-	Time Difference: 87ms
+	Distance: 7714
+	Open Set Size A: 80067
+	Open Set Size B: 167
+	Closed Set Size A: 78661
+	Closed Set Size B: 22
+	Elapsed Time A: 271ms
+	Elapsed Time B: 5ms
+	Time Difference: 266ms
 },
 {
-	Start: [180, 148] (54104)
-	Goal: [357, 128] (117983)
+	Start: [691, 22] (254563)
+	Goal: [520, 320] (353540)
 	Reached Goal: True
-	Distance: 1850
-	Open Set Size A: 3716
-	Open Set Size B: 58
-	Closed Set Size A: 3318
+	Distance: 3664
+	Open Set Size A: 22958
+	Open Set Size B: 177
+	Closed Set Size A: 22016
 	Closed Set Size B: 2
-	Elapsed Time A: 14ms
-	Elapsed Time B: 11ms
-	Time Difference: 3ms
+	Elapsed Time A: 49ms
+	Elapsed Time B: 9ms
+	Time Difference: 40ms
 },
 {
-	Start: [958, 964] (1848967)
-	Goal: [289, 643] (435421)
+	Start: [393, 158] (152234)
+	Goal: [1010, 87] (602340)
 	Reached Goal: True
-	Distance: 8142
-	Open Set Size A: 52773
-	Open Set Size B: 1393
-	Closed Set Size A: 50868
-	Closed Set Size B: 416
-	Elapsed Time A: 228ms
-	Elapsed Time B: 61ms
-	Time Difference: 167ms
+	Distance: 6792
+	Open Set Size A: 81835
+	Open Set Size B: 203
+	Closed Set Size A: 80513
+	Closed Set Size B: 124
+	Elapsed Time A: 189ms
+	Elapsed Time B: 7ms
+	Time Difference: 182ms
 },
 {
-	Start: [678, 1036] (1470791)
-	Goal: [506, 836] (901989)
+	Start: [77, 256] (55867)
+	Goal: [1028, 87] (622257)
 	Reached Goal: True
-	Distance: 4128
-	Open Set Size A: 42723
-	Open Set Size B: 1156
-	Closed Set Size A: 41898
-	Closed Set Size B: 610
-	Elapsed Time A: 186ms
-	Elapsed Time B: 47ms
-	Time Difference: 139ms
-},
-{
-	Start: [894, 606] (1126356)
-	Goal: [435, 890] (879365)
-	Reached Goal: True
-	Distance: 10308
-	Open Set Size A: 85982
-	Open Set Size B: 2718
-	Closed Set Size A: 84690
-	Closed Set Size B: 1740
-	Elapsed Time A: 378ms
-	Elapsed Time B: 133ms
-	Time Difference: 245ms
-},
-{
-	Start: [921, 841] (1554044)
-	Goal: [213, 652] (375197)
-	Reached Goal: True
-	Distance: 7836
-	Open Set Size A: 40799
-	Open Set Size B: 905
-	Closed Set Size A: 39228
-	Closed Set Size B: 111
-	Elapsed Time A: 175ms
-	Elapsed Time B: 31ms
-	Time Difference: 144ms
-},
-{
-	Start: [763, 459] (747712)
-	Goal: [1026, 813] (1692693)
-	Reached Goal: True
-	Distance: 6830
-	Open Set Size A: 76202
-	Open Set Size B: 2273
-	Closed Set Size A: 75065
-	Closed Set Size B: 1358
-	Elapsed Time A: 336ms
-	Elapsed Time B: 153ms
-	Time Difference: 183ms
-},
-{
-	Start: [143, 582] (263757)
-	Goal: [267, 370] (203573)
-	Reached Goal: True
-	Distance: 2616
-	Open Set Size A: 11801
-	Open Set Size B: 247
-	Closed Set Size A: 11125
-	Closed Set Size B: 2
-	Elapsed Time A: 48ms
-	Elapsed Time B: 25ms
-	Time Difference: 23ms
+	Distance: 10416
+	Open Set Size A: 159287
+	Open Set Size B: 228
+	Closed Set Size A: 157412
+	Closed Set Size B: 158
+	Elapsed Time A: 375ms
+	Elapsed Time B: 3ms
+	Time Difference: 372ms
 },
 -----------------------------------------------------------------
-Map Used: https://movingai.com/benchmarks/street/London_0_1024.png
-Elapsed Time: 39704ms
-Full Graph (A) Elapsed Time : 32843ms
-Visibility Graph (B) Elapsed Time : 6802ms
-Average Full Graph (B) Processing Time : 328.43ms
-Average Visibility Graph (B) Processing Time : 68.02ms
+Map Used: https://movingai.com/benchmarks/street/Denver_0_1024.png
+Elapsed Time: 3851ms
+Full Graph (A) Elapsed Time : 3719ms
+Visibility Graph (B) Elapsed Time : 117ms
+Average Full Graph (B) Processing Time : 123.9667ms
+Average Visibility Graph (B) Processing Time : 3.9ms
 -----------------------------------------------------------------

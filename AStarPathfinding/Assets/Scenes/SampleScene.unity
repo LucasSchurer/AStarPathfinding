@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd9241c019dcde4883b54129e1f0e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageUrl: https://movingai.com/benchmarks/street/London_0_1024.png
+  _imageUrl: https://movingai.com/benchmarks/street/Denver_0_1024.png
   _pixelsPerUnit: 53.65
   _spriteRenderer: {fileID: 1857118990}
 --- !u!114 &1909400684
@@ -671,4 +671,4 @@ MonoBehaviour:
   _unitsPerVertex: 1
   _fullGraphOverlay: {fileID: 277766480}
   _visibilityGraphOverlay: {fileID: 1253344168}
-  _numberOfPoints: 100
+  _numberOfPoints: 30

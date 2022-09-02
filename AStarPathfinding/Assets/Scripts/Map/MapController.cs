@@ -126,7 +126,7 @@ public class MapController : MonoBehaviour
 
                 _goalVertex = _fullGraph.GetVertexOnPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-                if (_startVertex != null)
+                if (_goalVertex != null)
                 {
                     _fullGraphDrawer.DrawVertex(_goalVertex, Color.yellow);
                 }
